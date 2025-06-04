@@ -1,4 +1,3 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/kalende1/public_html
-    - /bin/cp -r * $DEPLOYPATH
+    - /bin/rsync -av --delete ./ /home/kalende1/public_html/
