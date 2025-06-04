@@ -1,3 +1,5 @@
+---
 deployment:
   tasks:
-    - command: echo "deploy test1"
+    - export DEPLOYPATH=/home/kalende1/public_html/
+    - /bin/cp -R images $DEPLOYPATH
