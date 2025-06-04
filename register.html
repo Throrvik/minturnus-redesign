@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrer deg - KalenderTurnus</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/session.js"></script>
+    <script defer src="js/login.js"></script>
+</head>
+<body>
+    <header class="header">
+        <h1>KalenderTurnus</h1>
+        <div id="hamburger" class="hamburger">&#9776;</div>
+        <div id="user-info" style="float: right;"></div>
+    </header>
+    
+    <nav id="navbar" class="navbar">
+        <ul>
+            <li><a href="index.html">Kalender</a></li>
+            <li><a href="about.html">Om oss</a></li>
+            <li><a href="contact.html">Kontakt</a></li>
+            <li><a href="friends.html" id="friends-link" style="display: none;">Venner</a></li>
+            <li><a href="login.html" id="login-link">Logg inn</a></li>
+        </ul>
+    </nav>
+    
+    <div class="login-box">
+        <form id="form" data-action="register" novalidate>
+            <h2>Registrer deg</h2>
+            <div class="form-group"> 
+                <div id="error-messages" class="error-messages" style="display: none; color: red;"></div> <!-- Feilmeldingscontainer -->
+            </div>
+            <div class="form-group">
+                <input type="text" id="firstname" name="firstname" placeholder="Navn" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="E-post" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="Passord" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password_repeat" name="password_repeat" placeholder="Gjenta passord" required>
+            </div>
+            <button type="submit" class="btn">Registrer deg</button>
+            <br><br>
+            <p>Har du allerede en konto? <a href="login.html">Logg inn</a></p>
+        </form>
+    </div>
+
+    <script>
+        // Litt JavaScript for å sikre at skjemaet oppfører seg som forventet
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('form');
+            const errorMessages = document.getElementById('error-messages');
+
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    // Sjekk om passordene stemmer overens
+                    const password = document.getElementById('password').value;
+                    const passwordRepeat = document.getElementById('password_repeat').value;
+                    if (password !== passwordRepeat) {
+                        e.preventDefault();
+                        errorMessages.textContent = 'Passordene stemmer ikke overens.';
+                        errorMessages.style.display = 'block';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

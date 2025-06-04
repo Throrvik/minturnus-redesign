@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - KalenderTurnus</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/session.js"></script>
+    <script defer src="js/login.js"></script>
+    <script defer src="js/forgot_password.js"></script>
+
+</head>
+<body>
+    <header class="header">
+            <h1>KalenderTurnus</h1>
+            <div id="user-info" style="float: right;"></div> <!-- Plass til brukerinformasjon etter innlogging -->
+            <div id="hamburger" class="hamburger">&#9776;
+        </div>
+    </header>
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a href="index.html">Kalender</a></li>
+                <li><a href="about.html">Om oss</a></li>
+                <li><a href="contact.html">Kontakt</a></li>
+                <li><a href="friends.html" id="friends-link" style="display: none;">Venner</a></li>
+                <li><a href="login.html" id="login-link">Logg inn</a></li>
+            </ul>
+        </nav>
+    <div class="login-box">
+        <form id="form" data-action="login" method="post" novalidate>
+            <h2>Logg inn</h2><br>
+            <div id="error-messages" class="error-messages"></div><br>
+            <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="E-post" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="Passord" required>
+            </div>
+            <button type="submit" class="btn">Logg inn</button>
+            <button type="button" class="btn-secondary" id="reset-password-btn">Glemt passord?</button>
+            <p>Har du ikke bruker? <a href="register.html">Registrer ny bruker</a></p>
+        </form>
+    </div>
+</body>
+</html>

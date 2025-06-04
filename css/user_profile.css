@@ -1,0 +1,65 @@
+/* CSS styling som er spesifikk for brukerprofilen */
+/* Styling for turnusvalg for å gjøre feltet bredere */
+
+.contact-box select {
+    width: 100%; /* Sørg for at `select`-elementet fyller hele tilgjengelige bredde */
+    padding: 10px; /* Gi samme padding som inputfeltene for konsistens */
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.contact-box select:focus {
+    border-color: #2c3e50;
+    outline: none;
+}
+
+
+/* Sentraler profilboksen */
+.user-profile {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.user-profile-box {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background-color: #fff;
+    padding: 30px;
+}
+
+/* Form group styling for bedre plassering */
+.user-profile-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.user-profile-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+/* Styling for inndelinger, som "endre passord" */
+.section-divider {
+    border-top: 1px solid #ccc;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.options-inline {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    align-items: center;
+}
+
+/* For å gjøre teksten under hver seksjon bedre lesbar */
+.description {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #666;
+}

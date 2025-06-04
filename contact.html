@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt - KalenderTurnus</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/session.js"></script>
+
+</head>
+<body>
+    <header class="header">
+        <h1>KalenderTurnus</h1>
+        <div id="user-info" style="float: right;"></div>
+        <div id="hamburger" class="hamburger">&#9776;</div>
+    </header>
+
+    <nav id="navbar" class="navbar">
+        <ul>
+            <li><a href="index.html">Kalender</a></li>
+            <li><a href="about.html">Om oss</a></li>
+            <li><a href="contact.html">Kontakt</a></li>
+            <li><a href="friends.html" id="friends-link" style="display: none;">Venner</a></li>
+            <li><a href="login.html" id="login-link">Logg inn</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="contact-box">
+            <h2>Kontakt oss</h2>
+            <form id="contactForm" onsubmit="sendMail(event)">
+   
+                <p>Har du spørsmål, tilbakemeldinger eller ønsker å komme i kontakt med oss? Fyll ut skjemaet nedenfor eller send mail til <a href="mailto:thomas@kalenderturnus.no">thomas@kalenderturnus.no</a>.</p>
+                
+                <div class="form-group">
+                    <input type="text" id="name" name="name" placeholder="Navn" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="E-post" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="subject" name="subject" placeholder="Emne" required>
+                </div>
+
+                <div class="form-group">
+                    <textarea id="message" name="message" rows="5" placeholder="Melding" required></textarea>
+                </div>
+
+                <button type="submit" class="btn">Send melding</button>
+                <button type="reset" class="btn-secondary">Tøm skjema</button>
+            </form>
+
+            <div id="responseMessage"></div>
+        </div>
+    </div>
+    <script>
+        function sendMail(event) {
+            event.preventDefault(); // Hindrer vanlig innsending
+        
+            const formData = new FormData(document.getElementById('contactForm'));
+
+            fetch('backend/send_mail.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('responseMessage').innerHTML = data;
+                document.getElementById('contactForm').reset();
+            })
+            .catch(error => {
+                document.getElementById('responseMessage').innerHTML = `Noe gikk galt. Prøv igjen senere. Feilmelding: ${error.message}`;
+            });
+        }
+    </script>
+</body>
+</html>

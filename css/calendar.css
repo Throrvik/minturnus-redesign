@@ -1,0 +1,359 @@
+/* Main container styling for kalender */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for ukedagene */
+.weekday-row {
+    display: grid;
+    grid-template-columns: 40px repeat(7, 1fr); /* Ekstra kolonne for "Uke" */
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.weekday {
+    padding: 10px 0;
+    color: #2c3e50;
+    font-size: 0.9rem; /* Redusert skriftstørrelse for bedre mobilkompatibilitet */
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 15px 0; /* Økt padding for mer luft */
+    position: relative; /* Beholde posisjonering */
+}
+
+.calendar-header h2 {
+    margin: 0 auto;
+    font-size: 1.8rem;
+    text-align: center;
+    flex-grow: 1;
+    color: #2c3e50;
+}
+
+.nav-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    background-color: #2c3e50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.nav-button:hover {
+    background-color: #1a2a38;
+}
+
+
+@media (max-width: 600px) {
+    .calendar-header {
+        flex-direction: row; /* Sørger for horisontal layout */
+        justify-content: space-between; /* Plasserer elementene jevnt */
+    }
+
+    .nav-button {
+        font-size: 12px; /* Reduserer tekststørrelsen på små skjermer */
+        padding: 6px 10px;
+        width: auto; /* Unngår full bredde */
+    }
+
+    .calendar-header h2 {
+        font-size: 1.2rem; /* Reduserer størrelsen for små skjermer */
+        max-width: 40%; /* Unngår at tittelen tar for mye plass */
+    }
+}
+
+
+/* Kalender rutenett */
+.week-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    color: #2c3e50;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 40px; /* Bredde for kolonnen */
+    margin-right: 5px; /* Litt mellomrom til kalenderen */
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 40px repeat(7, 1fr); /* Legg til plass til ukenummer */
+    gap: 5px; /* Juster gap for konsistens */
+}
+
+
+.day {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.shift-container {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 kolonner */
+    grid-template-rows: repeat(5, 1fr); /* 5 rader */
+    gap: 2px;
+    width: 90%;
+    height: 90%;
+    z-index: 1;
+}
+
+.shift-container .shift-box {
+    width: 100%; /* Fyll cellen i grid-systemet */
+    height: 100%; /* Fyll cellen i grid-systemet */
+    border-radius: 4px;
+}
+
+.shift-container .shift-box:nth-child(13) {
+    display: none; /* Hold midten tom for datoen */
+}
+
+.day .day-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 2; /* Sørger for at datoen alltid er synlig */
+}
+
+.shift-box {
+    width: 20%; /* Passer for en grid med 5x5 */
+    height: 20%;
+    border-radius: 4px;
+}
+
+
+.today {
+    background-color: #2c3e50;
+    color: white;
+    font-weight: bold;
+}
+
+/* Shift mark styling */
+.shift-mark {
+    position: absolute;
+    height: 100%;
+    background-color: red;
+    border-radius: 8px 0 0 8px;
+    top: 0;
+    left: 0;
+    width: 8px;
+    z-index: 0;
+}
+
+.day-text {
+    position: relative;
+    z-index: 1;
+}
+
+.red-day .day-text {
+    color: #ff0000; /* Rød tekst for datoen */
+    font-weight: bold;
+}
+
+.holiday-text {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.4rem;
+    color: #ff0000; /* Rød tekst for helligdager */
+    font-style: italic;
+    z-index: 2;
+}
+
+.special-text {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.4rem;
+    color: #555; /* Grå tekst for subtil forskjell */
+    font-style: italic;
+    z-index: 2;
+}
+
+
+.day {
+    position: relative;
+}
+
+
+/* Start - Styling for hver rad i turnuslisten */
+.shift-form {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.shift-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.shift-item > * {
+    text-align: center;
+    flex: 1;
+}
+
+.shift-item input[type="checkbox"] {
+    flex: 0.5;
+    margin-right: 10px;
+}
+
+.shift-item span {
+    flex: 2;
+}
+
+.shift-item span:nth-child(3) {
+    flex: 1;
+}
+
+.shift-item button {
+    flex: 0.8;
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    padding: 5px 0px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.shift-item button:hover {
+    background-color: #7f8c8d;
+}
+/* Slutt - Styling for hver rad i turnuslisten */
+
+/* Start - Styling for tittelrad i turnuslisten */
+.shift-list-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.shift-header {
+    flex: 1;
+    padding: 5px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.shift-header:first-child {
+    flex: 0.5;
+    text-align: left;
+}
+
+.shift-header:nth-child(2) {
+    flex: 2;
+}
+
+.shift-header:last-child {
+    flex: 0.8;
+}
+/* Slutt - Styling for tittelrad i turnuslisten */
+
+/* Form styling */
+.shift-form {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.shift-form label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    font-size: 0.9rem;
+}
+
+.shift-form input, .shift-form select, .shift-form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.turnus-oversikt {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-wrap: wrap; /* Sørg for horisontal layout med linjebryting */
+    gap: 10px; /* Avstand mellom elementene */
+}
+
+.turnus-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 120px; /* Minimum bredde for hver blokk */
+    flex: 1 1 calc(33.33% - 10px); /* Tre elementer per linje */
+    max-width: calc(33.33% - 10px); /* Ikke overskrid maks bredde */
+    box-sizing: border-box; /* For å sikre at padding og border ikke strekker elementet */
+}
+
+.turnus-item .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    #turnus-oversikt {
+        gap: 5px; /* Mindre avstand mellom elementer */
+    }
+
+    .turnus-item {
+        font-size: 12px; /* Mindre skriftstørrelse */
+        padding: 5px; /* Mindre padding */
+    }
+
+    .color-box {
+        width: 15px; /* Mindre fargeboks */
+        height: 15px;
+    }
+}
+
+

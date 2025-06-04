@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brukerprofil - KalenderTurnus</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user_profile.css">
+    <script defer src="js/session.js"></script>
+    <script defer src="js/user_profile.js"></script>
+</head>
+<body>
+    <header class="header">
+        <h1>KalenderTurnus</h1>
+        <div id="user-info" style="float: right;"></div>
+        <div id="hamburger" class="hamburger">&#9776;</div>
+    </header>
+
+    <nav id="navbar" class="navbar">
+        <ul>
+            <li><a href="index.html">Kalender</a></li>
+            <li><a href="about.html">Om oss</a></li>
+            <li><a href="contact.html">Kontakt</a></li>
+            <li><a href="friends.html" id="friends-link" style="display: none;">Venner</a></li>
+            <li><a href="login.html" id="login-link">Logg inn</a></li>
+        </ul>
+    </nav>
+        <div class="contact-box user-profile-box">
+            <h2>Brukerprofil</h2>
+            <form id="user-profile-form" novalidate>
+                <div class="form-group user-profile-group">
+                    <label for="firstname">Navn:</label>
+                    <input type="text" id="firstname" name="firstname" placeholder="Navn" required>
+                </div>
+                <div class="form-group user-profile-group">
+                    <label for="email">E-post:</label>
+                    <input type="email" id="email" name="email" placeholder="E-post" required>
+                </div>
+
+                <div class="form-group user-profile-group section-divider">
+
+                </div>
+                <div class="form-group user-profile-group">
+                    <label for="new-password">Nytt Passord:</label>
+                    <input type="password" id="new-password" name="new-password" placeholder="Nytt passord">
+                </div>
+                <div class="form-group user-profile-group">
+                    <label for="repeat-password">Gjenta Passord:</label>
+                    <input type="password" id="repeat-password" name="repeat-password" placeholder="Gjenta passord">
+                </div>
+
+                <div class="form-group user-profile-group section-divider">
+                    <label for="company">Firma:</label>
+                    <input type="text" id="company" name="company" placeholder="Firma">
+                    <div class="options-inline">
+                        <label><input type="checkbox" id="company-hide"> Skjul</label>
+                        <label><input type="checkbox" id="company-na"> NA</label>
+                    </div>
+                    <p class="description">Velg firma, eller velg "skjul" for ikke å vise dette på profilen din.</p>
+                </div>
+
+                <div class="form-group user-profile-group">
+                    <label for="location">Lokasjon:</label>
+                    <input type="text" id="location" name="location" placeholder="Lokasjon">
+                    <div class="options-inline">
+                        <label><input type="checkbox" id="location-hide"> Skjul</label>
+                        <label><input type="checkbox" id="location-na"> NA</label>
+                    </div>
+                    <p class="description">Skriv inn din lokasjon, eller velg "skjul" eller "NA" om ønskelig.</p>
+                </div>
+
+                <div class="form-group user-profile-group">
+                    <label for="shift">Turnus:</label>
+                    <select id="shift" name="shift">
+                        <!-- Full list of shifts including additional options -->
+                        <option value="mandag-fredag">Mandag til fredag</option>
+                        <option value="1-2">1-2</option>
+                        <option value="1-3">1-3</option>
+                        <option value="1-4">1-4</option>
+                        <option value="2-2">2-2</option>
+                        <option value="2-3">2-3</option>
+                        <option value="2-4">2-4</option>
+                        <option value="2-6">2-6</option>
+                        <option value="2-10">2-10</option>
+                        <option value="3-3">3-3</option>
+                        <option value="4-4">4-4</option>
+                        <option value="4-5">4-5</option>
+                        <option value="4-8">4-8</option>
+                        <option value="5-5">5-5</option>
+                    </select>
+                    <div class="options-inline">
+                        <label><input type="checkbox" id="shift-hide"> Skjul</label>
+                        <label><input type="checkbox" id="shift-na"> NA</label>
+                    </div>
+                    <p class="description">Velg din turnus. Hvis du ikke ønsker å vise dette, kan du velge "skjul".</p>
+                </div>
+
+                <button type="submit" class="btn">Oppdater profil</button>
+            </form>
+        </div>
+</body>
+</html>

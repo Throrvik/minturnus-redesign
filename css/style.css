@@ -1,0 +1,271 @@
+/* Reset default margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding: 20px 0;
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+}
+
+body {
+    margin-bottom: 100px; /* Gi litt mer rom for footer slik at den ikke overlapper */
+}
+
+/* Styling for Logg inn boks */
+.login-box {
+    max-width: 400px;
+    background-color: white;
+    padding: 30px;
+    margin: 50px auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #2c3e50; /* Mørk blå farge for overskrift */
+}
+
+/* Inputfelt styling */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* Justert avstand mellom inputfeltene */
+}
+
+.form-group label {
+    margin-right: 10px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Styling for knapper */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #2c3e50; /* Mørk blå farge som i ønsket design */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px; /* Avstand mellom knappene */
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #34495e; /* Litt mørkere hover-effekt */
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background-color: #95a5a6; /* Lysere grå farge som i ønsket design */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px; /* Avstand mellom Glemt passord og teksten under */
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d; /* Mørkere hover-effekt for sekundærknapp */
+}
+
+    /* Styling for Om oss Section */
+.section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.section p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Styling for Kontakt Oss Section */
+.contact-box {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+
+.contact-box h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+.contact-box p {
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input, .form-group textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #2c3e50;
+    outline: none;
+}
+
+#responseMessage {
+    margin-top: 20px;
+    text-align: center;
+    color: #28203f;
+    font-weight: bold;
+}
+
+/* Style for Beregne lønn siden */
+/* Custom styles for the calculator */
+.contact-box {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.calculator-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c3e50;
+    display: block;
+}
+
+.form-input,
+.form-select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: #2c3e50;
+    outline: none;
+}
+
+.calculate-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #2c3e50;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.calculate-btn:hover {
+    background-color: #1a242f;
+}
+
+.result-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #34495e;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.result-title {
+    text-align: center;
+    font-size: 1.4rem;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.result-label {
+    font-weight: bold;
+    color: white;
+}
+
+.result-value {
+    color: white;
+}
+
+.footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 1;
+    width: 100%;
+}
+
+/* Styling for lenker */
+p {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+a {
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

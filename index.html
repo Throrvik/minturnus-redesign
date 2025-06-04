@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender - KalenderTurnus</title>
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="css/calendar.css">
+        <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/kalender.js"></script>
+    <script defer src="js/session.js"></script>
+    <script defer src="js/server.js"></script>
+</head>
+<body>
+    <header class="header">
+            <h1>KalenderTurnus</h1>
+            <div id="user-info" style="float: right;"></div> <!-- Plass til brukerinformasjon etter innlogging -->
+            <div id="hamburger" class="hamburger">&#9776;
+        </div>
+    </header>
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a href="index.html">Kalender</a></li>
+                <li><a href="about.html">Om oss</a></li>
+                <li><a href="contact.html">Kontakt</a></li>
+                <li><a href="friends.html" id="friends-link" style="display: none;">Venner</a></li>
+                <li><a href="login.html" id="login-link">Logg inn</a></li>
+            </ul>
+        </nav>
+    <!-- Kalender -->
+    <div class="container">
+        <div class="calendar-header">
+            <button id="prev-month" class="nav-button">← Forrige</button>
+            <h2 id="month-year">Oktober 2024</h2>
+            <button id="next-month" class="nav-button">Neste →</button>
+        </div>
+        <div class="weekday-row">
+            <div class="weekday">MAN</div>
+            <div class="weekday">TIR</div>
+            <div class="weekday">ONS</div>
+            <div class="weekday">TOR</div>
+            <div class="weekday">FRE</div>
+            <div class="weekday">LØR</div>
+            <div class="weekday">SØN</div>
+        </div>
+        <div class="calendar-grid"></div>
+        <div id="turnus-oversikt" class="turnus-oversikt"></div>
+    <div class="shift-form">
+        <h3>Legg til ny turnus</h3>
+        
+        <label for="shift-name">Navn på turnus:</label>
+        <input type="text" id="shift-name" placeholder="Eks: Thomas">
+        
+        <label for="shift-duration">Turnus lengde:</label>
+        <select id="shift-duration">
+            <!-- Forhåndsdefinerte turnuser -->
+            <option value="1-1">1-1</option>
+            <option value="1-2">1-2</option>
+            <option value="1-3">1-3</option>
+            <option value="1-4">1-4</option>
+            <option value="2-2">2-2</option>
+            <option value="2-3">2-3</option>
+            <option value="2-4">2-4</option>
+            <option value="2-6">2-6</option>
+            <option value="3-3">3-3</option>
+            <option value="3-4">3-4</option>
+            <option value="4-4">4-4</option>
+            <option value="4-5">4-5</option>
+            <option value="4-8">4-8</option>
+            <option value="5-5">5-5</option>
+            <option value="custom">Valgfritt...</option>
+        </select>
+                
+        <label for="shift-start">Første skiftdag</label>
+        <input type="date" id="shift-start">
+        
+        <label for="shift-color">Velg farge:</label>
+        <select id="shift-color">
+            <option value="#FF6666">Rød</option>
+            <option value="#FFB266">Oransje</option>
+            <option value="#FFFF66">Gul</option>
+            <option value="#B2FF66">Lys Grønn</option>
+            <option value="#66FFB2">Turkis</option>
+            <option value="#66B2FF">Lys Blå</option>
+            <option value="#FF66B2">Rosa</option>
+            <option value="#CC66FF">Fiolett</option>
+            <option value="#66FF66">Grønn</option>
+            <option value="#CCCCCC">Lys Grå</option>
+        </select>
+        
+        <button id="add-shift" class="btn">Legg til turnus</button>
+        <button id="reset" class="btn-secondary">Tøm skjema</button>
+    </div>
+
+    <!-- Kolonnetitler for turnuslisten -->
+    <div class="shift-list-header">
+        <span class="shift-header">Velg</span>
+        <span class="shift-header">Navn på turnus</span>
+        <span class="shift-header">Turnus</span>
+        <span class="shift-header">Handling</span>
+    </div>
+
+    <!-- Liste over aktive turnuser med mulighet for sletting og skjuling -->
+    <div id="shift-list" class="shift-list"></div>
+    <iframe src="backend/besok.php" style="border: none; width: 100%; height: 50px;"></iframe>
+
+</div>
+
+
+</body>
+</html>
