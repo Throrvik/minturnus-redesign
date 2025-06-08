@@ -98,19 +98,6 @@ function getSpecialDayInfo(date) {
 }
 
 
-function loadShiftsFromLocalStorage() {
-    const storedShifts = localStorage.getItem('shifts');
-    if (storedShifts) {
-        shifts = JSON.parse(storedShifts);
-        shifts.forEach(shift => {
-            shift.startDate = new Date(shift.startDate);
-        });
-    }
-}
-
-function saveShiftsToLocalStorage() {
-    localStorage.setItem('shifts', JSON.stringify(shifts));
-}
 
 const months = [
     'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni',
@@ -593,21 +580,6 @@ addShiftButton.addEventListener('click', () => {
     renderCalendar(currentMonth, currentYear); // Oppdater kalenderen for å vise ny turnus
 });
 
-// Fjern turnus
-function deleteShift(index) {
-    // Fjern turnus fra arrayet
-    shifts.splice(index, 1);
-
-    // Lagre den oppdaterte listen til localStorage
-    saveShiftsToLocalStorage();
-
-    // Oppdater listen nederst og kalenderen
-    renderShiftList();
-    renderCalendar(currentMonth, currentYear);
-
-    // Oppdater oversikten under kalenderen
-    updateTurnusOversikt();
-}
 
 // Initialiser kalenderen
 renderCalendar(currentMonth, currentYear);
