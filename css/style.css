@@ -11,7 +11,7 @@ footer {
     bottom: 0;
     width: 100%;
     padding: 20px 0;
-    background-color: #2c3e50;
+    background-color: #000000;
     color: white;
     text-align: center;
 }
@@ -33,7 +33,7 @@ body {
 
 h2 {
     margin-bottom: 20px;
-    color: #2c3e50; /* Mørk blå farge for overskrift */
+    color: #000000; /* Primærfarge for overskrift */
 }
 
 /* Inputfelt styling */
@@ -59,7 +59,7 @@ h2 {
 .btn {
     width: 100%;
     padding: 12px;
-    background-color: #2c3e50; /* Mørk blå farge som i ønsket design */
+    background-color: #000000; /* Primærfarge */
     color: white;
     border: none;
     border-radius: 5px;
@@ -69,14 +69,14 @@ h2 {
 }
 
 .btn:hover {
-    background-color: #34495e; /* Litt mørkere hover-effekt */
+    background-color: #F4A300; /* Hover-effekt i aksentfarge */
 }
 
 .btn-secondary {
     width: 100%;
     padding: 12px;
-    background-color: #95a5a6; /* Lysere grå farge som i ønsket design */
-    color: white;
+    background-color: #C2C2C2; /* Sekundær knappfarge */
+    color: #000;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -85,14 +85,15 @@ h2 {
 }
 
 .btn-secondary:hover {
-    background-color: #7f8c8d; /* Mørkere hover-effekt for sekundærknapp */
+    background-color: #F4A300; /* Hover-effekt i aksentfarge */
+    color: #000;
 }
 
     /* Styling for Om oss Section */
 .section h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #2c3e50;
+    color: #000000;
     text-align: center;
 }
 
@@ -116,7 +117,7 @@ h2 {
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
-    color: #2c3e50;
+    color: #000000;
 }
 
 .contact-box p {
@@ -140,7 +141,7 @@ h2 {
 }
 
 .form-group input:focus, .form-group textarea:focus {
-    border-color: #2c3e50;
+    border-color: #000000;
     outline: none;
 }
 
@@ -165,7 +166,7 @@ h2 {
 .calculator-title {
     text-align: center;
     font-size: 2rem;
-    color: #2c3e50;
+    color: #000000;
     margin-bottom: 20px;
 }
 
@@ -176,7 +177,7 @@ h2 {
 .form-label {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #2c3e50;
+    color: #000000;
     display: block;
 }
 
@@ -192,7 +193,7 @@ h2 {
 
 .form-input:focus,
 .form-select:focus {
-    border-color: #2c3e50;
+    border-color: #000000;
     outline: none;
 }
 
@@ -201,7 +202,7 @@ h2 {
     width: 100%;
     padding: 12px;
     margin-top: 20px;
-    background-color: #2c3e50;
+    background-color: #000000;
     color: #fff;
     font-size: 1.2rem;
     font-weight: bold;
@@ -212,13 +213,14 @@ h2 {
 }
 
 .calculate-btn:hover {
-    background-color: #1a242f;
+    background-color: #F4A300;
+    color: #000;
 }
 
 .result-section {
     margin-top: 30px;
     padding: 20px;
-    background-color: #34495e;
+    background-color: #C2C2C2;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -246,7 +248,7 @@ h2 {
 }
 
 .footer {
-    background-color: #2c3e50;
+    background-color: #000000;
     color: white;
     text-align: center;
     padding: 10px 0;
@@ -262,7 +264,7 @@ p {
 }
 
 a {
-    color: #2c3e50;
+    color: #000000;
     text-decoration: none;
 }
 
