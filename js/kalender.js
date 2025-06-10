@@ -362,14 +362,6 @@ function saveShiftsToLocalStorage() {
     localStorage.setItem('shifts', JSON.stringify(shifts));
 }
 
-// Initialiser kalender og UI
-window.onload = function() {
-    loadShiftsFromLocalStorage();
-    renderCalendar(currentMonth, currentYear);
-    renderShiftList();
-    updateTurnusOversikt();  // Legg til denne linjen for å gjenopprette oversikten under kalenderen
-};
-
 function updateTurnusOversikt() {
     const oversiktContainer = document.getElementById('turnus-oversikt');
     oversiktContainer.innerHTML = ''; 
@@ -397,6 +389,7 @@ window.onload = function() {
     loadShiftsFromLocalStorage();
     renderCalendar(currentMonth, currentYear);
     renderShiftList();
+    updateTurnusOversikt();  // inkludert denne!
 };
 
 function updateShiftCounts() {

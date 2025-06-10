@@ -1,11 +1,7 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
 header('Content-Type: application/json');
 
-// Sjekk om brukeren er logget inn
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['status' => 'error', 'message' => 'Bruker ikke innlogget']);
     exit;
