@@ -30,11 +30,6 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
-if ($conn->connect_error) {
-    die(json_encode(['status' => 'error', 'message' => 'Kunne ikke koble til databasen']));
-}
-
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
     echo json_encode(['status' => 'success', 'user' => $user]);
