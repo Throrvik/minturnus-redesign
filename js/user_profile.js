@@ -70,6 +70,13 @@ function updateUserProfile() {
 
     // Sjekk om passordfeltet er fylt ut før det sendes
     const newPassword = document.getElementById('new-password').value;
+    const repeatPassword = document.getElementById('repeat-password').value; 
+    
+    if (newPassword && newPassword !== repeatPassword) {
+        alert("Passordene stemmer ikke overens.");
+        return; // Stopp innsendingen
+    }
+    
     if (newPassword) {
         formData.append('new-password', newPassword);
     }
