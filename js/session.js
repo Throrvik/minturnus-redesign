@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Håndter innloggingsstatus
     if (userName) {
-        console.log("Bruker er logget inn:", userName);
-
         // Oppdater header for å vise velkomstmelding og logg ut-knapp
         if (userInfoDiv) {
             userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${userName}</strong></a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
@@ -19,12 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Skjul "Logg inn"-lenken når brukeren er logget inn
         if (loginLink) {
             loginLink.style.display = 'none';
-            console.log("Logg inn-knappen skjult");
         }
 
     } else {
-        console.log("Ingen bruker er logget inn.");
-        
         // Skjul venne-lenken hvis brukeren ikke er logget inn
         if (friendsLink) friendsLink.style.display = 'none';
 
