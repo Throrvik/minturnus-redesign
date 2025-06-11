@@ -10,21 +10,6 @@ const calendarGrid = document.querySelector('.calendar-grid');
 
 console.log("🚀 kalender.js er lastet!");
 
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("✅ DOM er ferdig lastet!");
-
-    const addShiftButton = document.getElementById('add-shift');
-    console.log("🔎 add-shift:", addShiftButton);
-
-    if (addShiftButton) {
-        console.log("✅ add-shift ble funnet! Legger til event listener...");
-        addShiftButton.addEventListener('click', addNewShift);
-    } else {
-        console.error("❌ Feil: add-shift knappen ble IKKE funnet!");
-    }
-});
-
-
 // Turnuser
 let shifts = [];
 const predefinedShifts = [
@@ -223,7 +208,7 @@ function addColorToDropdown(color) {
 
 // Funksjon for å legge til ny turnus
 function addNewShift() {
-    if (shifts.length >= 10) {
+    if (shifts.length >= maxShifts) {
         alert(`Maksimum antall turnuser er nådd. Slett en turnus for å legge til en ny.`);
         return;
     }
@@ -533,46 +518,6 @@ function renderShiftList() {
 
 // Legg til ny turnus
 const maxShifts = 10; // Sett maksgrensen her
-
-addShiftButton.addEventListener('click', () => {
-    if (shifts.length >= maxShifts) {
-        alert(`Maksimum antall turnuser er ${maxShifts}. Slett en turnus for å legge til en ny.`);
-        return;
-    }
-
-    const name = document.getElementById('shift-name').value;
-    const durationInput = document.getElementById('shift-duration').value;
-    let duration = durationInput;
-
-    // Egendefinert input
-    if (durationInput === 'custom') {
-        duration = document.getElementById('custom-shift').value;
-    }
-
-    const durationArray = duration.split('-').map(Number);
-    if (durationArray.length !== 2 || durationArray.some(isNaN) || durationArray.some(num => num <= 0)) {
-        alert('Ugyldig turnuslengde, bruk formatet "2-4"');
-        return;
-    }
-
-    const startDate = new Date(document.getElementById('shift-start').value);
-    const color = document.getElementById('shift-color').value;
-
-
-    // Legg turnus som uker
-    const shift = { 
-        name, 
-        workWeeks: durationArray[0], 
-        offWeeks: durationArray[1], 
-        startDate, 
-        color, 
-        visible: true 
-    };
-    shifts.push(shift);
-    renderShiftList();
-    renderCalendar(currentMonth, currentYear); // Oppdater kalenderen for å vise ny turnus
-});
-
 
 // Initialiser kalenderen
 renderCalendar(currentMonth, currentYear);

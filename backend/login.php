@@ -4,7 +4,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 require_once 'database.php';
-$_SESSION['user_id'] = $user['id'];  // Antar du har bruker-ID tilgjengelig
+
+// Start session variables only after the user has been authenticated
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Hent input fra skjemaet
     $email = trim($_POST['email']);
