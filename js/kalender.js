@@ -133,6 +133,9 @@ function resetShifts() {
     if (confirm("Er du sikker på at du vil tømme alle turnusene? Dette kan ikke angres.")) {
         shifts = []; // Tømmer turnuslisten
         saveShiftsToLocalStorage(); // Oppdaterer local storage med den tomme listen
+        // Tilbakestill tilgjengelige farger slik at alle farger blir synlige igjen
+        saveAvailableColors(Object.keys(colorLabels));
+        updateColorDropdown();
         renderCalendar(currentMonth, currentYear); // Oppdaterer kalenderen
         renderShiftList(); // Oppdaterer listen som viser turnuser
 
