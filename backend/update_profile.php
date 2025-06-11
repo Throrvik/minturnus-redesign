@@ -9,10 +9,8 @@ header('Content-Type: application/json');
 
 include 'database.php';
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Bruker ikke innlogget']);
-    exit;
-}
+// Hopp over innloggingssjekk for testing
+$userId = 39;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = 39;
