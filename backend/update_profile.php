@@ -1,15 +1,17 @@
 <?php
 session_start();
 ob_clean();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 include 'database.php';
 
-// Midlertidig hardkodet for testing
-$userId = 39;
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Bruker ikke innlogget']);
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -26,13 +28,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $shiftHide = isset($_POST['shift-hide']) ? 1 : 0;
         $shiftNa = isset($_POST['shift-na']) ? 1 : 0;
 
-        $conn = openDatabaseConnection();
 
         $sql = "UPDATE users SET firstname=?, email=?, company=?, company_hidden=?, company_na=?,
                 location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?";
-        $params = [$firstname, $email, $company, $companyHide, $companyNa,
-                   $location, $locationHide, $locationNa, $shift, $shiftHide, $shiftNa];
-        $types = "sssiiisiisii";
+        $params = [
+            $firstname,
+            $email,
+            $company,
+            $companyHide,
+            $companyNa,
+            $location,
+            $locationHide,
+            $locationNa,
+            $shift,
+            $shiftHide,
+            $shiftNa,
+        ];
+        // types must mirror the params above: 11 values before id
+        $types = "sssiisiisii";  // 11 columns (no id yet)
 
         if ($newPassword) {
             $sql .= ", password=?";
@@ -43,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql .= " WHERE id=?";
         $params[] = $userId;
         $types .= "i";
+
+        // Ensure parameters and type string lengths match
+        if (strlen($types) !== count($params)) {
+            throw new Exception('Parameter count does not match types length');
+        }
 
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
@@ -57,7 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 🔧 Bruk ReflectionMethod (riktig måte å binde variabel liste)
         $method = new ReflectionMethod('mysqli_stmt', 'bind_param');
-        $method->invokeArgs($stmt, $bindParams);
+        $bindResult = $method->invokeArgs($stmt, $bindParams);
+        if ($bindResult === false) {
+            throw new Exception('bind_param failed: ' . $stmt->error);
+        }
 
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => "Profilen ble oppdatert ({$stmt->affected_rows} rad(er))"]);
