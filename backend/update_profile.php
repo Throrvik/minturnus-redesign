@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 
-include 'database.php'; // Forbindelse til databasen
+include 'database.php'; // Koble til databasen
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['status' => 'error', 'message' => 'Bruker ikke innlogget']);
@@ -12,7 +12,6 @@ if (!isset($_SESSION['user_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = $_SESSION['user_id'];
 
-    // Hent data trygt
     $firstname = $_POST['firstname'] ?? '';
     $email = $_POST['email'] ?? '';
     $newPassword = !empty($_POST['new-password']) ? password_hash($_POST['new-password'], PASSWORD_DEFAULT) : null;
@@ -28,10 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn = openDatabaseConnection();
 
-    // Bygg SQL-spørring dynamisk
     $sql = "UPDATE users SET firstname=?, email=?, company=?, company_hidden=?, company_na=?, 
             location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?";
-
     $params = [$firstname, $email, $company, $companyHide, $companyNa,
                $location, $locationHide, $locationNa, $shift, $shiftHide, $shiftNa];
     $types = "sssiiisiisi";
@@ -48,20 +45,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
-        echo json_encode(['status' => 'error', 'message' => 'Forberedelse av spørring feilet: ' . $conn->error]);
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Prepare failed: ' . $conn->error]);
         exit;
     }
 
-    $stmt->bind_param($types, ...$params);
+    $bindNames[] = $types;
+    foreach ($params as $key => $value) {
+        $bindNames[] = &$params[$key];
+    }
+
+    call_user_func_array([$stmt, 'bind_param'], $bindNames);
 
     if ($stmt->execute()) {
         echo json_encode(['status' => 'success', 'message' => 'Profilen ble oppdatert']);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Feil ved oppdatering av profilen: ' . $stmt->error]);
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Feil ved oppdatering: ' . $stmt->error]);
     }
 
     $stmt->close();
     $conn->close();
 } else {
+    http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Ugyldig forespørsel']);
 }
