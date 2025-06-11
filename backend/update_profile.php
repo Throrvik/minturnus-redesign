@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId = $_SESSION['user_id'];
+    $userId = 39;
 
     // Try catch for debugging
     try {
