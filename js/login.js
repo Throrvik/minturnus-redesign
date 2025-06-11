@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         localStorage.setItem('userName', result.firstname);
                         window.location.href = 'index.html'; 
                     } else {
-                        alert('Innlogging feilet. Sjekk brukernavn og passord.');
+                        showMessage('Innlogging feilet. Sjekk brukernavn og passord.', 'error');
                     }
                     window.location.href = 'index.html'; // Gå til forsiden etter vellykket innlogging
                 }
