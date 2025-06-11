@@ -42,12 +42,12 @@ function fetchUserData() {
                 // Deaktiver feltene basert på NA-avkrysningsboksene
                 toggleInputField();
             } else {
-                alert(`Kunne ikke hente brukerdata: ${data.message}`);
+                showMessage(`Kunne ikke hente brukerdata: ${data.message}`, 'error');
             }
         })
         .catch(error => {
             console.error('Feil ved henting av data:', error);
-            alert('En feil oppstod ved henting av brukerdata.');
+            showMessage('En feil oppstod ved henting av brukerdata.', 'error');
         });
 }
 
@@ -73,7 +73,7 @@ function updateUserProfile() {
     const repeatPassword = document.getElementById('repeat-password').value; 
     
     if (newPassword && newPassword !== repeatPassword) {
-        alert("Passordene stemmer ikke overens.");
+        showMessage("Passordene stemmer ikke overens.", 'error');
         return; // Stopp innsendingen
     }
     
@@ -95,7 +95,7 @@ function updateUserProfile() {
     .then(data => {
         console.log('Server response:', data);
         if (data.status === 'success') {
-            alert('Profilen ble oppdatert!');
+            showMessage('Profilen ble oppdatert!', 'success');
 
             // Oppdater localStorage og header med nytt navn
             localStorage.setItem('userName', firstname);
@@ -104,12 +104,12 @@ function updateUserProfile() {
                 userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html">${firstname}</a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
             }
         } else {
-            alert(`Kunne ikke oppdatere profil: ${data.message}`);
+            showMessage(`Kunne ikke oppdatere profil: ${data.message}`, 'error');
         }
     })
     .catch(error => {
         console.error('Feil ved oppdatering:', error);
-        alert('Kunne ikke oppdatere profil.');
+        showMessage('Kunne ikke oppdatere profil.', 'error');
     });
 }
 

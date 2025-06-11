@@ -152,6 +152,22 @@ h2 {
     font-weight: bold;
 }
 
+#message {
+    margin-top: 20px;
+    text-align: center;
+    color: #28203f;
+    font-weight: bold;
+    display: none;
+}
+
+#message.success {
+    color: green;
+}
+
+#message.error {
+    color: red;
+}
+
 /* Style for Beregne lønn siden */
 /* Custom styles for the calculator */
 .contact-box {
