@@ -50,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Korrigert del: bruk call_user_func_array for dynamisk bind_param
+    $bindNames = [];
     $bindNames[] = $types;
     foreach ($params as $key => $value) {
         $bindNames[] = &$params[$key];
