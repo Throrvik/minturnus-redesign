@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $shiftHide = isset($_POST['shift-hide']) ? 1 : 0;
         $shiftNa = isset($_POST['shift-na']) ? 1 : 0;
 
-        $conn = openDatabaseConnection();
 
         $sql = "UPDATE users SET firstname=?, email=?, company=?, company_hidden=?, company_na=?,
                 location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?";
