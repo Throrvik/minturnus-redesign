@@ -212,7 +212,7 @@ function addColorToDropdown(color) {
 // Funksjon for å legge til ny turnus
 function addNewShift() {
     if (shifts.length >= maxShifts) {
-        alert(`Maksimum antall turnuser er nådd. Slett en turnus for å legge til en ny.`);
+        showMessage(`Maksimum antall turnuser er nådd. Slett en turnus for å legge til en ny.`, 'error');
         return;
     }
 
@@ -226,7 +226,7 @@ function addNewShift() {
 
     
     if (!name || !durationInput || isNaN(startDate.getTime())) {
-        alert('Vennligst fyll inn alle feltene riktig.');
+        showMessage('Vennligst fyll inn alle feltene riktig.', 'error');
         return;
     }
 
@@ -234,7 +234,7 @@ function addNewShift() {
     if (durationInput === 'custom') {
         durationInput = prompt('Angi ønsket turnus i formatet "X-Y" for uker eller "D5-2" for dager:', '');
         if (!durationInput || !/^(\d+-\d+|D\d+-\d+)$/.test(durationInput)) {
-            alert('Ugyldig format. Bruk formatet "2-4" eller "D5-2".');
+            showMessage('Ugyldig format. Bruk formatet "2-4" eller "D5-2".', 'error');
             return;
         }
     }
@@ -250,7 +250,7 @@ function addNewShift() {
     }
 
     if (!workPeriod || !offPeriod || workPeriod <= 0 || offPeriod <= 0) {
-        alert('Ugyldig turnuslengde. Bruk formatet "2-4" eller "D5-2".');
+        showMessage('Ugyldig turnuslengde. Bruk formatet "2-4" eller "D5-2".', 'error');
         return;
     }
 
@@ -263,7 +263,7 @@ function addNewShift() {
     );
 
     if (isDuplicate) {
-        alert('Denne turnusen er allerede lagt til!');
+        showMessage('Denne turnusen er allerede lagt til!', 'error');
         return;
     }
 
