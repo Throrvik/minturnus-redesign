@@ -1,15 +1,17 @@
 <?php
 session_start();
 ob_clean();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 include 'database.php';
 
-// Midlertidig hardkodet for testing
-$userId = 39;
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['status' => 'error', 'message' => 'Bruker ikke innlogget']);
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
