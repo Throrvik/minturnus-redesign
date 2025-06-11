@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?";
         $params = [$firstname, $email, $company, $companyHide, $companyNa,
                    $location, $locationHide, $locationNa, $shift, $shiftHide, $shiftNa];
-        $types = "sssiiisiisi";
+        $types = "sssiiisiisii"; // 12 verdier = 11 kolonner + id
 
         if ($newPassword) {
             $sql .= ", password=?";
