@@ -54,7 +54,9 @@ function fetchUserData() {
 // Funksjon for å oppdatere brukerprofil
 function updateUserProfile() {
     const formData = new FormData();
-    formData.append('firstname', document.getElementById('firstname').value);
+    const firstname = document.getElementById('firstname').value;
+
+    formData.append('firstname', firstname);
     formData.append('email', document.getElementById('email').value);
     formData.append('company', document.getElementById('company').value);
     formData.append('company-hide', document.getElementById('company-hide').checked ? 1 : 0);
@@ -87,6 +89,13 @@ function updateUserProfile() {
         console.log('Server response:', data);
         if (data.status === 'success') {
             alert('Profilen ble oppdatert!');
+
+            // Oppdater localStorage og header med nytt navn
+            localStorage.setItem('userName', firstname);
+            const userInfoDiv = document.getElementById('user-info');
+            if (userInfoDiv) {
+                userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html">${firstname}</a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
+            }
         } else {
             alert(`Kunne ikke oppdatere profil: ${data.message}`);
         }
@@ -96,6 +105,7 @@ function updateUserProfile() {
         alert('Kunne ikke oppdatere profil.');
     });
 }
+
 
 // Funksjon for å deaktivere inputfelt basert på avkrysningsboksene
 function toggleInputField() {
