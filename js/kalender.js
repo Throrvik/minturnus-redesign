@@ -128,21 +128,34 @@ function initializeEventListeners() {
 }
 
 
-function resetShifts() {
-    // Bekreft at brukeren faktisk vil tømme alle turnusene
-    if (confirm("Er du sikker på at du vil tømme alle turnusene? Dette kan ikke angres.")) {
-        shifts = []; // Tømmer turnuslisten
-        saveShiftsToLocalStorage(); // Oppdaterer local storage med den tomme listen
-        // Tilbakestill tilgjengelige farger slik at alle farger blir synlige igjen
-        saveAvailableColors(Object.keys(colorLabels));
-        updateColorDropdown();
-        renderCalendar(currentMonth, currentYear); // Oppdaterer kalenderen
-        renderShiftList(); // Oppdaterer listen som viser turnuser
+let resetPending = false;
+let resetTimeout;
 
-        // Tøm oversikten under kalenderen
-        const oversiktContainer = document.getElementById('turnus-oversikt');
-        oversiktContainer.innerHTML = ''; // Fjern alt innhold
+function resetShifts() {
+    if (!resetPending) {
+        showMessage("Trykk på 'T\u00f8m skjema' igjen innen 10 sekunder for \u00e5 t\u00f8mme alle turnusene.");
+        resetPending = true;
+        resetTimeout = setTimeout(() => {
+            resetPending = false;
+        }, 10000);
+        return;
     }
+
+    resetPending = false;
+    clearTimeout(resetTimeout);
+
+    shifts = []; // Tømmer turnuslisten
+    saveShiftsToLocalStorage(); // Oppdaterer local storage med den tomme listen
+    // Tilbakestill tilgjengelige farger slik at alle farger blir synlige igjen
+    saveAvailableColors(Object.keys(colorLabels));
+    updateColorDropdown();
+    renderCalendar(currentMonth, currentYear); // Oppdaterer kalenderen
+    renderShiftList(); // Oppdaterer listen som viser turnuser
+
+    // Tøm oversikten under kalenderen
+    const oversiktContainer = document.getElementById('turnus-oversikt');
+    oversiktContainer.innerHTML = ''; // Fjern alt innhold
+    showMessage('Skjemaet ble t\u00f8mt.', 'success');
 }
 
 // Definer alle farger og deres etiketter
