@@ -1,4 +1,6 @@
+---
 deployment:
   tasks:
-    - export DEPLOY_PATH=/home/kalende1/public_html/
-    - /bin/cp -R kalenderturnus/* $DEPLOY_PATH
+    - export DEPLOYPATH=/home/example/public_html/
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp style.css $DEPLOYPATH
