@@ -8,6 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
+$config = require __DIR__ . '/config.php';
 require_once 'database.php'; // Databasekonfigurasjon
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -48,8 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->isSMTP();                                    
                 $mail->Host = 'cpanel02.dedia-server.no';          
                 $mail->SMTPAuth = true;                             
-                $mail->Username = 'thomas@kalenderturnus.no';       
-                $mail->Password = 'U=W623?8_)kM';                   
+                $mail->Username = $config['MAIL_USER'];
+                $mail->Password = $config['MAIL_PASS'];
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;    
                 $mail->Port = 465;                                  
 
