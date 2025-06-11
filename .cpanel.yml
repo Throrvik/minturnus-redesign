@@ -1,6 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/kalende1/public_html
-    - /bin/cp index.html $DEPLOYPATH
-    - /bin/cp style.css $DEPLOYPATH
+    - export DEPLOYPATH=/home/kalende1/public_html/
+    - /bin/cp -R images $DEPLOYPATH
