@@ -1,21 +1,17 @@
 <?php
 session_start();
-ob_clean(); // Tøm eventuelt output buffer
+ob_clean();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 header('Content-Type: application/json');
-
 include 'database.php';
 
-// Hopp over innloggingssjekk for testing
+// Midlertidig hardkodet for testing
 $userId = 39;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId = 39;
-
-    // Try catch for debugging
     try {
         $firstname = $_POST['firstname'] ?? '';
         $email = $_POST['email'] ?? '';
@@ -32,11 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $conn = openDatabaseConnection();
 
-        $sql = "UPDATE users SET firstname=?, email=?, company=?, company_hidden=?, company_na=?, 
+        $sql = "UPDATE users SET firstname=?, email=?, company=?, company_hidden=?, company_na=?,
                 location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?";
         $params = [$firstname, $email, $company, $companyHide, $companyNa,
                    $location, $locationHide, $locationNa, $shift, $shiftHide, $shiftNa];
-        $types = "sssiiisiisii"; // 12 verdier = 11 kolonner + id
+        $types = "sssiiisiisii";
 
         if ($newPassword) {
             $sql .= ", password=?";
@@ -53,27 +49,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Prepare failed: " . $conn->error);
         }
 
-        $bindNames = [];
-        $bindNames[] = $types;
-        foreach ($params as $key => $value) {
-            $bindNames[] = &$params[$key];
+        $bindParams = [];
+        $bindParams[] = $types;
+        foreach ($params as $key => $val) {
+            $bindParams[] = &$params[$key];
         }
 
-        call_user_func_array([$stmt, 'bind_param'], $bindNames);
+        // 🔧 Bruk ReflectionMethod (riktig måte å binde variabel liste)
+        $method = new ReflectionMethod('mysqli_stmt', 'bind_param');
+        $method->invokeArgs($stmt, $bindParams);
 
         if ($stmt->execute()) {
-            error_log("Oppdatering utført for bruker $userId");
-            echo json_encode(['status' => 'success', 'message' => 'Profilen ble oppdatert']);
+            echo json_encode(['status' => 'success', 'message' => "Profilen ble oppdatert ({$stmt->affected_rows} rad(er))"]);
         } else {
             throw new Exception("Execute failed: " . $stmt->error);
         }
 
-
         $stmt->close();
         $conn->close();
+
     } catch (Exception $e) {
         http_response_code(500);
-        error_log("Oppdatering utført for bruker $userId");
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 } else {
