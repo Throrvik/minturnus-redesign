@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_clean(); // Tøm eventuelt output buffer
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -63,15 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         call_user_func_array([$stmt, 'bind_param'], $bindNames);
 
         if ($stmt->execute()) {
+            error_log("Oppdatering utført for bruker $userId");
             echo json_encode(['status' => 'success', 'message' => 'Profilen ble oppdatert']);
         } else {
             throw new Exception("Execute failed: " . $stmt->error);
         }
 
+
         $stmt->close();
         $conn->close();
     } catch (Exception $e) {
         http_response_code(500);
+        error_log("Oppdatering utført for bruker $userId");
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 } else {
