@@ -17,9 +17,9 @@ if ($query === '') {
 }
 
 $search = '%' . $conn->real_escape_string($query) . '%';
-$sql = "SELECT id, firstname AS fullname, company, location FROM users WHERE firstname LIKE ? ORDER BY firstname LIMIT 10";
+$sql = "SELECT id, firstname, lastname, avatar_url FROM users WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname LIMIT 10";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('s', $search);
+$stmt->bind_param('ss', $search, $search);
 $stmt->execute();
 $result = $stmt->get_result();
 $users = [];

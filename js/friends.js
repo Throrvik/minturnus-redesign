@@ -83,15 +83,18 @@ function createCard(user, options = {}) {
 
     const avatar = document.createElement('div');
     avatar.className = 'avatar';
-    avatar.textContent = '👤';
+    if (user.avatar_url) {
+        avatar.style.backgroundImage = `url('${user.avatar_url}')`;
+        avatar.style.backgroundSize = 'cover';
+        avatar.textContent = '';
+    } else {
+        avatar.textContent = '👤';
+    }
     card.appendChild(avatar);
 
     const info = document.createElement('div');
-    info.innerHTML = `
-        <div><strong>${user.fullname}</strong></div>
-        <div>${user.company || ''}</div>
-        <div>${user.location || ''}</div>
-    `;
+    const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
+    info.innerHTML = `<div><strong>${name.trim()}</strong></div>`;
     card.appendChild(info);
 
     if (options.request) {
