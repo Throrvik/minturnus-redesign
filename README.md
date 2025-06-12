@@ -63,3 +63,20 @@ deployment:
 
 When you push updates, cPanel copies the repository contents to the path specified by `DEPLOYPATH`. Adjust this path to match your hosting account.
 
+
+## Friends API
+
+The `api/` directory exposes a small JSON API used by `friends.html`.
+All endpoints require the user to be logged in via PHP sessions.
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `api/search_users.php?query=NAME` | GET | Search for users by name. |
+| `api/send_request.php` | POST | Send a colleague request. JSON body `{id}`. |
+| `api/pending_requests.php` | GET | List incoming colleague requests. |
+| `api/respond_request.php` | POST | Accept or decline a request. JSON body `{id, accept}`. |
+| `api/my_colleagues.php` | GET | List confirmed colleagues. |
+| `api/remove_colleague.php` | DELETE | Remove a colleague. JSON body `{id}`. |
+
+These scripts expect the tables `friend_requests` and `friends` in the database
+as described in `js/friends.js`.
