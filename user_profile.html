@@ -30,25 +30,28 @@
         <div class="contact-box user-profile-box">
             <h2>Brukerprofil</h2>
             <form id="user-profile-form" novalidate>
-                <div class="form-group user-profile-group">
-                    <label for="firstname">Navn:</label>
-                    <input type="text" id="firstname" name="firstname" placeholder="Navn" required>
+                <div class="profile-card">
+                    <div class="avatar-section">
+                        <div id="avatar-preview" class="avatar-img">👤</div>
+                        <input type="file" id="avatar" name="avatar" accept="image/*">
+                        <button type="button" id="avatar-remove" class="btn-secondary">Slett bilde</button>
+                    </div>
+                    <div class="name-section">
+                        <div class="form-group user-profile-group">
+                            <label for="first-name">Fornavn:</label>
+                            <input type="text" id="first-name" name="first-name" placeholder="Fornavn" required>
+                        </div>
+                        <div class="form-group user-profile-group">
+                            <label for="last-name">Etternavn:</label>
+                            <input type="text" id="last-name" name="last-name" placeholder="Etternavn" required>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="form-group user-profile-group">
                     <label for="email">E-post:</label>
-                    <input type="email" id="email" name="email" placeholder="E-post" required>
-                </div>
-
-                <div class="form-group user-profile-group section-divider">
-
-                </div>
-                <div class="form-group user-profile-group">
-                    <label for="new-password">Nytt Passord:</label>
-                    <input type="password" id="new-password" name="new-password" placeholder="Nytt passord">
-                </div>
-                <div class="form-group user-profile-group">
-                    <label for="repeat-password">Gjenta Passord:</label>
-                    <input type="password" id="repeat-password" name="repeat-password" placeholder="Gjenta passord">
+                    <input type="email" id="email" name="email" placeholder="E-post" disabled>
+                    <a href="change_password.html" class="password-link">Endre passord</a>
                 </div>
 
                 <div class="form-group user-profile-group section-divider">
@@ -74,7 +77,6 @@
                 <div class="form-group user-profile-group">
                     <label for="shift">Turnus:</label>
                     <select id="shift" name="shift">
-                        <!-- Full list of shifts including additional options -->
                         <option value="mandag-fredag">Mandag til fredag</option>
                         <option value="1-2">1-2</option>
                         <option value="1-3">1-3</option>
@@ -97,7 +99,13 @@
                     <p class="description">Velg din turnus. Hvis du ikke ønsker å vise dette, kan du velge "skjul".</p>
                 </div>
 
+                <div class="form-group user-profile-group">
+                    <label for="first-shift">Første skift:</label>
+                    <input type="date" id="first-shift" name="first-shift">
+                </div>
+
                 <button type="submit" class="btn">Oppdater profil</button>
+                <button type="button" id="preview-btn" class="btn-secondary">Forhåndsvis</button>
                 <div id="message"></div>
             </form>
         </div>

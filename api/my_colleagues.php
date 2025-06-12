@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $uid = $_SESSION['user_id'];
-$sql = "SELECT u.id, u.firstname AS fullname, u.company, u.location
+$sql = "SELECT u.id, u.firstname, u.lastname, u.avatar_url
         FROM friends f
         JOIN users u ON (u.id = IF(f.user1 = ?, f.user2, f.user1))
         WHERE f.user1 = ? OR f.user2 = ?";

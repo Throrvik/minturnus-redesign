@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Hent brukerdata når siden lastes
     fetchUserData();
 
-    // Håndter skjema for profiloppdatering
     const profileForm = document.getElementById('user-profile-form');
     if (profileForm) {
         profileForm.addEventListener('submit', function (event) {
@@ -11,7 +9,37 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Legg til event listeners for "NA"-avkrysningsbokser for å deaktivere tilhørende inputfelt
+    const avatarInput = document.getElementById('avatar');
+    const avatarPreview = document.getElementById('avatar-preview');
+    const avatarRemove = document.getElementById('avatar-remove');
+    if (avatarInput) {
+        avatarInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    avatarPreview.style.backgroundImage = `url('${e.target.result}')`;
+                    avatarPreview.textContent = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    if (avatarRemove) {
+        avatarRemove.addEventListener('click', function () {
+            avatarInput.value = '';
+            avatarPreview.style.backgroundImage = '';
+            avatarPreview.textContent = '👤';
+        });
+    }
+
+    const previewBtn = document.getElementById('preview-btn');
+    if (previewBtn) {
+        previewBtn.addEventListener('click', () => {
+            alert('Dette er en forhåndsvisning av hvordan profilen din ser ut for andre.');
+        });
+    }
+
     addToggleListeners();
 });
 
@@ -28,11 +56,23 @@ function fetchUserData() {
         .then(data => {
             console.log('Server response:', data);
             if (data.status === 'success') {
-                document.getElementById('firstname').value = data.user.firstname || '';
+                const fullName = data.user.firstname || '';
+                const parts = fullName.split(' ');
+                document.getElementById('first-name').value = parts[0] || '';
+                document.getElementById('last-name').value = parts.slice(1).join(' ');
                 document.getElementById('email').value = data.user.email || '';
                 document.getElementById('company').value = data.user.company || '';
                 document.getElementById('location').value = data.user.location || '';
                 document.getElementById('shift').value = data.user.shift || '';
+                if (data.user.first_shift) {
+                    document.getElementById('first-shift').value = data.user.first_shift;
+                }
+
+                if (data.user.avatar_url) {
+                    const avatarPreview = document.getElementById('avatar-preview');
+                    avatarPreview.style.backgroundImage = `url('${data.user.avatar_url}')`;
+                    avatarPreview.textContent = '';
+                }
 
                 // Håndter NA-avkrysningsbokser basert på data
                 document.getElementById('company-na').checked = data.user.company_na === 1;
@@ -54,9 +94,10 @@ function fetchUserData() {
 // Funksjon for å oppdatere brukerprofil
 function updateUserProfile() {
     const formData = new FormData();
-    const firstname = document.getElementById('firstname').value;
+    const first = document.getElementById('first-name').value.trim();
+    const last = document.getElementById('last-name').value.trim();
 
-    formData.append('firstname', firstname);
+    formData.append('firstname', `${first} ${last}`.trim());
     formData.append('email', document.getElementById('email').value);
     formData.append('company', document.getElementById('company').value);
     formData.append('company-hide', document.getElementById('company-hide').checked ? 1 : 0);
@@ -67,18 +108,11 @@ function updateUserProfile() {
     formData.append('shift', document.getElementById('shift').value);
     formData.append('shift-hide', document.getElementById('shift-hide').checked ? 1 : 0);
     formData.append('shift-na', document.getElementById('shift-na').checked ? 1 : 0);
+    formData.append('first-shift', document.getElementById('first-shift').value);
 
-    // Sjekk om passordfeltet er fylt ut før det sendes
-    const newPassword = document.getElementById('new-password').value;
-    const repeatPassword = document.getElementById('repeat-password').value; 
-    
-    if (newPassword && newPassword !== repeatPassword) {
-        showMessage("Passordene stemmer ikke overens.", 'error');
-        return; // Stopp innsendingen
-    }
-    
-    if (newPassword) {
-        formData.append('new-password', newPassword);
+    const avatar = document.getElementById('avatar').files[0];
+    if (avatar) {
+        formData.append('avatar', avatar);
     }
 
     fetch('backend/update_profile.php', {
@@ -98,10 +132,10 @@ function updateUserProfile() {
             showMessage('Profilen ble oppdatert!', 'success');
 
             // Oppdater localStorage og header med nytt navn
-            localStorage.setItem('userName', firstname);
+            localStorage.setItem('userName', first);
             const userInfoDiv = document.getElementById('user-info');
             if (userInfoDiv) {
-                userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html">${firstname}</a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
+                userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${first}</strong></a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
             }
         } else {
             showMessage(`Kunne ikke oppdatere profil: ${data.message}`, 'error');
