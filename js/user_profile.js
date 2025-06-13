@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const avatarInput = document.getElementById('avatar');
     const avatarPreview = document.getElementById('avatar-preview');
     const avatarRemove = document.getElementById('avatar-remove');
+    const avatarView = document.getElementById('avatar-view');
     if (avatarInput) {
         avatarInput.addEventListener('change', function () {
             const file = this.files[0];
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 reader.onload = e => {
                     avatarPreview.style.backgroundImage = `url('${e.target.result}')`;
                     avatarPreview.textContent = '';
+                    if (avatarView) avatarView.style.display = 'inline-block';
                 };
                 reader.readAsDataURL(file);
             }
@@ -30,14 +32,22 @@ document.addEventListener('DOMContentLoaded', function () {
             avatarInput.value = '';
             avatarPreview.style.backgroundImage = '';
             avatarPreview.textContent = '👤';
+            if (avatarView) avatarView.style.display = 'none';
+        });
+    }
+    if (avatarView) {
+        avatarView.addEventListener('click', function () {
+            const bg = avatarPreview.style.backgroundImage;
+            if (bg) {
+                const url = bg.slice(5, -2);
+                window.open(url, '_blank');
+            }
         });
     }
 
     const previewBtn = document.getElementById('preview-btn');
     if (previewBtn) {
-        previewBtn.addEventListener('click', () => {
-            alert('Dette er en forhåndsvisning av hvordan profilen din ser ut for andre.');
-        });
+        previewBtn.addEventListener('click', showPreview);
     }
 
     addToggleListeners();
@@ -145,6 +155,33 @@ function updateUserProfile() {
         console.error('Feil ved oppdatering:', error);
         showMessage('Kunne ikke oppdatere profil.', 'error');
     });
+}
+
+function showPreview() {
+    const modal = document.getElementById('preview-modal');
+    const content = document.getElementById('preview-content');
+    const avatar = document.getElementById('avatar-preview').style.backgroundImage;
+    const name = `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`.trim();
+    const company = document.getElementById('company').value;
+    const location = document.getElementById('location').value;
+    const shift = document.getElementById('shift').value;
+    const firstShift = document.getElementById('first-shift').value;
+
+    let html = `<div class="avatar-img" style="margin:0 auto;${avatar ? `background-image:${avatar};` : ''}">${avatar ? '' : '👤'}</div>`;
+    html += `<p><strong>${name}</strong></p>`;
+    if (company) html += `<p>Firma: ${company}</p>`;
+    if (location) html += `<p>Lokasjon: ${location}</p>`;
+    if (shift) html += `<p>Turnus: ${shift}</p>`;
+    if (firstShift) html += `<p>Første skift: ${firstShift}</p>`;
+    content.innerHTML = html;
+    modal.style.display = 'block';
+    const closeBtn = document.getElementById('modal-close');
+    if (closeBtn) {
+        closeBtn.onclick = () => { modal.style.display = 'none'; };
+    }
+    window.onclick = function(event) {
+        if (event.target === modal) modal.style.display = 'none';
+    };
 }
 
 
