@@ -15,8 +15,9 @@ $userId = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $firstname = $_POST['firstname'] ?? '';
-        $email = $_POST['email'] ?? '';
+        $firstname  = $_POST['firstname'] ?? '';
+        $lastname   = $_POST['lastname'] ?? '';
+        $email      = $_POST['email'] ?? '';
         $newPassword = !empty($_POST['new-password']) ? password_hash($_POST['new-password'], PASSWORD_DEFAULT) : null;
         $company = $_POST['company'] ?? '';
         $companyHide = isset($_POST['company-hide']) ? 1 : 0;
@@ -27,12 +28,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $shift = $_POST['shift'] ?? '';
         $shiftHide = isset($_POST['shift-hide']) ? 1 : 0;
         $shiftNa = isset($_POST['shift-na']) ? 1 : 0;
+        $shiftDate = $_POST['shift_date'] ?? null;
+
+        $avatarUrl = null;
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . '/../uploads/avatars/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            $ext = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
+            $fileName = uniqid('avatar_') . '.' . $ext;
+            $destination = $uploadDir . $fileName;
+            if (move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
+                $avatarUrl = 'uploads/avatars/' . $fileName;
+            }
+        }
 
 
-        $sql = "UPDATE users SET firstname=?, email=?, company=?, company_hidden=?, company_na=?,
-                location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?";
+        $sql = "UPDATE users SET firstname=?, lastname=?, email=?, company=?, company_hidden=?, company_na=?,
+                location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?, shift_date=?";
         $params = [
             $firstname,
+            $lastname,
             $email,
             $company,
             $companyHide,
@@ -43,9 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $shift,
             $shiftHide,
             $shiftNa,
+            $shiftDate,
         ];
-        // types must mirror the params above: 11 values before id
-        $types = "sssiisiisii";  // 11 columns (no id yet)
+        // types must mirror the params above
+        $types = "ssssiisiisiis";  // 13 columns (no id yet)
+
+        if ($avatarUrl !== null) {
+            $sql .= ", avatar_url=?";
+            $params[] = $avatarUrl;
+            $types .= "s";
+        }
 
         if ($newPassword) {
             $sql .= ", password=?";

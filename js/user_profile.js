@@ -66,16 +66,14 @@ function fetchUserData() {
         .then(data => {
             console.log('Server response:', data);
             if (data.status === 'success') {
-                const fullName = data.user.firstname || '';
-                const parts = fullName.split(' ');
-                document.getElementById('first-name').value = parts[0] || '';
-                document.getElementById('last-name').value = parts.slice(1).join(' ');
+                document.getElementById('first-name').value = data.user.firstname || '';
+                document.getElementById('last-name').value = data.user.lastname || '';
                 document.getElementById('email').value = data.user.email || '';
                 document.getElementById('company').value = data.user.company || '';
                 document.getElementById('location').value = data.user.location || '';
                 document.getElementById('shift').value = data.user.shift || '';
-                if (data.user.first_shift) {
-                    document.getElementById('first-shift').value = data.user.first_shift;
+                if (data.user.shift_date) {
+                    document.getElementById('first-shift').value = data.user.shift_date;
                 }
 
                 if (data.user.avatar_url) {
@@ -107,7 +105,8 @@ function updateUserProfile() {
     const first = document.getElementById('first-name').value.trim();
     const last = document.getElementById('last-name').value.trim();
 
-    formData.append('firstname', `${first} ${last}`.trim());
+    formData.append('firstname', first);
+    formData.append('lastname', last);
     formData.append('email', document.getElementById('email').value);
     formData.append('company', document.getElementById('company').value);
     formData.append('company-hide', document.getElementById('company-hide').checked ? 1 : 0);
@@ -118,7 +117,7 @@ function updateUserProfile() {
     formData.append('shift', document.getElementById('shift').value);
     formData.append('shift-hide', document.getElementById('shift-hide').checked ? 1 : 0);
     formData.append('shift-na', document.getElementById('shift-na').checked ? 1 : 0);
-    formData.append('first-shift', document.getElementById('first-shift').value);
+    formData.append('shift_date', document.getElementById('first-shift').value);
 
     const avatar = document.getElementById('avatar').files[0];
     if (avatar) {

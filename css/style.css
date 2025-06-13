@@ -303,3 +303,12 @@ a:hover {
     font-size: 1.5rem;
     cursor: pointer;
 }
+
+/* Toggle for user shift in calendar */
+.user-shift-toggle {
+    margin: 10px 0;
+}
+.user-shift-toggle label {
+    cursor: pointer;
+    font-weight: bold;
+}
