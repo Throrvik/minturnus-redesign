@@ -12,6 +12,7 @@ console.log("🚀 kalender.js er lastet!");
 
 // Turnuser
 let shifts = [];
+let userShift = null;
 const predefinedShifts = [
     '1-1', '1-2', '1-3', '1-4', '2-2', '2-3', '2-4', '2-6', 
     '3-3', '3-4', '4-4', '4-5', '4-8', '5-5'
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderWeekdayRow();
     initializeEventListeners();
     loadShiftsFromLocalStorage();
+    loadUserShift();
     renderCalendar(currentMonth, currentYear);
     renderShiftList();
 });
@@ -350,6 +352,46 @@ function saveShiftsToLocalStorage() {
     localStorage.setItem('shifts', JSON.stringify(shifts));
 }
 
+function loadUserShift() {
+    fetch('backend/get_user_data.php')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+            if (!data || data.status !== 'success') return;
+            if (!data.user.shift || !data.user.shift_date) return;
+
+            const label = document.getElementById('user-shift-label');
+            const checkbox = document.getElementById('show-user-shift');
+            const toggleDiv = document.getElementById('user-shift-toggle');
+
+            const [work, off] = data.user.shift.split('-').map(Number);
+            const startDate = new Date(data.user.shift_date + 'T00:00:00');
+            userShift = {
+                name: `${data.user.firstname} ${data.user.lastname}`.trim(),
+                workWeeks: work,
+                offWeeks: off,
+                startDate,
+                color: '#66B2FF',
+                visible: localStorage.getItem('showUserShift') !== '0',
+                isUserShift: true
+            };
+            shifts.push(userShift);
+
+            if (label && checkbox && toggleDiv) {
+                label.textContent = `${userShift.name} (${data.user.shift})`;
+                checkbox.checked = userShift.visible;
+                toggleDiv.style.display = 'block';
+                checkbox.addEventListener('change', () => {
+                    userShift.visible = checkbox.checked;
+                    localStorage.setItem('showUserShift', checkbox.checked ? '1' : '0');
+                    renderCalendar(currentMonth, currentYear);
+                });
+            }
+
+            renderCalendar(currentMonth, currentYear);
+        })
+        .catch(() => {});
+}
+
 function updateTurnusOversikt() {
     const oversiktContainer = document.getElementById('turnus-oversikt');
     oversiktContainer.innerHTML = ''; 
@@ -375,6 +417,7 @@ function updateTurnusOversikt() {
 // It's good practice to keep render and load operations separate from event listener setups
 window.onload = function() {
     loadShiftsFromLocalStorage();
+    loadUserShift();
     renderCalendar(currentMonth, currentYear);
     renderShiftList();
     updateTurnusOversikt();  // inkludert denne!
@@ -517,6 +560,7 @@ function renderShiftList() {
     shiftList.innerHTML = '';
 
     shifts.forEach((shift, index) => {
+        if (shift.isUserShift) return;
         const listItem = document.createElement('div');
         listItem.className = 'shift-item';
 
