@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Funksjon for å hente brukerdata fra backend
 function fetchUserData() {
-    fetch('backend/get_user_data.php')
+    fetch('backend/get_user_data.php', { credentials: 'include' })
         .then(response => {
             console.log('HTTP response status:', response.status);
             if (!response.ok) {
@@ -126,7 +126,8 @@ function updateUserProfile() {
 
     fetch('backend/update_profile.php', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include'
     })
     .then(response => {
         console.log('HTTP response status:', response.status);
