@@ -3,8 +3,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #000;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light-color);
     padding: 10px;
 }
 
@@ -12,8 +12,12 @@
     margin-bottom: 10px;
 }
 
+#user-info {
+    margin-left: auto;
+}
+
 #user-info a {
-    color: #C2C2C2; /* Lys grå farge for å matche headeren */
+    color: var(--secondary-color); /* Lys grå farge for å matche headeren */
     text-decoration: none; /* Fjern understrekingen */
     font-weight: bold; /* Fet skrift */
     transition: color 0.3s ease-in-out; /* Glatt overgang for farge ved hover */
@@ -24,7 +28,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    background-color: #C2C2C2;
+    background-color: var(--secondary-color);
     padding: 10px 0;
 }
 
@@ -39,14 +43,14 @@
 }
 
 .navbar ul li a {
-    color: white;
+    color: var(--light-color);
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
 }
 
 .navbar ul li a:hover {
-    color: #C2C2C2;
+    color: var(--secondary-color);
 }
 
 /* Skjul hamburgermeny og mobilnavigasjon for store skjermer */
@@ -63,7 +67,7 @@
         top: 60px; /* Ligger like under headeren */
         left: 0;
         right: 0;
-        background-color: #000;
+        background-color: var(--primary-color);
         height: calc(100% - 60px);
         z-index: 1000;
         padding-top: 30px;
@@ -87,7 +91,7 @@
         display: block; /* Vises på små skjermer */
         cursor: pointer;
         font-size: 30px;
-        color: white;
+        color: var(--light-color);
         position: absolute;
         top: 15px;
         right: 20px;

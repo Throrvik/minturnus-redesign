@@ -3,7 +3,7 @@
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background-color: white;
+    background-color: var(--light-color);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -23,7 +23,7 @@
 
 .weekday {
     padding: 10px 0;
-    color: #000;
+    color: var(--primary-color);
     font-size: 0.9rem; /* Redusert skriftstørrelse for bedre mobilkompatibilitet */
 }
 
@@ -41,15 +41,15 @@
     font-size: 1.8rem;
     text-align: center;
     flex-grow: 1;
-    color: #000;
+    color: var(--primary-color);
 }
 
 .nav-button {
     padding: 10px 20px;
     font-size: 16px;
     margin: 5px;
-    background-color: #000;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light-color);
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -57,7 +57,7 @@
 }
 
 .nav-button:hover {
-    background-color: #F4A300;
+    background-color: var(--accent-color);
 }
 
 
@@ -87,7 +87,7 @@
     justify-content: center;
     font-weight: bold;
     background-color: #f5f5f5;
-    color: #000;
+    color: var(--primary-color);
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 40px; /* Bredde for kolonnen */
@@ -107,7 +107,7 @@
     align-items: center;
     justify-content: center;
     border: 1px solid #ddd;
-    background-color: #ffffff;
+    background-color: var(--light-color);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -153,8 +153,8 @@
 
 
 .today {
-    background-color: #F4A300;
-    color: #000;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
     font-weight: bold;
 }
 
@@ -240,8 +240,8 @@
 
 .shift-item button {
     flex: 0.8;
-    background-color: #C2C2C2;
-    color: #000;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
     border: none;
     padding: 5px 0px;
     cursor: pointer;
@@ -250,7 +250,7 @@
 }
 
 .shift-item button:hover {
-    background-color: #F4A300;
+    background-color: var(--accent-color);
 }
 /* Slutt - Styling for hver rad i turnuslisten */
 
@@ -269,7 +269,7 @@
 .shift-header {
     flex: 1;
     padding: 5px;
-    color: #000;
+    color: var(--primary-color);
     text-align: center;
 }
 
@@ -324,7 +324,7 @@
     display: flex;
     align-items: center;
     padding: 5px;
-    background-color: #ffffff;
+    background-color: var(--light-color);
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     min-width: 120px; /* Minimum bredde for hver blokk */

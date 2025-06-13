@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrer deg - KalenderTurnus</title>
-    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
     <script defer src="js/session.js"></script>
     <script defer src="js/login.js"></script>
 </head>
@@ -13,7 +13,7 @@
     <header class="header">
         <h1>KalenderTurnus</h1>
         <div id="hamburger" class="hamburger">&#9776;</div>
-        <div id="user-info" style="float: right;"></div>
+        <div id="user-info"></div>
     </header>
     
     <nav id="navbar" class="navbar">
@@ -30,7 +30,7 @@
         <form id="form" data-action="register" novalidate>
             <h2>Registrer deg</h2>
             <div class="form-group"> 
-                <div id="error-messages" class="error-messages" style="display: none; color: red;"></div> <!-- Feilmeldingscontainer -->
+                <div id="error-messages" class="error-messages"></div> <!-- Feilmeldingscontainer -->
             </div>
             <div class="form-group">
                 <input type="text" id="firstname" name="firstname" placeholder="Navn" required>
