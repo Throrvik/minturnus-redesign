@@ -32,13 +32,14 @@
         <form id="user-profile-form" class="user-profile" novalidate>
             <h2>Brukerprofil</h2>
 
-            <section class="profile-section">
+            <div class="profile-card">
                 <div class="avatar-section">
-                    <div id="avatar-preview" class="avatar-img">
-                        <img id="avatar-image" alt="Profilbilde" />
+                    <div id="avatar-preview" class="avatar-img">👤</div>
+                    <input type="file" id="avatar" name="avatar" accept="image/*">
+                    <div class="avatar-buttons">
+                        <button type="button" id="avatar-remove" class="btn-secondary">Slett bilde</button>
+                        <button type="button" id="avatar-view" class="btn-secondary" style="display:none;">Forhåndsvis</button>
                     </div>
-                    <input type="file" id="avatar-upload" name="avatar-upload" accept="image/*">
-                    <button type="button" id="avatar-remove" class="btn-secondary">Slett bilde</button>
                 </div>
                 <div class="name-section">
                     <div class="form-group">
@@ -50,18 +51,18 @@
                         <input type="text" id="last-name" name="last-name" placeholder="Etternavn" required>
                     </div>
                 </div>
-            </section>
+            </div>
 
             <section class="account-section">
                 <div class="form-group">
                     <label for="email">E-post</label>
                     <input type="email" id="email" name="email" readonly>
                 </div>
-                <a href="reset_password.html" class="btn-secondary">Endre passord</a>
+                <a href="change_password.html" class="btn-secondary password-link">Endre e-post eller passord</a>
             </section>
 
             <section class="work-section">
-                <div class="info-row">
+                <div class="form-group">
                     <label for="company">Firma</label>
                     <input type="text" id="company" name="company">
                     <div class="options-inline">
@@ -70,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="info-row">
+                <div class="form-group">
                     <label for="location">Lokasjon</label>
                     <input type="text" id="location" name="location">
                     <div class="options-inline">
@@ -79,7 +80,7 @@
                     </div>
                 </div>
 
-                <div class="info-row">
+                <div class="form-group">
                     <label for="shift">Turnus</label>
                     <select id="shift" name="shift">
                         <option value="">Velg...</option>
@@ -104,7 +105,7 @@
                     </div>
                 </div>
 
-                <div class="info-row">
+                <div class="form-group">
                     <label for="first-shift">Første skift</label>
                     <input type="date" id="first-shift" name="first-shift">
                     <div class="options-inline">

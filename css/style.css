@@ -14,6 +14,11 @@
     --light-color: #ffffff;
     --text-color: #000;
     --font-family: Arial, sans-serif;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #ccc;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 footer {
@@ -33,11 +38,11 @@ body {
 /* Styling for Logg inn boks */
 .login-box {
     max-width: 400px;
-    background-color: var(--light-color);
+    background-color: var(--card-bg);
     padding: 30px;
     margin: 50px auto;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     text-align: center;
 }
 
@@ -49,22 +54,32 @@ h2 {
 /* Inputfelt styling */
 .form-group {
     display: flex;
-    align-items: center;
-    margin-bottom: 15px; /* Justert avstand mellom inputfeltene */
+    flex-direction: column;
+    margin-bottom: 15px;
 }
 
 .form-group label {
-    margin-right: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
-.form-group input {
+.form-group input, .form-group select, .form-group textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    font-size: 1rem;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--border-radius);
+    transition: border-color 0.3s ease-in-out;
 }
 
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Styling for knapper */
 /* Styling for knapper */
 .btn {
     width: 100%;
@@ -72,7 +87,7 @@ h2 {
     background-color: var(--primary-color); /* Primærfarge */
     color: var(--light-color);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     margin-bottom: 10px; /* Avstand mellom knappene */
     font-size: 16px;
@@ -88,7 +103,7 @@ h2 {
     background-color: var(--secondary-color); /* Sekundær knappfarge */
     color: var(--primary-color);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     font-size: 16px;
     margin-bottom: 10px; /* Avstand mellom Glemt passord og teksten under */
@@ -117,11 +132,12 @@ h2 {
 .contact-box {
     max-width: 600px;
     margin: 50px auto;
+    max-width: 600px;
+    margin: 50px auto;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    background-color: var(--light-color);
-}
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background-color: var(--card-bg);
 
 .contact-box h2 {
     font-size: 2rem;
@@ -137,22 +153,6 @@ h2 {
     margin-bottom: 30px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group input, .form-group textarea {
-    width: calc(100% - 20px);
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: border-color 0.3s ease-in-out;
-}
-
-.form-group input:focus, .form-group textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
 }
 
 #responseMessage {
@@ -188,12 +188,12 @@ h2 {
 .contact-box {
     max-width: 700px;
     margin: 30px auto;
+    max-width: 700px;
+    margin: 30px auto;
     padding: 30px;
-    background-color: var(--light-color);
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
 .calculator-title {
     text-align: center;
     font-size: 2rem;
@@ -201,29 +201,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: var(--primary-color);
-    display: block;
-}
-
-.form-input,
-.form-select {
-    width: calc(100% - 20px);
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: border-color 0.3s ease-in-out;
-}
-
-.form-input:focus,
-.form-select:focus {
     border-color: var(--primary-color);
     outline: none;
 }
@@ -320,4 +297,9 @@ a:hover {
     padding: 20px;
     border-radius: 8px;
     max-width: 500px;
+}
+.close {
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
