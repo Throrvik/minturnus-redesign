@@ -3,7 +3,17 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: var(--font-family);
+}
+
+/* Global design tokens */
+:root {
+    --primary-color: #000;
+    --secondary-color: #C2C2C2;
+    --accent-color: #F4A300;
+    --light-color: #ffffff;
+    --text-color: #000;
+    --font-family: Arial, sans-serif;
 }
 
 footer {
@@ -11,8 +21,8 @@ footer {
     bottom: 0;
     width: 100%;
     padding: 20px 0;
-    background-color: #000000;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light-color);
     text-align: center;
 }
 
@@ -23,7 +33,7 @@ body {
 /* Styling for Logg inn boks */
 .login-box {
     max-width: 400px;
-    background-color: white;
+    background-color: var(--light-color);
     padding: 30px;
     margin: 50px auto;
     border-radius: 10px;
@@ -33,7 +43,7 @@ body {
 
 h2 {
     margin-bottom: 20px;
-    color: #000000; /* Primærfarge for overskrift */
+    color: var(--primary-color); /* Primærfarge for overskrift */
 }
 
 /* Inputfelt styling */
@@ -59,8 +69,8 @@ h2 {
 .btn {
     width: 100%;
     padding: 12px;
-    background-color: #000000; /* Primærfarge */
-    color: white;
+    background-color: var(--primary-color); /* Primærfarge */
+    color: var(--light-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -69,14 +79,14 @@ h2 {
 }
 
 .btn:hover {
-    background-color: #F4A300; /* Hover-effekt i aksentfarge */
+    background-color: var(--accent-color); /* Hover-effekt i aksentfarge */
 }
 
 .btn-secondary {
     width: 100%;
     padding: 12px;
-    background-color: #C2C2C2; /* Sekundær knappfarge */
-    color: #000;
+    background-color: var(--secondary-color); /* Sekundær knappfarge */
+    color: var(--primary-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -85,15 +95,15 @@ h2 {
 }
 
 .btn-secondary:hover {
-    background-color: #F4A300; /* Hover-effekt i aksentfarge */
-    color: #000;
+    background-color: var(--accent-color); /* Hover-effekt i aksentfarge */
+    color: var(--primary-color);
 }
 
     /* Styling for Om oss Section */
 .section h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #000000;
+    color: var(--primary-color);
     text-align: center;
 }
 
@@ -110,14 +120,14 @@ h2 {
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
+    background-color: var(--light-color);
 }
 
 .contact-box h2 {
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
-    color: #000000;
+    color: var(--primary-color);
 }
 
 .contact-box p {
@@ -141,7 +151,7 @@ h2 {
 }
 
 .form-group input:focus, .form-group textarea:focus {
-    border-color: #000000;
+    border-color: var(--primary-color);
     outline: none;
 }
 
@@ -150,6 +160,11 @@ h2 {
     text-align: center;
     color: #28203f;
     font-weight: bold;
+}
+
+.error-messages {
+    color: red;
+    display: none;
 }
 
 #message {
@@ -174,7 +189,7 @@ h2 {
     max-width: 700px;
     margin: 30px auto;
     padding: 30px;
-    background-color: #fff;
+    background-color: var(--light-color);
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
@@ -182,7 +197,7 @@ h2 {
 .calculator-title {
     text-align: center;
     font-size: 2rem;
-    color: #000000;
+    color: var(--primary-color);
     margin-bottom: 20px;
 }
 
@@ -193,7 +208,7 @@ h2 {
 .form-label {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #000000;
+    color: var(--primary-color);
     display: block;
 }
 
@@ -209,7 +224,7 @@ h2 {
 
 .form-input:focus,
 .form-select:focus {
-    border-color: #000000;
+    border-color: var(--primary-color);
     outline: none;
 }
 
@@ -218,8 +233,8 @@ h2 {
     width: 100%;
     padding: 12px;
     margin-top: 20px;
-    background-color: #000000;
-    color: #fff;
+    background-color: var(--primary-color);
+    color: var(--light-color);
     font-size: 1.2rem;
     font-weight: bold;
     border: none;
@@ -229,14 +244,14 @@ h2 {
 }
 
 .calculate-btn:hover {
-    background-color: #F4A300;
-    color: #000;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
 }
 
 .result-section {
     margin-top: 30px;
     padding: 20px;
-    background-color: #C2C2C2;
+    background-color: var(--secondary-color);
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -244,7 +259,7 @@ h2 {
 .result-title {
     text-align: center;
     font-size: 1.4rem;
-    color: white;
+    color: var(--light-color);
     margin-bottom: 15px;
 }
 
@@ -256,16 +271,16 @@ h2 {
 
 .result-label {
     font-weight: bold;
-    color: white;
+    color: var(--light-color);
 }
 
 .result-value {
-    color: white;
+    color: var(--light-color);
 }
 
 .footer {
-    background-color: #000000;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--light-color);
     text-align: center;
     padding: 10px 0;
     position: relative;
@@ -280,10 +295,29 @@ p {
 }
 
 a {
-    color: #000000;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+/* Simple modal component */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: var(--light-color);
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
 }
