@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Accept': 'application/json',
                     },
                     body: formData,
+                    credentials: 'include'
                 });
 
                 const responseText = await response.text();

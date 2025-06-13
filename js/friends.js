@@ -10,7 +10,9 @@ function searchUsers() {
     const query = document.getElementById('search-input').value.trim();
     if (!query) return;
 
-    fetch(`api/search_users.php?query=${encodeURIComponent(query)}`)
+    fetch(`api/search_users.php?query=${encodeURIComponent(query)}`, {
+        credentials: 'include'
+    })
         .then(r => r.json())
         .then(showSearchResults)
         .catch(() => alert('Kunne ikke hente søkeresultater'));
@@ -27,6 +29,7 @@ function showSearchResults(users) {
 
 function sendRequest(id) {
     fetch('api/send_request.php', {
+        credentials: 'include',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
@@ -37,7 +40,7 @@ function sendRequest(id) {
 }
 
 function loadPendingRequests() {
-    fetch('api/pending_requests.php')
+    fetch('api/pending_requests.php', { credentials: 'include' })
         .then(r => r.json())
         .then(requests => {
             const box = document.getElementById('pending-requests');
@@ -48,18 +51,19 @@ function loadPendingRequests() {
 
 function respondRequest(id, accept) {
     fetch('api/respond_request.php', {
+        credentials: 'include',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, accept })
     })
-    .then(() => {
-        loadPendingRequests();
-        loadColleagues();
-    });
+        .then(() => {
+            loadPendingRequests();
+            loadColleagues();
+        });
 }
 
 function loadColleagues() {
-    fetch('api/my_colleagues.php')
+    fetch('api/my_colleagues.php', { credentials: 'include' })
         .then(r => r.json())
         .then(list => {
             const box = document.getElementById('colleagues-list');
@@ -70,6 +74,7 @@ function loadColleagues() {
 
 function removeColleague(id) {
     fetch('api/remove_colleague.php', {
+        credentials: 'include',
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })

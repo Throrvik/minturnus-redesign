@@ -353,7 +353,7 @@ function saveShiftsToLocalStorage() {
 }
 
 function loadUserShift() {
-    fetch('backend/get_user_data.php')
+    fetch('backend/get_user_data.php', { credentials: 'include' })
         .then(r => r.ok ? r.json() : null)
         .then(data => {
             if (!data || data.status !== 'success') return;

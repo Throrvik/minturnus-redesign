@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('backend/change_password.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ current, new: newPass })
+            body: JSON.stringify({ current, new: newPass }),
+            credentials: 'include'
         })
         .then(r => r.json())
         .then(data => {
