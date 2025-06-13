@@ -7,13 +7,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (ob_get_contents()) ob_clean();
 
     // Hent input fra skjemaet og trim hvite mellomrom
-    $name = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
+    $firstname = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
+    $lastname = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? trim($_POST['password']) : '';
     $password_repeat = isset($_POST['password_repeat']) ? trim($_POST['password_repeat']) : '';
 
     // Valider at ingen av feltene er tomme
-    if (empty($name) || empty($email) || empty($password) || empty($password_repeat)) {
+    if (empty($firstname) || empty($lastname) || empty($email) || empty($password) || empty($password_repeat)) {
         echo json_encode(["status" => "error", "message" => "Alle feltene må fylles ut."]);
         exit; // Stopp all annen output
     }
@@ -48,14 +49,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Sett inn ny bruker i databasen
-        $stmt = $db->prepare("INSERT INTO users (firstname, email, password) VALUES (:name, :email, :password)");
-        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt = $db->prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)");
+        $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+        $stmt->bindParam(':lastname', $lastname, PDO::PARAM_STR);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':password', $hashed_password, PDO::PARAM_STR);
         $stmt->execute();
 
         // Send suksessmelding når registreringen er vellykket, inkludert brukernavn
-        echo json_encode(["success" => true, "message" => "Bruker er opprettet", "firstname" => $name]);
+        echo json_encode(["success" => true, "message" => "Bruker er opprettet", "firstname" => $firstname]);
         exit; // Stopp all annen output
 
     } catch (PDOException $e) {
