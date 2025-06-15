@@ -24,9 +24,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (loginLink) loginLink.style.display = 'none';
 
         // Håndter utlogging
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', async function (event) {
             if (event.target && event.target.id === 'logout-btn') {
                 if (confirm("Er du sikker på at du vil logge ut?")) {
+                    try {
+                        await fetch('backend/logout.php', { credentials: 'include' });
+                    } catch (e) {
+                        console.error('Logout request failed:', e);
+                    }
                     localStorage.removeItem('userName');
                     window.location.href = 'index.html';
                 }
