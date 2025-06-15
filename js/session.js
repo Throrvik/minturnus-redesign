@@ -1,4 +1,24 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    // Verify the current session with the backend
+    try {
+        const res = await fetch('backend/session_status.php', { credentials: 'include' });
+        if (res.ok) {
+            const data = await res.json();
+            if (data.loggedIn) {
+                // Store the verified user name from the session
+                if (data.userName) {
+                    localStorage.setItem('userName', data.userName);
+                }
+            } else {
+                // Remove any stale value if the session is not valid
+                localStorage.removeItem('userName');
+            }
+        }
+    } catch (e) {
+        // If the request fails we keep the existing localStorage value
+        console.error('Session status check failed:', e);
+    }
+
     const userName = localStorage.getItem('userName');
     const userInfoDiv = document.getElementById('user-info');
     const friendsLink = document.getElementById('friends-link');
