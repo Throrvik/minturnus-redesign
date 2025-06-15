@@ -59,7 +59,7 @@
                     <label for="email">E-post</label>
                     <input type="email" id="email" name="email" readonly>
                 </div>
-                <a href="change_password.html" class="btn-secondary password-link">Endre e-post eller passord</a>
+                <a href="change_password.html" class="btn-secondary password-link">Endre passord</a>
             </section>
 
             <section class="work-section">
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="location">Lokasjon</label>
+                    <label for="location">Arbeidssted</label>
                     <input type="text" id="location" name="location">
                     <div class="options-inline">
                         <label><input type="checkbox" id="location-hide"> Skjul</label>
@@ -81,38 +81,36 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="shift">Turnus</label>
-                    <select id="shift" name="shift">
-                        <option value="">Velg...</option>
-                        <option value="mandag-fredag">Mandag til fredag</option>
-                        <option value="1-2">1-2</option>
-                        <option value="1-3">1-3</option>
-                        <option value="1-4">1-4</option>
-                        <option value="2-2">2-2</option>
-                        <option value="2-3">2-3</option>
-                        <option value="2-4">2-4</option>
-                        <option value="2-6">2-6</option>
-                        <option value="2-10">2-10</option>
-                        <option value="3-3">3-3</option>
-                        <option value="4-4">4-4</option>
-                        <option value="4-5">4-5</option>
-                        <option value="4-8">4-8</option>
-                        <option value="5-5">5-5</option>
-                    </select>
-                    <div class="options-inline">
-                        <label><input type="checkbox" id="shift-hide"> Skjul</label>
-                        <label><input type="checkbox" id="shift-na"> NA</label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="shift">Turnus</label>
+                        <select id="shift" name="shift">
+                            <option value="">Velg...</option>
+                            <option value="mandag-fredag">Mandag til fredag</option>
+                            <option value="1-2">1-2</option>
+                            <option value="1-3">1-3</option>
+                            <option value="1-4">1-4</option>
+                            <option value="2-2">2-2</option>
+                            <option value="2-3">2-3</option>
+                            <option value="2-4">2-4</option>
+                            <option value="2-6">2-6</option>
+                            <option value="2-10">2-10</option>
+                            <option value="3-3">3-3</option>
+                            <option value="4-4">4-4</option>
+                            <option value="4-5">4-5</option>
+                            <option value="4-8">4-8</option>
+                            <option value="5-5">5-5</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first-shift">Første skift</label>
+                        <input type="date" id="first-shift" name="first-shift">
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="first-shift">Første skift</label>
-                    <input type="date" id="first-shift" name="first-shift">
-                    <div class="options-inline">
-                        <label><input type="checkbox" id="first-shift-hide"> Skjul</label>
-                        <label><input type="checkbox" id="first-shift-na"> NA</label>
-                    </div>
+                <div class="options-inline">
+                    <label><input type="checkbox" id="shift-hide"> Skjul</label>
+                    <label><input type="checkbox" id="shift-na"> NA</label>
                 </div>
             </section>
 

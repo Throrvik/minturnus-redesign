@@ -175,14 +175,15 @@ function showPreview() {
     const shift = document.getElementById('shift').value;
     const firstShift = document.getElementById('first-shift').value;
 
-    // Use single quotes around the style attribute to avoid breaking on
-    // double quotes returned from style.backgroundImage
-    let html = `<div class="avatar-img" style='margin:0 auto;${avatar ? `background-image:${avatar};` : ''}'>${avatar ? '' : '👤'}</div>`;
-    html += `<p><strong>${name}</strong></p>`;
-    if (company) html += `<p>Firma: ${company}</p>`;
-    if (location) html += `<p>Lokasjon: ${location}</p>`;
-    if (shift) html += `<p>Turnus: ${shift}</p>`;
-    if (firstShift) html += `<p>Første skift: ${firstShift}</p>`;
+    let html = `<div class="user-card">`;
+    html += `<div class="avatar-img" style='${avatar ? `background-image:${avatar};` : ''}'>${avatar ? '' : '👤'}</div>`;
+    html += `<div class="user-info">`;
+    html += `<p class="name"><strong>${name}</strong></p>`;
+    if (company) html += `<p>${company}</p>`;
+    if (location) html += `<p>${location}</p>`;
+    if (shift) html += `<p>${shift}</p>`;
+    if (firstShift) html += `<p>${firstShift}</p>`;
+    html += `</div></div>`;
     content.innerHTML = html;
     modal.style.display = 'block';
     const closeBtn = document.getElementById('modal-close');
@@ -224,9 +225,14 @@ function deleteProfile() {
 
 // Funksjon for å deaktivere inputfelt basert på avkrysningsboksene
 function toggleInputField() {
-    document.getElementById('company').disabled = document.getElementById('company-na').checked;
-    document.getElementById('location').disabled = document.getElementById('location-na').checked;
-    document.getElementById('shift').disabled = document.getElementById('shift-na').checked;
+    const companyNa = document.getElementById('company-na').checked;
+    const locationNa = document.getElementById('location-na').checked;
+    const shiftNa = document.getElementById('shift-na').checked;
+
+    document.getElementById('company').disabled = companyNa;
+    document.getElementById('location').disabled = locationNa;
+    document.getElementById('shift').disabled = shiftNa;
+    document.getElementById('first-shift').disabled = shiftNa;
 }
 
 // Legg til event listeners for checkboxer

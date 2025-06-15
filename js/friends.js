@@ -84,13 +84,12 @@ function removeColleague(id) {
 
 function createCard(user, options = {}) {
     const card = document.createElement('div');
-    card.className = 'colleague-card fade';
+    card.className = 'user-card fade';
 
     const avatar = document.createElement('div');
-    avatar.className = 'avatar';
+    avatar.className = 'avatar-img';
     if (user.avatar_url) {
         avatar.style.backgroundImage = `url('${user.avatar_url}')`;
-        avatar.style.backgroundSize = 'cover';
         avatar.textContent = '';
     } else {
         avatar.textContent = '👤';
@@ -98,8 +97,13 @@ function createCard(user, options = {}) {
     card.appendChild(avatar);
 
     const info = document.createElement('div');
+    info.className = 'user-info';
     const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
-    info.innerHTML = `<div><strong>${name.trim()}</strong></div>`;
+    info.innerHTML = `<p class="name"><strong>${name.trim()}</strong></p>`;
+    if (user.location) info.innerHTML += `<p>${user.location}</p>`;
+    if (user.company) info.innerHTML += `<p>${user.company}</p>`;
+    if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
+    if (user.shift_date) info.innerHTML += `<p>${user.shift_date}</p>`;
     card.appendChild(info);
 
     if (options.request) {
