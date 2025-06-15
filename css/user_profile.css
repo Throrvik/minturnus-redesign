@@ -57,16 +57,31 @@
     align-items: flex-start;
 }
 
-.avatar-buttons {
-    display: flex;
-    gap: 10px;
-}
-
 .avatar-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.camera-icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
+}
+
+#avatar {
+    display: none;
 }
 
 /* Row layout for turnus og første skift */
@@ -119,6 +134,18 @@
 }
 #delete-profile-btn:hover {
     background-color: #c0392b;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.button-row .btn,
+.button-row .btn-secondary {
+    margin-bottom: 0;
+    flex: 1;
 }
 @media (max-width: 600px) {
     .profile-card {
