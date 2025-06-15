@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     } else {
                         showMessage('Innlogging feilet. Sjekk brukernavn og passord.', 'error');
                     }
-                    window.location.href = 'index.html'; // Gå til forsiden etter vellykket innlogging
                 }
 
             } catch (error) {
