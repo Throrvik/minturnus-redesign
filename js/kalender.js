@@ -480,6 +480,14 @@ function renderCalendar(month, year) {
         dayElement.appendChild(shiftContainer);
 
         const date = new Date(year, month, day);
+
+        if (
+            date.getFullYear() === currentDate.getFullYear() &&
+            date.getMonth() === currentDate.getMonth() &&
+            date.getDate() === currentDate.getDate()
+        ) {
+            dayElement.classList.add('today');
+        }
         
         // Sjekk om dagen er en rød dag
         const redDay = getRedDayInfo(date);
