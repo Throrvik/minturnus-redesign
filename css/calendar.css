@@ -32,8 +32,9 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    padding: 15px 0; /* Økt padding for mer luft */
-    position: relative; /* Beholde posisjonering */
+    padding: 20px 0;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .calendar-header h2 {
@@ -63,8 +64,10 @@
 
 @media (max-width: 600px) {
     .calendar-header {
-        flex-direction: row; /* Sørger for horisontal layout */
-        justify-content: space-between; /* Plasserer elementene jevnt */
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px 0;
+        margin-bottom: 15px;
     }
 
     .nav-button {
@@ -208,7 +211,8 @@
 
 /* Start - Styling for hver rad i turnuslisten */
 .shift-form {
-    margin-top: 20px;
+    margin: 20px 0;
+    padding: 15px;
     text-align: left;
 }
 
@@ -289,7 +293,8 @@
 
 /* Form styling */
 .shift-form {
-    margin-top: 20px;
+    margin: 20px 0;
+    padding: 15px;
     text-align: left;
 }
 
@@ -343,6 +348,11 @@
 @media (max-width: 600px) {
     #turnus-oversikt {
         gap: 5px; /* Mindre avstand mellom elementer */
+    }
+
+    .shift-form {
+        padding: 10px;
+        margin: 15px 0;
     }
 
     .turnus-item {
