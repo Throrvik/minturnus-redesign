@@ -1,5 +1,3 @@
-let deletePending = false;
-let deleteTimeout;
 
 document.addEventListener('DOMContentLoaded', function () {
     fetchUserData();
@@ -186,15 +184,9 @@ function showPreview() {
 }
 
 function deleteProfile() {
-    if (!deletePending) {
-        showMessage("Trykk på 'Slett profil' igjen innen 10 sekunder for å bekrefte.");
-        deletePending = true;
-        deleteTimeout = setTimeout(() => { deletePending = false; }, 10000);
+    if (!confirm('Er du sikker på at du vil slette profilen?')) {
         return;
     }
-
-    deletePending = false;
-    clearTimeout(deleteTimeout);
 
     fetch('backend/delete_profile.php', {
         method: 'POST',
@@ -206,7 +198,8 @@ function deleteProfile() {
             localStorage.removeItem('userName');
             window.location.href = 'login.html';
         } else {
-            showMessage('Kunne ikke slette profil.', 'error');
+            const msg = data.message ? `Kunne ikke slette profil: ${data.message}` : 'Kunne ikke slette profil.';
+            showMessage(msg, 'error');
         }
     })
     .catch(() => showMessage('Kunne ikke slette profil.', 'error'));

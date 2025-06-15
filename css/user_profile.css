@@ -124,7 +124,7 @@
 }
 
 #preview-btn {
-    margin-top: 10px;
+    margin-top: 0;
 }
 
 #delete-profile-btn {
@@ -146,6 +146,7 @@
 .button-row .btn-secondary {
     margin-bottom: 0;
     flex: 1;
+    height: 40px;
 }
 @media (max-width: 600px) {
     .profile-card {
