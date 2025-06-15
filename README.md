@@ -22,6 +22,7 @@ KalenderTurnus is a small PHP and JavaScript web application for managing shifts
 3. Install a MySQL database and create a user with access to it.
 4. Configure the application credentials as described below.
 5. Point your web server to the project directory.
+6. Serve the project through a PHP-capable web server (e.g., Apache) so that sessions work. Opening the HTML files directly in your browser will bypass PHP and the login and profile pages will not function.
 
 ## Configuring credentials
 
