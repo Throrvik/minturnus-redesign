@@ -33,25 +33,23 @@
         <form id="user-profile-form" class="user-profile" novalidate>
             <h2>Brukerprofil</h2>
 
-            <div class="profile-card">
-                <div class="avatar-section">
+            <div class="avatar-section">
+                <div class="avatar-wrapper">
                     <div id="avatar-preview" class="avatar-img">👤</div>
-                    <input type="file" id="avatar" name="avatar" accept="image/*">
-                    <div class="avatar-buttons">
-                        <button type="button" id="avatar-remove" class="btn-secondary">Slett bilde</button>
-                        <button type="button" id="avatar-view" class="btn-secondary" style="display:none;">Forhåndsvis</button>
-                    </div>
+                    <span class="camera-icon">📷</span>
                 </div>
-                <div class="name-section">
-                    <div class="form-group">
-                        <label for="first-name">Fornavn</label>
-                        <input type="text" id="first-name" name="first-name" placeholder="Fornavn" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="last-name">Etternavn</label>
-                        <input type="text" id="last-name" name="last-name" placeholder="Etternavn" required>
-                    </div>
-                </div>
+                <input type="file" id="avatar" name="avatar" accept="image/*">
+                <button type="button" id="avatar-remove" class="btn-secondary">Slett bilde</button>
+            </div>
+
+            <div class="form-group">
+                <label for="first-name">Fornavn</label>
+                <input type="text" id="first-name" name="first-name" placeholder="Fornavn" required>
+            </div>
+
+            <div class="form-group">
+                <label for="last-name">Etternavn</label>
+                <input type="text" id="last-name" name="last-name" placeholder="Etternavn" required>
             </div>
 
             <section class="account-section">
@@ -66,19 +64,11 @@
                 <div class="form-group">
                     <label for="company">Firma</label>
                     <input type="text" id="company" name="company">
-                    <div class="options-inline">
-                        <label><input type="checkbox" id="company-hide"> Skjul</label>
-                        <label><input type="checkbox" id="company-na"> NA</label>
-                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="location">Arbeidssted</label>
                     <input type="text" id="location" name="location">
-                    <div class="options-inline">
-                        <label><input type="checkbox" id="location-hide"> Skjul</label>
-                        <label><input type="checkbox" id="location-na"> NA</label>
-                    </div>
                 </div>
 
                 <div class="form-row">
@@ -108,14 +98,19 @@
                         <input type="date" id="first-shift" name="first-shift">
                     </div>
                 </div>
-                <div class="options-inline">
-                    <label><input type="checkbox" id="shift-hide"> Skjul</label>
-                    <label><input type="checkbox" id="shift-na"> NA</label>
-                </div>
+
+                <input type="hidden" id="company-hide" name="company-hide" value="0">
+                <input type="hidden" id="location-hide" name="location-hide" value="0">
+                <input type="hidden" id="shift-hide" name="shift-hide" value="0">
             </section>
 
-            <button type="submit" class="btn">Oppdater profil</button>
-            <button type="button" id="preview-btn" class="btn-secondary">Forhåndsvis</button>
+            <button type="button" id="toggle-info-btn" class="btn-secondary">Skjul informasjon</button>
+
+            <div class="button-row">
+                <button type="submit" class="btn">Oppdater profil</button>
+                <button type="button" id="preview-btn" class="btn-secondary">Forhåndsvis</button>
+            </div>
+
             <button type="button" id="delete-profile-btn" class="btn-secondary">Slett profil</button>
             <div id="message"></div>
         </form>

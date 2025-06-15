@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const avatarInput = document.getElementById('avatar');
     const avatarPreview = document.getElementById('avatar-preview');
     const avatarRemove = document.getElementById('avatar-remove');
-    const avatarView = document.getElementById('avatar-view');
     if (avatarInput) {
         avatarInput.addEventListener('change', function () {
             const file = this.files[0];
@@ -24,27 +23,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 reader.onload = e => {
                     avatarPreview.style.backgroundImage = `url('${e.target.result}')`;
                     avatarPreview.textContent = '';
-                    if (avatarView) avatarView.style.display = 'inline-block';
                 };
                 reader.readAsDataURL(file);
             }
         });
+        if (avatarPreview) {
+            avatarPreview.addEventListener('click', () => avatarInput.click());
+        }
     }
     if (avatarRemove) {
         avatarRemove.addEventListener('click', function () {
             avatarInput.value = '';
             avatarPreview.style.backgroundImage = '';
             avatarPreview.textContent = '👤';
-            if (avatarView) avatarView.style.display = 'none';
-        });
-    }
-    if (avatarView) {
-        avatarView.addEventListener('click', function () {
-            const bg = avatarPreview.style.backgroundImage;
-            if (bg) {
-                const url = bg.slice(5, -2);
-                window.open(url, '_blank');
-            }
         });
     }
 
@@ -58,7 +49,10 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteBtn.addEventListener('click', deleteProfile);
     }
 
-    addToggleListeners();
+    const toggleBtn = document.getElementById('toggle-info-btn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', toggleInfoVisibility);
+    }
 });
 
 // Funksjon for å hente brukerdata fra backend
@@ -90,13 +84,10 @@ function fetchUserData() {
                     avatarPreview.textContent = '';
                 }
 
-                // Håndter NA-avkrysningsbokser basert på data
-                document.getElementById('company-na').checked = data.user.company_na === 1;
-                document.getElementById('location-na').checked = data.user.location_na === 1;
-                document.getElementById('shift-na').checked = data.user.shift_na === 1;
-
-                // Deaktiver feltene basert på NA-avkrysningsboksene
-                toggleInputField();
+                document.getElementById('company-hide').value = data.user.company_hidden ? 1 : 0;
+                document.getElementById('location-hide').value = data.user.location_hidden ? 1 : 0;
+                document.getElementById('shift-hide').value = data.user.shift_hidden ? 1 : 0;
+                updateToggleButton();
             } else {
                 showMessage(`Kunne ikke hente brukerdata: ${data.message}`, 'error');
             }
@@ -117,14 +108,11 @@ function updateUserProfile() {
     formData.append('lastname', last);
     formData.append('email', document.getElementById('email').value);
     formData.append('company', document.getElementById('company').value);
-    formData.append('company-hide', document.getElementById('company-hide').checked ? 1 : 0);
-    formData.append('company-na', document.getElementById('company-na').checked ? 1 : 0);
+    formData.append('company-hide', document.getElementById('company-hide').value);
     formData.append('location', document.getElementById('location').value);
-    formData.append('location-hide', document.getElementById('location-hide').checked ? 1 : 0);
-    formData.append('location-na', document.getElementById('location-na').checked ? 1 : 0);
+    formData.append('location-hide', document.getElementById('location-hide').value);
     formData.append('shift', document.getElementById('shift').value);
-    formData.append('shift-hide', document.getElementById('shift-hide').checked ? 1 : 0);
-    formData.append('shift-na', document.getElementById('shift-na').checked ? 1 : 0);
+    formData.append('shift-hide', document.getElementById('shift-hide').value);
     formData.append('shift_date', document.getElementById('first-shift').value);
 
     const avatar = document.getElementById('avatar').files[0];
@@ -179,10 +167,12 @@ function showPreview() {
     html += `<div class="avatar-img" style='${avatar ? `background-image:${avatar};` : ''}'>${avatar ? '' : '👤'}</div>`;
     html += `<div class="user-info">`;
     html += `<p class="name"><strong>${name}</strong></p>`;
-    if (company) html += `<p>${company}</p>`;
-    if (location) html += `<p>${location}</p>`;
-    if (shift) html += `<p>${shift}</p>`;
-    if (firstShift) html += `<p>${firstShift}</p>`;
+    if (company && document.getElementById('company-hide').value === '0') html += `<p>${company}</p>`;
+    if (location && document.getElementById('location-hide').value === '0') html += `<p>${location}</p>`;
+    if (shift && document.getElementById('shift-hide').value === '0') {
+        html += `<p>${shift}</p>`;
+        if (firstShift) html += `<p>${firstShift}</p>`;
+    }
     html += `</div></div>`;
     content.innerHTML = html;
     modal.style.display = 'block';
@@ -222,22 +212,19 @@ function deleteProfile() {
     .catch(() => showMessage('Kunne ikke slette profil.', 'error'));
 }
 
-
-// Funksjon for å deaktivere inputfelt basert på avkrysningsboksene
-function toggleInputField() {
-    const companyNa = document.getElementById('company-na').checked;
-    const locationNa = document.getElementById('location-na').checked;
-    const shiftNa = document.getElementById('shift-na').checked;
-
-    document.getElementById('company').disabled = companyNa;
-    document.getElementById('location').disabled = locationNa;
-    document.getElementById('shift').disabled = shiftNa;
-    document.getElementById('first-shift').disabled = shiftNa;
+function updateToggleButton() {
+    const hidden = document.getElementById('company-hide').value === '1';
+    const btn = document.getElementById('toggle-info-btn');
+    if (btn) {
+        btn.textContent = hidden ? 'Vis informasjon' : 'Skjul informasjon';
+    }
 }
 
-// Legg til event listeners for checkboxer
-function addToggleListeners() {
-    document.getElementById('company-na').addEventListener('change', toggleInputField);
-    document.getElementById('location-na').addEventListener('change', toggleInputField);
-    document.getElementById('shift-na').addEventListener('change', toggleInputField);
+function toggleInfoVisibility() {
+    const current = document.getElementById('company-hide').value === '1';
+    const newVal = current ? '0' : '1';
+    document.getElementById('company-hide').value = newVal;
+    document.getElementById('location-hide').value = newVal;
+    document.getElementById('shift-hide').value = newVal;
+    updateToggleButton();
 }
