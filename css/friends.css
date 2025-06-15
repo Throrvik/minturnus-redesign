@@ -23,30 +23,7 @@
 }
 
 .colleague-card {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    background: var(--light-color);
-    position: relative;
-}
-
-.colleague-card .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-    background: var(--secondary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: var(--light-color);
-}
-
-.colleague-card button {
-    margin-left: auto;
+    /* kept for backward compatibility */
 }
 
 .fade {

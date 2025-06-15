@@ -69,6 +69,26 @@
     gap: 10px;
 }
 
+/* Row layout for turnus og første skift */
+.form-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+/* Grå ut deaktiverte felt */
+.user-profile input:disabled,
+.user-profile select:disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+}
+
 .avatar-img {
     width: 100px;
     height: 100px;
