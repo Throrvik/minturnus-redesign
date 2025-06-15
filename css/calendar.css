@@ -356,4 +356,9 @@
     }
 }
 
+/* Ensure dropdown text is readable over colored backgrounds */
+option {
+    color: #000;
+}
+
 
