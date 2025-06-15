@@ -28,9 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Global event listener for utlogging
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', async function (event) {
         if (event.target && event.target.id === 'logout-btn') {
             if (confirm("Er du sikker på at du vil logge ut?")) {
+                try {
+                    await fetch('backend/logout.php', { credentials: 'include' });
+                } catch (e) {
+                    console.error('Logout request failed:', e);
+                }
                 localStorage.removeItem('userName'); // Fjern brukernavn fra localStorage
                 window.location.href = 'index.html'; // Gå tilbake til hovedsiden
             }
