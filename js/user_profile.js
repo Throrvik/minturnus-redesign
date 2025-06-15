@@ -1,3 +1,6 @@
+let deletePending = false;
+let deleteTimeout;
+
 document.addEventListener('DOMContentLoaded', function () {
     fetchUserData();
 
@@ -48,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const previewBtn = document.getElementById('preview-btn');
     if (previewBtn) {
         previewBtn.addEventListener('click', showPreview);
+    }
+
+    const deleteBtn = document.getElementById('delete-profile-btn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', deleteProfile);
     }
 
     addToggleListeners();
@@ -182,6 +190,33 @@ function showPreview() {
     window.onclick = function(event) {
         if (event.target === modal) modal.style.display = 'none';
     };
+}
+
+function deleteProfile() {
+    if (!deletePending) {
+        showMessage("Trykk på 'Slett profil' igjen innen 10 sekunder for å bekrefte.");
+        deletePending = true;
+        deleteTimeout = setTimeout(() => { deletePending = false; }, 10000);
+        return;
+    }
+
+    deletePending = false;
+    clearTimeout(deleteTimeout);
+
+    fetch('backend/delete_profile.php', {
+        method: 'POST',
+        credentials: 'include'
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === 'success') {
+            localStorage.removeItem('userName');
+            window.location.href = 'login.html';
+        } else {
+            showMessage('Kunne ikke slette profil.', 'error');
+        }
+    })
+    .catch(() => showMessage('Kunne ikke slette profil.', 'error'));
 }
 
 

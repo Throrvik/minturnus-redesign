@@ -91,6 +91,15 @@
 #preview-btn {
     margin-top: 10px;
 }
+
+#delete-profile-btn {
+    margin-top: 10px;
+    background-color: #e74c3c;
+    color: #fff;
+}
+#delete-profile-btn:hover {
+    background-color: #c0392b;
+}
 @media (max-width: 600px) {
     .profile-card {
         flex-direction: column;
