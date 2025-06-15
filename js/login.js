@@ -1,53 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Hent nødvendige elementer
-    const userName = localStorage.getItem('userName');
-    const userInfoDiv = document.getElementById('user-info');
-    const friendsLink = document.getElementById('friends-link');
-    const loginLink = document.getElementById('login-link');
-    const hamburger = document.getElementById('hamburger');
-    const navbar = document.getElementById('navbar');
     const form = document.getElementById('form');
-    const logoutBtn = document.getElementById('logout-btn');
     const resetPasswordBtn = document.getElementById('reset-password-btn');
-
-    // Håndter innloggingsstatus
-    if (userName) {
-        // Oppdater header for å vise velkomstmelding og logg ut-knapp
-        if (userInfoDiv) {
-            userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html">${userName}</a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
-        }
-
-        // Vis venne- og lønnstabell-lenker hvis brukeren er logget inn
-        if (friendsLink) friendsLink.style.display = 'inline';
-
-        // Skjul "Logg inn"-lenken når brukeren er logget inn
-        if (loginLink) loginLink.style.display = 'none';
-
-        // Håndter utlogging
-        document.addEventListener('click', async function (event) {
-            if (event.target && event.target.id === 'logout-btn') {
-                if (confirm("Er du sikker på at du vil logge ut?")) {
-                    try {
-                        await fetch('backend/logout.php', { credentials: 'include' });
-                    } catch (e) {
-                        console.error('Logout request failed:', e);
-                    }
-                    localStorage.removeItem('userName');
-                    window.location.href = 'index.html';
-                }
-            }
-        });
-    } else {
-        // Hvis brukeren IKKE er logget inn, fjern venne- og lønnstabell-lenker
-        if (friendsLink) friendsLink.style.display = 'none';
-    }
-
-    // Håndter navigasjon for hamburgermenyen
-    if (hamburger && navbar) {
-        hamburger.addEventListener('click', function () {
-            navbar.classList.toggle('show'); // Vis/skjul navigasjonen
-        });
-    }
 
     // Håndter logikk for innlogging/registrering
     if (form) {
