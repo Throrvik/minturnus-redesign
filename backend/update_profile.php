@@ -29,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $shiftHide = isset($_POST['shift-hide']) ? 1 : 0;
         $shiftNa = isset($_POST['shift-na']) ? 1 : 0;
         $shiftDate = $_POST['shift_date'] ?? null;
+        if ($shiftDate === '') {
+            $shiftDate = null; // allow empty date field
+        }
 
         $avatarUrl = null;
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
