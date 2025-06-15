@@ -175,7 +175,9 @@ function showPreview() {
     const shift = document.getElementById('shift').value;
     const firstShift = document.getElementById('first-shift').value;
 
-    let html = `<div class="avatar-img" style="margin:0 auto;${avatar ? `background-image:${avatar};` : ''}">${avatar ? '' : '👤'}</div>`;
+    // Use single quotes around the style attribute to avoid breaking on
+    // double quotes returned from style.backgroundImage
+    let html = `<div class="avatar-img" style='margin:0 auto;${avatar ? `background-image:${avatar};` : ''}'>${avatar ? '' : '👤'}</div>`;
     html += `<p><strong>${name}</strong></p>`;
     if (company) html += `<p>Firma: ${company}</p>`;
     if (location) html += `<p>Lokasjon: ${location}</p>`;
