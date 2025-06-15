@@ -81,3 +81,27 @@ All endpoints require the user to be logged in via PHP sessions.
 
 These scripts expect the tables `friend_requests` and `friends` in the database
 as described in `js/friends.js`.
+
+### Creating the friends tables
+
+You can create the required tables manually or import the provided
+`schema.sql` file using phpMyAdmin's **Import** feature. The SQL definition is
+shown below:
+
+```sql
+CREATE TABLE `friend_requests` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `sender_id` INT NOT NULL,
+  `receiver_id` INT NOT NULL,
+  `status` TINYINT NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `sender_id` (`sender_id`),
+  KEY `receiver_id` (`receiver_id`)
+);
+
+CREATE TABLE `friends` (
+  `user1` INT NOT NULL,
+  `user2` INT NOT NULL,
+  PRIMARY KEY (`user1`, `user2`)
+);
+```
