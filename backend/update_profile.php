@@ -15,6 +15,17 @@ $userId = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // Fetch existing avatar for potential deletion
+        $currentAvatar = null;
+        $checkStmt = $conn->prepare('SELECT avatar_url FROM users WHERE id=?');
+        if ($checkStmt) {
+            $checkStmt->bind_param('i', $userId);
+            $checkStmt->execute();
+            $checkStmt->bind_result($currentAvatar);
+            $checkStmt->fetch();
+            $checkStmt->close();
+        }
+
         $firstname  = $_POST['firstname'] ?? '';
         $lastname   = $_POST['lastname'] ?? '';
         $email      = $_POST['email'] ?? '';
@@ -29,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($shiftDate === '') {
             $shiftDate = null; // allow empty date field
         }
+
+        $removeAvatar = isset($_POST['avatar_remove']) && $_POST['avatar_remove'] === '1';
 
         $avatarUrl = null;
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
@@ -59,10 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // types must mirror the params above
         $types = "sssssssi";
 
-        if ($avatarUrl !== null) {
+        $avatarChanged = false;
+        if ($avatarUrl !== null || $removeAvatar) {
             $sql .= ", avatar_url=?";
-            $params[] = $avatarUrl;
+            $params[] = $avatarUrl; // null if removing
             $types .= "s";
+            $avatarChanged = true;
         }
 
         if ($newPassword) {
@@ -99,6 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($stmt->execute()) {
+            if ($avatarChanged && $currentAvatar) {
+                $oldPath = __DIR__ . '/../' . $currentAvatar;
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
+            }
             echo json_encode(['status' => 'success', 'message' => "Profilen ble oppdatert ({$stmt->affected_rows} rad(er))"]);
         } else {
             throw new Exception("Execute failed: " . $stmt->error);

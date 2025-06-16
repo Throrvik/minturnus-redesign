@@ -22,16 +22,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const avatarInput = document.getElementById('avatar');
     const avatarPreview = document.getElementById('avatar-preview');
     const avatarRemove = document.getElementById('avatar-remove');
+    const avatarRemoveFlag = document.getElementById('avatar-remove-flag');
+    const cropperModal = document.getElementById('cropper-modal');
+    const cropperImage = document.getElementById('cropper-image');
+    const cropperClose = document.getElementById('cropper-close');
+    const cropperConfirm = document.getElementById('cropper-confirm');
+
+    let cropper = null;
+    let croppedAvatarBlob = null;
     if (avatarInput) {
         avatarInput.addEventListener('change', function () {
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = e => {
-                    avatarPreview.style.backgroundImage = `url('${e.target.result}')`;
-                    avatarPreview.textContent = '';
+                    cropperImage.src = e.target.result;
+                    cropperModal.style.display = 'block';
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropperImage, { aspectRatio: 1, viewMode: 1 });
                 };
                 reader.readAsDataURL(file);
+                if (avatarRemoveFlag) avatarRemoveFlag.value = '0';
             }
         });
         if (avatarPreview) {
@@ -43,6 +54,33 @@ document.addEventListener('DOMContentLoaded', function () {
             avatarInput.value = '';
             avatarPreview.style.backgroundImage = '';
             avatarPreview.textContent = '👤';
+            croppedAvatarBlob = null;
+            if (avatarRemoveFlag) avatarRemoveFlag.value = '1';
+        });
+    }
+
+    if (cropperClose) {
+        cropperClose.addEventListener('click', () => {
+            cropperModal.style.display = 'none';
+            if (cropper) { cropper.destroy(); cropper = null; }
+            avatarInput.value = '';
+        });
+    }
+
+    if (cropperConfirm) {
+        cropperConfirm.addEventListener('click', () => {
+            if (cropper) {
+                const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
+                avatarPreview.style.backgroundImage = `url('${canvas.toDataURL('image/jpeg')}')`;
+                avatarPreview.textContent = '';
+                canvas.toBlob(blob => {
+                    croppedAvatarBlob = blob;
+                }, 'image/jpeg');
+                if (avatarRemoveFlag) avatarRemoveFlag.value = '0';
+                cropperModal.style.display = 'none';
+                cropper.destroy();
+                cropper = null;
+            }
         });
     }
 
@@ -142,9 +180,16 @@ function updateUserProfile() {
         localStorage.removeItem('userColor');
     }
 
-    const avatar = document.getElementById('avatar').files[0];
-    if (avatar) {
-        formData.append('avatar', avatar);
+    if (croppedAvatarBlob) {
+        formData.append('avatar', croppedAvatarBlob, 'avatar.jpg');
+    } else {
+        const avatar = document.getElementById('avatar').files[0];
+        if (avatar) {
+            formData.append('avatar', avatar);
+        }
+    }
+    if (avatarRemoveFlag) {
+        formData.append('avatar_remove', avatarRemoveFlag.value);
     }
 
     fetch('backend/update_profile.php', {
