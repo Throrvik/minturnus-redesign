@@ -13,6 +13,10 @@ console.log("🚀 kalender.js er lastet!");
 // Turnuser
 let shifts = [];
 let userShift = null;
+let colleagues = [];
+let selectedColleagues = [];
+const colleagueColors = ['#FF6666','#FFB266','#FFFF66','#B2FF66','#66FFB2','#66B2FF','#FF66B2','#CC66FF','#66FF66','#CCCCCC'];
+let colleagueColorIndex = 0;
 const predefinedShifts = [
     '1-1', '1-2', '1-3', '1-4', '2-2', '2-3', '2-4', '2-6', 
     '3-3', '3-4', '4-4', '4-5', '4-8', '5-5'
@@ -94,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
     renderWeekdayRow();
     initializeEventListeners();
     loadShiftsFromLocalStorage();
+    loadSelectedColleagues();
+    loadColleaguesList();
     loadUserShift();
     renderCalendar(currentMonth, currentYear);
     renderShiftList();
@@ -146,8 +152,10 @@ function resetShifts() {
     resetPending = false;
     clearTimeout(resetTimeout);
 
-    shifts = []; // Tømmer turnuslisten
-    saveShiftsToLocalStorage(); // Oppdaterer local storage med den tomme listen
+    const removed = shifts.filter(s => !s.isUserShift && !s.isColleagueShift);
+    removed.forEach(s => addColorToDropdown(s.color));
+    shifts = shifts.filter(s => s.isUserShift || s.isColleagueShift);
+    saveShiftsToLocalStorage();
     // Tilbakestill tilgjengelige farger slik at alle farger blir synlige igjen
     saveAvailableColors(Object.keys(colorLabels));
     updateColorDropdown();
@@ -316,6 +324,7 @@ function addNewShift() {
 
 // Funksjon for å slette en turnus
 function deleteShift(index) {
+    if (shifts[index].isColleagueShift || shifts[index].isUserShift) return;
     const deletedShift = shifts.splice(index, 1)[0];
 
     if (deletedShift && deletedShift.color) {
@@ -340,7 +349,7 @@ function loadShiftsFromLocalStorage() {
         const seen = new Set();
         shifts = shifts.filter(shift => {
             const key = [shift.name, shift.workWeeks, shift.offWeeks,
-                shift.startDate.toISOString(), shift.color, shift.isUserShift ? 1 : 0].join('|');
+                shift.startDate.toISOString(), shift.color].join('|');
             if (seen.has(key)) return false;
             seen.add(key);
             return true;
@@ -358,7 +367,106 @@ function loadShiftsFromLocalStorage() {
 
 // Lagre turnuser til localStorage
 function saveShiftsToLocalStorage() {
-    localStorage.setItem('shifts', JSON.stringify(shifts));
+    const custom = shifts.filter(s => !s.isUserShift && !s.isColleagueShift);
+    localStorage.setItem('shifts', JSON.stringify(custom));
+}
+
+function loadSelectedColleagues() {
+    const stored = localStorage.getItem('selectedColleagues');
+    if (stored) {
+        selectedColleagues = JSON.parse(stored);
+    }
+}
+
+function saveSelectedColleagues() {
+    localStorage.setItem('selectedColleagues', JSON.stringify(selectedColleagues));
+}
+
+function getNextColleagueColor() {
+    const color = colleagueColors[colleagueColorIndex % colleagueColors.length];
+    colleagueColorIndex++;
+    return color;
+}
+
+function loadColleaguesList() {
+    fetch('api/my_colleagues.php', { credentials: 'include' })
+        .then(r => r.json())
+        .then(data => {
+            if (!Array.isArray(data)) return;
+            colleagues = data.filter(c => !c.info_hide);
+            // Fjern valgte kollegaer som ikke finnes lenger
+            selectedColleagues = selectedColleagues.filter(sc =>
+                colleagues.some(c => c.id === sc.id && c.shift && c.shift_date)
+            );
+            saveSelectedColleagues();
+            renderColleagueList();
+            applySelectedColleagueShifts();
+        });
+}
+
+function renderColleagueList(filter = '') {
+    const list = document.getElementById('colleague-list');
+    if (!list) return;
+    list.innerHTML = '';
+    const term = filter.toLowerCase();
+    colleagues
+        .filter(c => (`${c.firstname} ${c.lastname}`.trim()).toLowerCase().includes(term))
+        .forEach(c => {
+            const item = document.createElement('div');
+            item.className = 'colleague-item';
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.checked = selectedColleagues.some(sc => sc.id === c.id);
+            cb.addEventListener('change', () => toggleColleagueSelection(c.id, cb.checked));
+            const label = document.createElement('label');
+            label.textContent = `${c.firstname} ${c.lastname}`.trim();
+            item.appendChild(cb);
+            item.appendChild(label);
+            list.appendChild(item);
+        });
+    const search = document.getElementById('colleague-search');
+    if (search && !search.oninput) {
+        search.addEventListener('input', e => renderColleagueList(e.target.value));
+    }
+}
+
+function toggleColleagueSelection(id, checked) {
+    if (checked) {
+        if (!selectedColleagues.some(c => c.id === id)) {
+            selectedColleagues.push({ id, color: getNextColleagueColor() });
+        }
+    } else {
+        selectedColleagues = selectedColleagues.filter(c => c.id !== id);
+    }
+    saveSelectedColleagues();
+    applySelectedColleagueShifts();
+}
+
+function applySelectedColleagueShifts() {
+    shifts = shifts.filter(s => !s.isColleagueShift);
+    selectedColleagues.forEach(sel => {
+        const c = colleagues.find(col => col.id === sel.id);
+        if (!c || !c.shift || !c.shift_date) return;
+        const [work, off] = c.shift.split('-').map(Number);
+        const startDate = new Date(c.shift_date + 'T00:00:00');
+        const shift = {
+            name: `${c.firstname} ${c.lastname}`.trim(),
+            workWeeks: work,
+            offWeeks: off,
+            startDate,
+            color: sel.color || getNextColleagueColor(),
+            visible: true,
+            isColleagueShift: true,
+            colleagueId: c.id
+        };
+        sel.color = shift.color;
+        shifts.push(shift);
+    });
+    saveSelectedColleagues();
+    saveShiftsToLocalStorage();
+    renderShiftList();
+    updateTurnusOversikt();
+    renderCalendar(currentMonth, currentYear);
 }
 
 function loadUserShift() {
@@ -573,7 +681,7 @@ function renderShiftList() {
     shiftList.innerHTML = '';
 
     shifts.forEach((shift, index) => {
-        if (shift.isUserShift) return;
+        if (shift.isUserShift || shift.isColleagueShift) return;
         const listItem = document.createElement('div');
         listItem.className = 'shift-item';
 

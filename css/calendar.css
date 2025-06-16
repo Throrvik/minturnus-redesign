@@ -371,4 +371,31 @@ option {
     color: #000;
 }
 
+/* Kollegaseksjon under kalenderen */
+.colleague-section {
+    margin-top: 20px;
+}
+
+#colleague-search {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.colleague-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.colleague-item label {
+    flex: 1;
+}
+
+.colleague-item input[type="checkbox"] {
+    margin-right: 10px;
+}
+
 
