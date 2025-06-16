@@ -95,6 +95,14 @@ document.addEventListener('DOMContentLoaded', function () {
         cropperClose.addEventListener('click', resetCropper);
     }
 
+    // Attach cropper drag events now that the canvas exists
+    if (cropperCanvas) {
+        cropperCanvas.addEventListener('mousedown', startDrag);
+        cropperCanvas.addEventListener('mousemove', drag);
+        cropperCanvas.addEventListener('mouseup', endDrag);
+        cropperCanvas.addEventListener('mouseleave', endDrag);
+    }
+
     if (cropperConfirm) {
         cropperConfirm.addEventListener('click', () => {
             if (!ctx || !imageObj) return;
@@ -203,12 +211,6 @@ function endDrag() {
     isDragging = false;
 }
 
-if (cropperCanvas) {
-    cropperCanvas.addEventListener('mousedown', startDrag);
-    cropperCanvas.addEventListener('mousemove', drag);
-    cropperCanvas.addEventListener('mouseup', endDrag);
-    cropperCanvas.addEventListener('mouseleave', endDrag);
-}
 
 // Funksjon for å hente brukerdata fra backend
 function fetchUserData() {
