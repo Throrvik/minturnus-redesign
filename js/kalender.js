@@ -16,6 +16,7 @@ let userShift = null;
 let colleagues = [];
 let selectedColleagues = [];
 let colleagueColorPref = {};
+let currentUserFirstName = '';
 const allColors = [
   "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
   "#66B2FF", "#CC66FF", "#FF66B2", "#66FF66", "#CCCCCC",
@@ -346,6 +347,7 @@ function renderColleagueList(filter = '') {
     const term = filter.toLowerCase();
     colleagues
         .filter(c => (`${c.firstname} ${c.lastname}`.trim()).toLowerCase().includes(term))
+        .sort((a, b) => `${a.firstname} ${a.lastname}`.localeCompare(`${b.firstname} ${b.lastname}`))
         .forEach(c => {
             const item = document.createElement('div');
             item.className = 'colleague-item';
@@ -451,6 +453,7 @@ function loadUserShift() {
             const [work, off] = data.user.shift.split('-').map(Number);
             const startDate = new Date(data.user.shift_date + 'T00:00:00');
             const pref = localStorage.getItem('userColor');
+            currentUserFirstName = data.user.firstname || '';
             userShift = {
                 name: `${data.user.firstname} ${data.user.lastname}`.trim(),
                 workWeeks: work,
@@ -467,7 +470,7 @@ function loadUserShift() {
             updateTurnusOversikt();
 
             if (label && checkbox && toggleDiv) {
-                label.textContent = `${userShift.name} (${data.user.shift})`;
+                label.textContent = `${userShift.name} (meg)`;
                 checkbox.checked = userShift.visible;
                 toggleDiv.style.display = 'block';
                 checkbox.addEventListener('change', () => {
@@ -495,7 +498,8 @@ function updateTurnusOversikt() {
         colorBox.style.backgroundColor = shift.color;
 
         const nameText = document.createElement('span');
-        nameText.textContent = `${shift.name} (${shift.workWeeks}-${shift.offWeeks})`;
+        const firstName = shift.name.split(' ')[0];
+        nameText.textContent = `${firstName} (${shift.workWeeks}-${shift.offWeeks})`;
 
         turnusItem.appendChild(colorBox);
         turnusItem.appendChild(nameText);
