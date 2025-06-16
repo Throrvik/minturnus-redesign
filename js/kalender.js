@@ -420,6 +420,8 @@ function renderColleagueList(filter = '') {
             cb.addEventListener('change', () => toggleColleagueSelection(c.id, cb.checked));
             const label = document.createElement('label');
             label.textContent = `${c.firstname} ${c.lastname}`.trim();
+            label.className = 'colleague-name';
+            label.addEventListener('click', () => showColleagueCard(c.id));
             item.appendChild(cb);
             item.appendChild(label);
             list.appendChild(item);
@@ -428,6 +430,35 @@ function renderColleagueList(filter = '') {
     if (search && !search.oninput) {
         search.addEventListener('input', e => renderColleagueList(e.target.value));
     }
+}
+
+function showColleagueCard(id) {
+    fetch(`api/user_info.php?id=${id}`, { credentials: 'include' })
+        .then(r => r.json())
+        .then(data => {
+            if (!data || data.status !== 'success') return;
+            const modal = document.getElementById('colleague-modal');
+            const content = document.getElementById('colleague-content');
+            const u = data.user;
+            let html = '<div class="user-card">';
+            if (u.avatar_url) {
+                html += `<div class="avatar-img" style="background-image:url('${u.avatar_url}')"></div>`;
+            } else {
+                html += '<div class="avatar-img">👤</div>';
+            }
+            html += '<div class="user-info">';
+            const name = `${u.firstname || ''} ${u.lastname || ''}`.trim() || (u.fullname || '');
+            html += `<p class="name"><strong>${name}</strong></p>`;
+            if (u.company) html += `<p>${u.company}</p>`;
+            if (u.location) html += `<p>${u.location}</p>`;
+            if (u.shift) html += `<p>${u.shift}</p>`;
+            html += '</div></div>';
+            content.innerHTML = html;
+            modal.style.display = 'block';
+            const closeBtn = document.getElementById('colleague-close');
+            if (closeBtn) closeBtn.onclick = () => { modal.style.display = 'none'; };
+            window.onclick = function(e) { if (e.target === modal) modal.style.display = 'none'; };
+        });
 }
 
 function toggleColleagueSelection(id, checked) {
