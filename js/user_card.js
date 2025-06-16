@@ -91,3 +91,37 @@ function createCard(user, options = {}) {
     }
     return card;
 }
+
+function createProfileCard(user) {
+    const card = document.createElement('div');
+    card.className = 'profile-card fade';
+
+    const nameEl = document.createElement('h2');
+    nameEl.className = 'profile-name';
+    const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
+    nameEl.textContent = name.trim();
+    card.appendChild(nameEl);
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'profile-content';
+
+    if (user.avatar_url) {
+        const img = document.createElement('img');
+        img.className = 'profile-image';
+        img.src = user.avatar_url;
+        img.alt = 'Profilbilde';
+        contentDiv.appendChild(img);
+    }
+
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'profile-info';
+    if (!user.info_hide) {
+        if (user.company) infoDiv.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
+        if (user.location) infoDiv.innerHTML += `<p><strong>Arbeidssted:</strong> ${user.location}</p>`;
+        if (user.shift) infoDiv.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
+    }
+
+    contentDiv.appendChild(infoDiv);
+    card.appendChild(contentDiv);
+    return card;
+}
