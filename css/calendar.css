@@ -373,7 +373,10 @@ option {
 
 /* Kollegaseksjon under kalenderen */
 .colleague-section {
-    margin-top: 20px;
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
 
 #colleague-search {
@@ -388,10 +391,16 @@ option {
     display: flex;
     align-items: center;
     padding: 5px 0;
+    font-size: 0.9rem;
 }
 
 .colleague-item label {
     flex: 1;
+    cursor: pointer;
+}
+
+.colleague-name:hover {
+    text-decoration: underline;
 }
 
 .colleague-item input[type="checkbox"] {
