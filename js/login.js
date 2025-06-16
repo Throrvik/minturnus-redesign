@@ -50,11 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     errorMessages.textContent = result.message;
                     errorMessages.style.display = 'block';
                 } else if (result.success) {
-                    // Lagre brukernavn i localStorage
+                    // Lagre brukernavn i localStorage og send bruker videre
                     console.log('Server response:', result);
                     if (result.success && result.firstname) {
                         localStorage.setItem('userName', result.firstname);
-                        window.location.href = 'index.html'; 
+                        if (action === 'register') {
+                            window.location.href = 'user_profile.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
                     } else {
                         showMessage('Innlogging feilet. Sjekk brukernavn og passord.', 'error');
                     }
