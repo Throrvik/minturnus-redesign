@@ -376,21 +376,9 @@ function showColleagueCard(id) {
             if (!data || data.status !== 'success') return;
             const modal = document.getElementById('colleague-modal');
             const content = document.getElementById('colleague-content');
-            const u = data.user;
-            let html = '<div class="user-card">';
-            if (u.avatar_url) {
-                html += `<div class="avatar-img" style="background-image:url('${u.avatar_url}')"></div>`;
-            } else {
-                html += '<div class="avatar-img">👤</div>';
-            }
-            html += '<div class="user-info">';
-            const name = `${u.firstname || ''} ${u.lastname || ''}`.trim() || (u.fullname || '');
-            html += `<p class="name"><strong>${name}</strong></p>`;
-            if (u.company) html += `<p>${u.company}</p>`;
-            if (u.location) html += `<p>${u.location}</p>`;
-            if (u.shift) html += `<p>${u.shift}</p>`;
-            html += '</div></div>';
-            content.innerHTML = html;
+            const card = createCard(data.user, {});
+            content.innerHTML = '';
+            content.appendChild(card);
             modal.style.display = 'block';
             const closeBtn = document.getElementById('colleague-close');
             if (closeBtn) closeBtn.onclick = () => { modal.style.display = 'none'; };
