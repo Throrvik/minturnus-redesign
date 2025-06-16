@@ -293,15 +293,18 @@ a:hover {
 }
 
 .modal-content {
-    background-color: var(--light-color);
+    background-color: transparent;
     margin: 10% auto;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 0;
+    border-radius: 0;
     max-width: 500px;
+    position: relative;
     z-index: 2001;
 }
 .close {
-    float: right;
+    position: absolute;
+    top: 10px;
+    right: 10px;
     font-size: 1.5rem;
     cursor: pointer;
 }
