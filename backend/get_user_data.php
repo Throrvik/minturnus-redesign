@@ -18,7 +18,7 @@ if (!$conn) {
 }
 
 // Test SQL-spørringen
-$query = "SELECT firstname, lastname, email, company, location, shift, shift_date, avatar_url, company_na, location_na, shift_na FROM users WHERE id = ?";
+$query = "SELECT firstname, lastname, email, company, location, shift, shift_date, avatar_url, info_hide FROM users WHERE id = ?";
 $stmt = $conn->prepare($query);
 
 if (!$stmt) {

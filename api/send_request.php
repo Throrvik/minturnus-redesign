@@ -49,6 +49,9 @@ if ($stmt->affected_rows > 0) {
             $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = 465;
 
+            // Sørg for korrekt tegnsett i emne og innhold
+            $mail->CharSet = 'UTF-8';
+
             $mail->setFrom('noreply@kalenderturnus.no', 'KalenderTurnus');
             $mail->addAddress($row['email']);
 

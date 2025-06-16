@@ -82,9 +82,7 @@ function fetchUserData() {
                     avatarPreview.textContent = '';
                 }
 
-                document.getElementById('company-hide').value = data.user.company_hidden ? 1 : 0;
-                document.getElementById('location-hide').value = data.user.location_hidden ? 1 : 0;
-                document.getElementById('shift-hide').value = data.user.shift_hidden ? 1 : 0;
+                document.getElementById('info-hide').value = data.user.info_hide ? 1 : 0;
                 updateToggleButton();
             } else {
                 showMessage(`Kunne ikke hente brukerdata: ${data.message}`, 'error');
@@ -106,11 +104,9 @@ function updateUserProfile() {
     formData.append('lastname', last);
     formData.append('email', document.getElementById('email').value);
     formData.append('company', document.getElementById('company').value);
-    formData.append('company-hide', document.getElementById('company-hide').value);
     formData.append('location', document.getElementById('location').value);
-    formData.append('location-hide', document.getElementById('location-hide').value);
     formData.append('shift', document.getElementById('shift').value);
-    formData.append('shift-hide', document.getElementById('shift-hide').value);
+    formData.append('info-hide', document.getElementById('info-hide').value);
     formData.append('shift_date', document.getElementById('first-shift').value);
 
     const avatar = document.getElementById('avatar').files[0];
@@ -165,9 +161,9 @@ function showPreview() {
     html += `<div class="avatar-img" style='${avatar ? `background-image:${avatar};` : ''}'>${avatar ? '' : '👤'}</div>`;
     html += `<div class="user-info">`;
     html += `<p class="name"><strong>${name}</strong></p>`;
-    if (company && document.getElementById('company-hide').value === '0') html += `<p>${company}</p>`;
-    if (location && document.getElementById('location-hide').value === '0') html += `<p>${location}</p>`;
-    if (shift && document.getElementById('shift-hide').value === '0') {
+    if (company && document.getElementById('info-hide').value === '0') html += `<p>${company}</p>`;
+    if (location && document.getElementById('info-hide').value === '0') html += `<p>${location}</p>`;
+    if (shift && document.getElementById('info-hide').value === '0') {
         html += `<p>${shift}</p>`;
         if (firstShift) html += `<p>${firstShift}</p>`;
     }
@@ -206,7 +202,7 @@ function deleteProfile() {
 }
 
 function updateToggleButton() {
-    const hidden = document.getElementById('company-hide').value === '1';
+    const hidden = document.getElementById('info-hide').value === '1';
     const btn = document.getElementById('toggle-info-btn');
     if (btn) {
         btn.textContent = hidden ? 'Vis informasjon' : 'Skjul informasjon';
@@ -214,10 +210,8 @@ function updateToggleButton() {
 }
 
 function toggleInfoVisibility() {
-    const current = document.getElementById('company-hide').value === '1';
+    const current = document.getElementById('info-hide').value === '1';
     const newVal = current ? '0' : '1';
-    document.getElementById('company-hide').value = newVal;
-    document.getElementById('location-hide').value = newVal;
-    document.getElementById('shift-hide').value = newVal;
+    document.getElementById('info-hide').value = newVal;
     updateToggleButton();
 }

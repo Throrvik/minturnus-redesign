@@ -20,14 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email      = $_POST['email'] ?? '';
         $newPassword = !empty($_POST['new-password']) ? password_hash($_POST['new-password'], PASSWORD_DEFAULT) : null;
         $company = $_POST['company'] ?? '';
-        $companyHide = isset($_POST['company-hide']) ? 1 : 0;
-        $companyNa = isset($_POST['company-na']) ? 1 : 0;
         $location = $_POST['location'] ?? '';
-        $locationHide = isset($_POST['location-hide']) ? 1 : 0;
-        $locationNa = isset($_POST['location-na']) ? 1 : 0;
         $shift = $_POST['shift'] ?? '';
-        $shiftHide = isset($_POST['shift-hide']) ? 1 : 0;
-        $shiftNa = isset($_POST['shift-na']) ? 1 : 0;
+        $infoHide = isset($_POST['info-hide']) ? 1 : 0;
         $shiftDate = $_POST['shift_date'] ?? null;
         if ($shiftDate === '') {
             $shiftDate = null; // allow empty date field
@@ -48,25 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
 
-        $sql = "UPDATE users SET firstname=?, lastname=?, email=?, company=?, company_hidden=?, company_na=?,
-                location=?, location_hidden=?, location_na=?, shift=?, shift_hidden=?, shift_na=?, shift_date=?";
+        $sql = "UPDATE users SET firstname=?, lastname=?, email=?, company=?, location=?, shift=?, shift_date=?, info_hide=?";
         $params = [
             $firstname,
             $lastname,
             $email,
             $company,
-            $companyHide,
-            $companyNa,
             $location,
-            $locationHide,
-            $locationNa,
             $shift,
-            $shiftHide,
-            $shiftNa,
             $shiftDate,
+            $infoHide,
         ];
         // types must mirror the params above
-        $types = "ssssiisiisiis";  // 13 columns (no id yet)
+        $types = "sssssssi";
 
         if ($avatarUrl !== null) {
             $sql .= ", avatar_url=?";
