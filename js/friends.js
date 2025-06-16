@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadPendingRequests();
+    loadSentRequests();
     loadColleagues();
 
     document.getElementById('search-btn')
@@ -35,7 +36,10 @@ function sendRequest(id) {
         body: JSON.stringify({ id })
     })
     .then(r => r.json())
-    .then(() => alert('Forespørsel sendt'))
+    .then(() => {
+        alert('Forespørsel sendt');
+        loadSentRequests();
+    })
     .catch(() => alert('Noe gikk galt'));
 }
 
@@ -46,6 +50,18 @@ function loadPendingRequests() {
             const box = document.getElementById('pending-requests');
             box.innerHTML = '';
             requests.forEach(r => box.appendChild(createRequestCard(r)));
+            if (typeof updateRequestAlert === 'function') updateRequestAlert();
+        });
+}
+
+function loadSentRequests() {
+    fetch('api/sent_requests.php', { credentials: 'include' })
+        .then(r => r.json())
+        .then(requests => {
+            const box = document.getElementById('sent-requests');
+            if (!box) return;
+            box.innerHTML = '';
+            requests.forEach(r => box.appendChild(createSentRequestCard(r)));
         });
 }
 
@@ -59,6 +75,7 @@ function respondRequest(id, accept) {
         .then(() => {
             loadPendingRequests();
             loadColleagues();
+            if (typeof updateRequestAlert === 'function') updateRequestAlert();
         });
 }
 
@@ -134,5 +151,23 @@ function createRequestCard(req) {
 
     card.appendChild(accept);
     card.appendChild(decline);
+    return card;
+}
+
+function cancelRequest(id) {
+    fetch('api/cancel_request.php', {
+        credentials: 'include',
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+    }).then(() => loadSentRequests());
+}
+
+function createSentRequestCard(req) {
+    const card = createCard(req.user || req, {});
+    const cancel = document.createElement('button');
+    cancel.textContent = 'Slett';
+    cancel.onclick = () => cancelRequest(req.id);
+    card.appendChild(cancel);
     return card;
 }

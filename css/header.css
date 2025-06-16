@@ -23,6 +23,18 @@
     transition: color 0.3s ease-in-out; /* Glatt overgang for farge ved hover */
 }
 
+/* Varslingsikon for kollegaforespørsler */
+.request-alert {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--light-color);
+}
+
+.request-alert.active {
+    color: red;
+}
+
 /* Styling for navigasjonen for store skjermer */
 .navbar {
     display: flex;

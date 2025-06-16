@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const userInfoDiv = document.getElementById('user-info');
     const friendsLink = document.getElementById('friends-link');
     const loginLink = document.getElementById('login-link');
+    const requestAlert = document.getElementById('request-alert');
 
     // Håndter innloggingsstatus
     if (userName) {
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // Vis venne-lenken hvis brukeren er logget inn
         if (friendsLink) friendsLink.style.display = 'list-item';
+        if (requestAlert) requestAlert.style.display = 'inline';
 
         // Skjul "Logg inn"-lenken når brukeren er logget inn
         if (loginLink) {
@@ -42,9 +44,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     } else {
         // Skjul venne-lenken hvis brukeren ikke er logget inn
         if (friendsLink) friendsLink.style.display = 'none';
-
+        
         // Sørg for at "Logg inn"-lenken vises
         if (loginLink) loginLink.style.display = 'list-item';
+        if (requestAlert) requestAlert.style.display = 'none';
     }
 
     // Global event listener for utlogging
@@ -71,4 +74,35 @@ document.addEventListener('DOMContentLoaded', async function () {
             navbar.classList.toggle('show'); // Vis/skjul navigasjonen ved å toggle 'show'-klassen
         });
     }
+
+    if (requestAlert) {
+        requestAlert.addEventListener('click', function () {
+            window.location.href = 'friends.html';
+        });
+        updateRequestAlert();
+        setInterval(updateRequestAlert, 60000);
+    }
 });
+
+async function updateRequestAlert() {
+    const icon = document.getElementById('request-alert');
+    if (!icon) return;
+    try {
+        const res = await fetch('api/pending_count.php', { credentials: 'include' });
+        if (!res.ok) {
+            icon.classList.remove('active');
+            icon.style.display = 'none';
+            return;
+        }
+        const data = await res.json();
+        if (data.count > 0) {
+            icon.classList.add('active');
+            icon.style.display = 'inline';
+        } else {
+            icon.classList.remove('active');
+            icon.style.display = 'none';
+        }
+    } catch (e) {
+        console.error('Failed to fetch pending count:', e);
+    }
+}
