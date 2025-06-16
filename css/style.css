@@ -307,10 +307,16 @@ a:hover {
 /* Toggle for user shift in calendar */
 .user-shift-toggle {
     margin: 10px 0;
+    display: flex;
+    align-items: center;
 }
 .user-shift-toggle label {
+    flex: 1;
     cursor: pointer;
     font-weight: bold;
+}
+.user-shift-toggle input[type="checkbox"] {
+    margin-right: 10px;
 }
 
 /* Kortdesign for brukere */
