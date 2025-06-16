@@ -34,6 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function updateColorOptions() {
+    const used = new Set(Object.values(colorPrefs).filter(c => c));
+    document.querySelectorAll('#colleagues-list select').forEach(sel => {
+        const current = sel.value;
+        Array.from(sel.options).forEach(opt => {
+            if (!opt.value) return;
+            opt.disabled = used.has(opt.value) && opt.value !== current;
+        });
+    });
+}
+
 function searchUsers() {
     const query = document.getElementById('search-input').value.trim();
     if (!query) return;
@@ -55,7 +66,7 @@ function showSearchResults(users) {
     });
 }
 
-function sendRequest(id) {
+function sendRequest(id, btn) {
     fetch('api/send_request.php', {
         credentials: 'include',
         method: 'POST',
@@ -64,7 +75,10 @@ function sendRequest(id) {
     })
     .then(r => r.json())
     .then(() => {
-        alert('Forespørsel sendt');
+        if (btn) {
+            btn.textContent = 'Ventende forespørsel';
+            btn.disabled = true;
+        }
         loadSentRequests();
     })
     .catch(() => alert('Noe gikk galt'));
@@ -112,9 +126,10 @@ function loadColleagues() {
         .then(list => {
             const box = document.getElementById('colleagues-list');
             box.innerHTML = '';
-            list.forEach(c => box.appendChild(createCard(c, { remove: true, modal: true, compact: true })));
+            list.forEach(c => box.appendChild(createCard(c, { remove: true, modal: true, compact: true }))); 
             const count = document.getElementById('colleague-count');
             if (count) count.textContent = list.length;
+            updateColorOptions();
         });
 }
 
@@ -177,7 +192,7 @@ function createCard(user, options = {}) {
             btn.textContent = 'Send forespørsel';
             btn.onclick = (e) => {
                 e.stopPropagation();
-                sendRequest(user.id);
+                sendRequest(user.id, btn);
             };
             card.appendChild(btn);
         }
@@ -197,10 +212,12 @@ function createCard(user, options = {}) {
             sel.appendChild(o);
         });
         sel.value = colorPrefs[user.id] || '';
+        sel.addEventListener('click', e => e.stopPropagation());
         sel.onchange = e => {
             const val = e.target.value;
             if (val) colorPrefs[user.id] = val; else delete colorPrefs[user.id];
             localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
+            updateColorOptions();
         };
         card.appendChild(sel);
 
