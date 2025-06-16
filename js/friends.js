@@ -38,7 +38,7 @@ function showSearchResults(users) {
     const box = document.getElementById('search-results');
     box.innerHTML = '';
     users.forEach(u => {
-        const card = createCard(u, { request: true });
+        const card = createCard(u, { search: true, compact: true });
         box.appendChild(card);
     });
 }
@@ -100,7 +100,7 @@ function loadColleagues() {
         .then(list => {
             const box = document.getElementById('colleagues-list');
             box.innerHTML = '';
-            list.forEach(c => box.appendChild(createCard(c, { remove: true, modal: true })));
+            list.forEach(c => box.appendChild(createCard(c, { remove: true, modal: true, compact: true })));
             const count = document.getElementById('colleague-count');
             if (count) count.textContent = list.length;
         });
@@ -134,9 +134,12 @@ function createCard(user, options = {}) {
     info.className = 'user-info';
     const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
     info.innerHTML = `<p class="name"><strong>${name.trim()}</strong></p>`;
-    if (user.company) info.innerHTML += `<p>${user.company}</p>`;
-    if (user.location) info.innerHTML += `<p>${user.location}</p>`;
-    if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
+    if (!options.compact) {
+        if (user.company) info.innerHTML += `<p>${user.company}</p>`;
+        if (user.location) info.innerHTML += `<p>${user.location}</p>`;
+        if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
+        if (user.shift_date) info.innerHTML += `<p>${user.shift_date}</p>`;
+    }
     card.appendChild(info);
 
     if (options.modal) {
@@ -144,15 +147,27 @@ function createCard(user, options = {}) {
         card.addEventListener('click', () => showColleagueInfo(user.id));
     }
 
-    if (options.request) {
-        const btn = document.createElement('button');
-        btn.className = 'action-btn';
-        btn.textContent = 'Send forespørsel';
-        btn.onclick = (e) => {
-            e.stopPropagation();
-            sendRequest(user.id);
-        };
-        card.appendChild(btn);
+    if (options.search) {
+        if (user.relation === 'colleague') {
+            const span = document.createElement('span');
+            span.className = 'status-text';
+            span.textContent = 'Kollega';
+            card.appendChild(span);
+        } else if (user.relation === 'pending') {
+            const span = document.createElement('span');
+            span.className = 'status-text';
+            span.textContent = 'Ventende forespørsel';
+            card.appendChild(span);
+        } else {
+            const btn = document.createElement('button');
+            btn.className = 'action-btn';
+            btn.textContent = 'Send forespørsel';
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                sendRequest(user.id);
+            };
+            card.appendChild(btn);
+        }
     }
 
     if (options.remove) {
@@ -209,20 +224,11 @@ function showColleagueInfo(id) {
         .then(r => r.json())
         .then(data => {
             if (!data || data.status !== 'success') return;
-            const u = data.user;
             const modal = document.getElementById('colleague-modal');
             const content = document.getElementById('colleague-content');
-            let html = `<div class="user-card">`;
-            const avatar = u.avatar_url ? `background-image:url('${u.avatar_url}')` : '';
-            html += `<div class="avatar-img" style="${avatar}">${u.avatar_url ? '' : '👤'}</div>`;
-            html += `<div class="user-info">`;
-            const name = `${u.firstname || ''} ${u.lastname || ''}`.trim();
-            html += `<p class="name"><strong>${name}</strong></p>`;
-            if (u.company) html += `<p>${u.company}</p>`;
-            if (u.location) html += `<p>${u.location}</p>`;
-            if (u.shift) html += `<p>${u.shift}</p>`;
-            html += `</div></div>`;
-            content.innerHTML = html;
+            const card = createCard(data.user, {});
+            content.innerHTML = '';
+            content.appendChild(card);
             modal.style.display = 'block';
         });
 }

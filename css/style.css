@@ -369,3 +369,9 @@ a:hover {
 .user-card .user-info p {
     margin-bottom: 4px;
 }
+
+.status-text {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+}
