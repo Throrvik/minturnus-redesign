@@ -52,13 +52,13 @@ if ($stmt->affected_rows > 0) {
             // Sørg for korrekt tegnsett i emne og innhold
             $mail->CharSet = 'UTF-8';
 
-            $mail->setFrom('noreply@kalenderturnus.no', 'KalenderTurnus');
+            $mail->setFrom('noreply@minturnus.no', 'MinTurnus');
             $mail->addAddress($row['email']);
 
             $mail->isHTML(true);
             $mail->Subject = 'Ny kollegaforespørsel';
-            $mail->Body    = '<p>Hei ' . htmlspecialchars($row['firstname']) . ',</p><p>Du har mottatt en ny kollegaforespørsel i KalenderTurnus.</p><p>Logg inn for å godta eller avslå forespørselen.</p>';
-            $mail->AltBody = "Hei {$row['firstname']},\nDu har mottatt en ny kollegaforespørsel i KalenderTurnus. Logg inn for å godta eller avslå forespørselen.";
+            $mail->Body    = '<p>Hei ' . htmlspecialchars($row['firstname']) . ',</p><p>Du har mottatt en ny kollegaforespørsel i MinTurnus.</p><p>Logg inn for å godta eller avslå forespørselen.</p>';
+            $mail->AltBody = "Hei {$row['firstname']},\nDu har mottatt en ny kollegaforespørsel i MinTurnus. Logg inn for å godta eller avslå forespørselen.";
             $mail->send();
         } catch (Exception $e) {
             // ignore email errors

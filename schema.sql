@@ -1,4 +1,4 @@
--- SQL schema for KalenderTurnus friendship features
+-- SQL schema for MinTurnus friendship features
 
 -- Table storing pending colleague requests
 CREATE TABLE `friend_requests` (
