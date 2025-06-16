@@ -336,9 +336,18 @@ function loadShiftsFromLocalStorage() {
         shifts.forEach(shift => {
             shift.startDate = new Date(shift.startDate);
         });
+        // Fjern eventuelle duplikater
+        const seen = new Set();
+        shifts = shifts.filter(shift => {
+            const key = [shift.name, shift.workWeeks, shift.offWeeks,
+                shift.startDate.toISOString(), shift.color, shift.isUserShift ? 1 : 0].join('|');
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+        saveShiftsToLocalStorage();
     }
     updateTurnusOversikt(); // Kall funksjonen her for å oppdatere visningen ved lasting
-
 
     // Oppdater fargevalg ved innlasting
     const usedColors = shifts.map(shift => shift.color);
@@ -374,7 +383,11 @@ function loadUserShift() {
                 visible: localStorage.getItem('showUserShift') !== '0',
                 isUserShift: true
             };
+            // Fjern tidligere lagret brukerskift og legg til den nye
+            shifts = shifts.filter(s => !s.isUserShift);
             shifts.push(userShift);
+            saveShiftsToLocalStorage();
+            updateTurnusOversikt();
 
             if (label && checkbox && toggleDiv) {
                 label.textContent = `${userShift.name} (${data.user.shift})`;
@@ -414,14 +427,6 @@ function updateTurnusOversikt() {
     });
 }
 
-// It's good practice to keep render and load operations separate from event listener setups
-window.onload = function() {
-    loadShiftsFromLocalStorage();
-    loadUserShift();
-    renderCalendar(currentMonth, currentYear);
-    renderShiftList();
-    updateTurnusOversikt();  // inkludert denne!
-};
 
 function updateShiftCounts() {
     document.querySelectorAll('.day').forEach(day => {
