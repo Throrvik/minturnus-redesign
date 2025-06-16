@@ -9,6 +9,22 @@
     margin-bottom: 20px;
 }
 
+.search-section button {
+    padding: 10px 20px;
+    border: none;
+    background: var(--primary-color);
+    color: var(--light-color);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.requests-section,
+.colleagues-section {
+    margin-top: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--secondary-color);
+}
+
 #search-input {
     flex: 1;
     padding: 10px;
