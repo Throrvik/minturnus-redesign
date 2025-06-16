@@ -324,6 +324,20 @@ a:hover {
     align-items: center;
 }
 
+.user-card.compact {
+    flex-direction: column;
+    text-align: center;
+}
+.user-card.compact button,
+.user-card.compact .action-btn {
+    width: 100%;
+}
+.user-card.compact .avatar-img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
 .user-card .avatar-img {
     width: 90px;
     height: 90px;
