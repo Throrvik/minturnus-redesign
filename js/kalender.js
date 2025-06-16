@@ -15,8 +15,31 @@ let shifts = [];
 let userShift = null;
 let colleagues = [];
 let selectedColleagues = [];
-const colleagueColors = ['#FF6666','#FFB266','#FFFF66','#B2FF66','#66FFB2','#66B2FF','#FF66B2','#CC66FF','#66FF66','#CCCCCC'];
-let colleagueColorIndex = 0;
+let colleagueColorPref = {};
+const allColors = [
+  "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
+  "#66B2FF", "#CC66FF", "#FF66B2", "#66FF66", "#CCCCCC",
+  "#FF8C00", "#FFD700", "#7CFC00", "#40E0D0", "#1E90FF",
+  "#BA55D3", "#FF1493", "#32CD32", "#D3D3D3", "#8B0000",
+  "#A52A2A", "#2E8B57", "#4682B4", "#FF4500", "#DA70D6",
+  "#B0C4DE", "#8A2BE2", "#20B2AA", "#FF6347", "#9ACD32"
+];
+
+function getNextAvailableColor() {
+  const usedColors = shifts.map(s => s.color);
+  if (userShift) usedColors.push(userShift.color);
+  selectedColleagues.forEach(c => c.color && usedColors.push(c.color));
+  return allColors.find(c => !usedColors.includes(c));
+}
+
+function loadColleagueColorPrefs() {
+  const s = localStorage.getItem('colleagueColorPref');
+  colleagueColorPref = s ? JSON.parse(s) : {};
+}
+
+function saveColleagueColorPrefs() {
+  localStorage.setItem('colleagueColorPref', JSON.stringify(colleagueColorPref));
+}
 const predefinedShifts = [
     '1-1', '1-2', '1-3', '1-4', '2-2', '2-3', '2-4', '2-6', 
     '3-3', '3-4', '4-4', '4-5', '4-8', '5-5'
@@ -99,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeEventListeners();
     loadShiftsFromLocalStorage();
     loadSelectedColleagues();
+    loadColleagueColorPrefs();
     loadColleaguesList();
     loadUserShift();
     renderCalendar(currentMonth, currentYear);
@@ -152,13 +176,8 @@ function resetShifts() {
     resetPending = false;
     clearTimeout(resetTimeout);
 
-    const removed = shifts.filter(s => !s.isUserShift && !s.isColleagueShift);
-    removed.forEach(s => addColorToDropdown(s.color));
     shifts = shifts.filter(s => s.isUserShift || s.isColleagueShift);
     saveShiftsToLocalStorage();
-    // Tilbakestill tilgjengelige farger slik at alle farger blir synlige igjen
-    saveAvailableColors(Object.keys(colorLabels));
-    updateColorDropdown();
     renderCalendar(currentMonth, currentYear); // Oppdaterer kalenderen
     renderShiftList(); // Oppdaterer listen som viser turnuser
 
@@ -168,69 +187,6 @@ function resetShifts() {
     showMessage('Skjemaet ble t\u00f8mt.', 'success');
 }
 
-// Definer alle farger og deres etiketter
-const colorLabels = {
-    "#FF6666": "Rød",
-    "#FFB266": "Oransje",
-    "#FFFF66": "Gul",
-    "#B2FF66": "Lys Grønn",
-    "#66FFB2": "Turkis",
-    "#66B2FF": "Lys Blå",
-    "#FF66B2": "Rosa",
-    "#CC66FF": "Fiolett",
-    "#66FF66": "Grønn",
-    "#CCCCCC": "Lys Grå"
-};
-
-// Laste tilgjengelige farger fra localStorage eller bruke standard
-function loadAvailableColors() {
-    const storedColors = localStorage.getItem('availableColors');
-    if (storedColors) {
-        return JSON.parse(storedColors);
-    }
-    return Object.keys(colorLabels);
-}
-
-// Lagre tilgjengelige farger til localStorage
-function saveAvailableColors(colors) {
-    localStorage.setItem('availableColors', JSON.stringify(colors));
-}
-
-// Oppdater fargevelgeren basert på tilgjengelige farger
-function updateColorDropdown() {
-    const colorSelect = document.getElementById('shift-color');
-    colorSelect.innerHTML = ''; // Tøm fargevelgeren
-
-    const availableColors = loadAvailableColors();
-    availableColors.forEach(color => {
-        const option = document.createElement('option');
-        option.value = color;
-        option.textContent = colorLabels[color];
-        colorSelect.appendChild(option);
-    });
-
-    if (availableColors.length > 0) {
-        colorSelect.selectedIndex = 0; // Velg første tilgjengelige farge
-    }
-}
-
-// Fjern farge fra dropdown og oppdater localStorage
-function removeColorFromDropdown(color) {
-    let availableColors = loadAvailableColors();
-    availableColors = availableColors.filter(c => c !== color);
-    saveAvailableColors(availableColors);
-    updateColorDropdown();
-}
-
-// Legg til farge tilbake i dropdown
-function addColorToDropdown(color) {
-    let availableColors = loadAvailableColors();
-    if (!availableColors.includes(color)) {
-        availableColors.push(color);
-        saveAvailableColors(availableColors);
-        updateColorDropdown();
-    }
-}
 
 // Funksjon for å legge til ny turnus
 function addNewShift() {
@@ -243,8 +199,7 @@ function addNewShift() {
     let durationInput = document.getElementById('shift-duration').value;
     let inputDate = document.getElementById('shift-start').value;
     let startDate = new Date(inputDate + "T00:00:00"); // Sørger for at det starter ved midnatt
-    const colorSelect = document.getElementById('shift-color');
-    const color = colorSelect.value;
+    const color = getNextAvailableColor();
 
 
     
@@ -303,8 +258,6 @@ function addNewShift() {
 
     shifts.push(shift);
 
-    // Fjern valgt farge fra dropdown
-    removeColorFromDropdown(color);
 
     saveShiftsToLocalStorage();
     renderShiftList();
@@ -315,21 +268,13 @@ function addNewShift() {
     document.getElementById('shift-name').value = '';
     document.getElementById('shift-start').value = '';
 
-    // Velg neste tilgjengelige farge automatisk
-    if (colorSelect.options.length > 0) {
-        colorSelect.selectedIndex = 0;
-    }
 }
 
 
 // Funksjon for å slette en turnus
 function deleteShift(index) {
     if (shifts[index].isColleagueShift || shifts[index].isUserShift) return;
-    const deletedShift = shifts.splice(index, 1)[0];
-
-    if (deletedShift && deletedShift.color) {
-        addColorToDropdown(deletedShift.color);
-    }
+    shifts.splice(index, 1);
 
     saveShiftsToLocalStorage();
     renderShiftList();
@@ -358,11 +303,6 @@ function loadShiftsFromLocalStorage() {
     }
     updateTurnusOversikt(); // Kall funksjonen her for å oppdatere visningen ved lasting
 
-    // Oppdater fargevalg ved innlasting
-    const usedColors = shifts.map(shift => shift.color);
-    let availableColors = Object.keys(colorLabels).filter(color => !usedColors.includes(color));
-    saveAvailableColors(availableColors);
-    updateColorDropdown();
 }
 
 // Lagre turnuser til localStorage
@@ -382,11 +322,6 @@ function saveSelectedColleagues() {
     localStorage.setItem('selectedColleagues', JSON.stringify(selectedColleagues));
 }
 
-function getNextColleagueColor() {
-    const color = colleagueColors[colleagueColorIndex % colleagueColors.length];
-    colleagueColorIndex++;
-    return color;
-}
 
 function loadColleaguesList() {
     fetch('api/my_colleagues.php', { credentials: 'include' })
@@ -464,7 +399,8 @@ function showColleagueCard(id) {
 function toggleColleagueSelection(id, checked) {
     if (checked) {
         if (!selectedColleagues.some(c => c.id === id)) {
-            selectedColleagues.push({ id, color: getNextColleagueColor() });
+            const pref = colleagueColorPref[id];
+            selectedColleagues.push({ id, color: pref || getNextAvailableColor() });
         }
     } else {
         selectedColleagues = selectedColleagues.filter(c => c.id !== id);
@@ -480,12 +416,13 @@ function applySelectedColleagueShifts() {
         if (!c || !c.shift || !c.shift_date) return;
         const [work, off] = c.shift.split('-').map(Number);
         const startDate = new Date(c.shift_date + 'T00:00:00');
+        const prefColor = colleagueColorPref[sel.id];
         const shift = {
             name: `${c.firstname} ${c.lastname}`.trim(),
             workWeeks: work,
             offWeeks: off,
             startDate,
-            color: sel.color || getNextColleagueColor(),
+            color: prefColor || sel.color || getNextAvailableColor(),
             visible: true,
             isColleagueShift: true,
             colleagueId: c.id
@@ -513,12 +450,13 @@ function loadUserShift() {
 
             const [work, off] = data.user.shift.split('-').map(Number);
             const startDate = new Date(data.user.shift_date + 'T00:00:00');
+            const pref = localStorage.getItem('userColor');
             userShift = {
                 name: `${data.user.firstname} ${data.user.lastname}`.trim(),
                 workWeeks: work,
                 offWeeks: off,
                 startDate,
-                color: '#66B2FF',
+                color: pref || getNextAvailableColor(),
                 visible: localStorage.getItem('showUserShift') !== '0',
                 isUserShift: true
             };
