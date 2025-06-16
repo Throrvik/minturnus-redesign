@@ -160,10 +160,24 @@ document.addEventListener('DOMContentLoaded', function () {
 function drawCropper() {
     if (!ctx || !imageObj) return;
     ctx.clearRect(0, 0, cropperCanvas.width, cropperCanvas.height);
+
+    // Draw the base image
     ctx.drawImage(imageObj, 0, 0, cropperCanvas.width, cropperCanvas.height);
+
+    // Darken the entire canvas
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     ctx.fillRect(0, 0, cropperCanvas.width, cropperCanvas.height);
+
+    // Reveal the selected area by redrawing the image only inside the selection
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(selection.x, selection.y, selection.size, selection.size);
+    ctx.clip();
     ctx.clearRect(selection.x, selection.y, selection.size, selection.size);
+    ctx.drawImage(imageObj, 0, 0, cropperCanvas.width, cropperCanvas.height);
+    ctx.restore();
+
+    // Outline the selection
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
     ctx.strokeRect(selection.x, selection.y, selection.size, selection.size);
