@@ -1,4 +1,16 @@
+const allColors = [
+    "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
+    "#66B2FF", "#CC66FF", "#FF66B2", "#66FF66", "#CCCCCC",
+    "#FF8C00", "#FFD700", "#7CFC00", "#40E0D0", "#1E90FF",
+    "#BA55D3", "#FF1493", "#32CD32", "#D3D3D3", "#8B0000",
+    "#A52A2A", "#2E8B57", "#4682B4", "#FF4500", "#DA70D6",
+    "#B0C4DE", "#8A2BE2", "#20B2AA", "#FF6347", "#9ACD32"
+];
+let colorPrefs = {};
+
 document.addEventListener('DOMContentLoaded', () => {
+    const stored = localStorage.getItem('colleagueColorPref');
+    colorPrefs = stored ? JSON.parse(stored) : {};
     loadPendingRequests();
     loadColleagues();
 
@@ -172,6 +184,26 @@ function createCard(user, options = {}) {
     }
 
     if (options.remove) {
+        const sel = document.createElement('select');
+        const autoOpt = document.createElement('option');
+        autoOpt.value = '';
+        autoOpt.textContent = 'Auto';
+        sel.appendChild(autoOpt);
+        allColors.forEach(c => {
+            const o = document.createElement('option');
+            o.value = c;
+            o.textContent = c;
+            o.style.backgroundColor = c;
+            sel.appendChild(o);
+        });
+        sel.value = colorPrefs[user.id] || '';
+        sel.onchange = e => {
+            const val = e.target.value;
+            if (val) colorPrefs[user.id] = val; else delete colorPrefs[user.id];
+            localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
+        };
+        card.appendChild(sel);
+
         const btn = document.createElement('button');
         btn.className = 'action-btn';
         btn.textContent = 'Fjern';

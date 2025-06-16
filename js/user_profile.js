@@ -1,5 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', function () {
+    const allColors = [
+        "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
+        "#66B2FF", "#CC66FF", "#FF66B2", "#66FF66", "#CCCCCC",
+        "#FF8C00", "#FFD700", "#7CFC00", "#40E0D0", "#1E90FF",
+        "#BA55D3", "#FF1493", "#32CD32", "#D3D3D3", "#8B0000",
+        "#A52A2A", "#2E8B57", "#4682B4", "#FF4500", "#DA70D6",
+        "#B0C4DE", "#8A2BE2", "#20B2AA", "#FF6347", "#9ACD32"
+    ];
+
     fetchUserData();
 
     const profileForm = document.getElementById('user-profile-form');
@@ -34,6 +43,23 @@ document.addEventListener('DOMContentLoaded', function () {
             avatarInput.value = '';
             avatarPreview.style.backgroundImage = '';
             avatarPreview.textContent = '👤';
+        });
+    }
+
+    const colorSelect = document.getElementById('user-color');
+    if (colorSelect) {
+        allColors.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c;
+            opt.textContent = c;
+            opt.style.backgroundColor = c;
+            colorSelect.appendChild(opt);
+        });
+        const saved = localStorage.getItem('userColor');
+        if (saved) colorSelect.value = saved;
+        colorSelect.addEventListener('change', () => {
+            const val = colorSelect.value;
+            if (val) localStorage.setItem('userColor', val); else localStorage.removeItem('userColor');
         });
     }
 
@@ -108,6 +134,13 @@ function updateUserProfile() {
     formData.append('shift', document.getElementById('shift').value);
     formData.append('info-hide', document.getElementById('info-hide').value);
     formData.append('shift_date', document.getElementById('first-shift').value);
+
+    const colorVal = document.getElementById('user-color').value;
+    if (colorVal) {
+        localStorage.setItem('userColor', colorVal);
+    } else {
+        localStorage.removeItem('userColor');
+    }
 
     const avatar = document.getElementById('avatar').files[0];
     if (avatar) {
