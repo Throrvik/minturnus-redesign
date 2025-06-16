@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/user_profile.css">
+    <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
     <script defer src="js/message.js"></script>
     <script defer src="js/session.js"></script>
     <script defer src="js/user_card.js"></script>
     <script defer src="js/user_profile.js"></script>
+    <script src="https://unpkg.com/cropperjs"></script>
 </head>
 <body>
     <header class="header">
@@ -128,6 +130,14 @@
         <div class="modal-content">
             <span id="modal-close" class="close">&times;</span>
             <div id="preview-content"></div>
+        </div>
+    </div>
+
+    <div id="cropper-modal" class="modal">
+        <div class="modal-content cropper-content">
+            <span id="cropper-close" class="close">&times;</span>
+            <img id="cropper-image" src="" alt="Cropper image">
+            <button type="button" id="cropper-confirm" class="btn">Bruk bilde</button>
         </div>
     </div>
 </body>

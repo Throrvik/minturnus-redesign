@@ -189,3 +189,18 @@
     flex: 1;
     height: 40px;
 }
+
+/* Cropper modal adjustments */
+#cropper-modal .cropper-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+#cropper-image {
+    max-width: 400px;
+    max-height: 60vh;
+    display: block;
+    margin: 0 auto 10px auto;
+}
