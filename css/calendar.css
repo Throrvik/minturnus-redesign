@@ -8,6 +8,22 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.container.year-view {
+    max-width: 1400px;
+}
+
+.year-container {
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.month-wrapper h3 {
+    text-align: center;
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
 /* Styling for ukedagene */
 .weekday-row {
     display: grid;
@@ -191,6 +207,9 @@
     color: #ff0000; /* Rød tekst for helligdager */
     font-style: italic;
     z-index: 2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .special-text {
@@ -201,6 +220,14 @@
     color: #555; /* Grå tekst for subtil forskjell */
     font-style: italic;
     z-index: 2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.container.year-view .holiday-text,
+.container.year-view .special-text {
+    display: none;
 }
 
 

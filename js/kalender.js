@@ -7,6 +7,11 @@ const monthYearElement = document.getElementById('month-year');
 const prevMonthButton = document.getElementById('prev-month');
 const nextMonthButton = document.getElementById('next-month');
 const calendarGrid = document.querySelector('.calendar-grid');
+const container = document.querySelector('.container');
+const yearContainer = document.getElementById('year-container');
+const todayButton = document.getElementById('today-button');
+const toggleYearButton = document.getElementById('toggle-year');
+let isYearView = false;
 
 console.log("🚀 kalender.js er lastet!");
 
@@ -132,24 +137,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function initializeEventListeners() {
     prevMonthButton.addEventListener('click', () => {
-        if (currentMonth === 0) {
-            currentMonth = 11;
+        if (isYearView) {
             currentYear--;
+            renderYearCalendar(currentYear);
         } else {
-            currentMonth--;
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            renderCalendar(currentMonth, currentYear);
         }
-        renderCalendar(currentMonth, currentYear);
     });
 
     nextMonthButton.addEventListener('click', () => {
-        if (currentMonth === 11) {
-            currentMonth = 0;
+        if (isYearView) {
             currentYear++;
+            renderYearCalendar(currentYear);
         } else {
-            currentMonth++;
+            if (currentMonth === 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            renderCalendar(currentMonth, currentYear);
         }
-        renderCalendar(currentMonth, currentYear);
     });
+
+    if (todayButton) {
+        todayButton.addEventListener('click', () => {
+            currentMonth = currentDate.getMonth();
+            currentYear = currentDate.getFullYear();
+            isYearView = false;
+            updateView();
+        });
+    }
+
+    if (toggleYearButton) {
+        toggleYearButton.addEventListener('click', () => {
+            isYearView = !isYearView;
+            updateView();
+        });
+    }
 
     // Event Listener for adding new shift
     const addShiftButton = document.getElementById('add-shift');
@@ -179,7 +210,7 @@ function resetShifts() {
 
     shifts = shifts.filter(s => s.isUserShift || s.isColleagueShift);
     saveShiftsToLocalStorage();
-    renderCalendar(currentMonth, currentYear); // Oppdaterer kalenderen
+    updateView(); // Oppdater kalenderen
     renderShiftList(); // Oppdaterer listen som viser turnuser
 
     // Tøm oversikten under kalenderen
@@ -262,7 +293,7 @@ function addNewShift() {
 
     saveShiftsToLocalStorage();
     renderShiftList();
-    renderCalendar(currentMonth, currentYear);
+    updateView();
     updateTurnusOversikt();
 
     // Nullstill skjemaet etterpå
@@ -279,7 +310,7 @@ function deleteShift(index) {
 
     saveShiftsToLocalStorage();
     renderShiftList();
-    renderCalendar(currentMonth, currentYear);
+    updateView();
     updateTurnusOversikt();
 }
 
@@ -424,7 +455,7 @@ function applySelectedColleagueShifts() {
     saveShiftsToLocalStorage();
     renderShiftList();
     updateTurnusOversikt();
-    renderCalendar(currentMonth, currentYear);
+    updateView();
 }
 
 function loadUserShift() {
@@ -464,11 +495,11 @@ function loadUserShift() {
                 checkbox.addEventListener('change', () => {
                     userShift.visible = checkbox.checked;
                     localStorage.setItem('showUserShift', checkbox.checked ? '1' : '0');
-                    renderCalendar(currentMonth, currentYear);
+                    updateView();
                 });
             }
 
-            renderCalendar(currentMonth, currentYear);
+            updateView();
         })
         .catch(() => {});
 }
@@ -510,45 +541,37 @@ function updateShiftCounts() {
 function toggleShiftVisibility(index) {
     shifts[index].visible = !shifts[index].visible;
     saveShiftsToLocalStorage();
-    renderCalendar(currentMonth, currentYear);
+    updateView();
 }
 
-function renderCalendar(month, year) {
-    calendarGrid.innerHTML = ''; // Tøm kalenderen
-
-    monthYearElement.textContent = `${months[month]} ${year}`;
+function renderMonthInto(targetGrid, month, year, hideText = false) {
+    targetGrid.innerHTML = '';
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
 
-    let weekNumber = getWeekNumber(new Date(year, month, 1)); // Start med korrekt uke 1
+    let weekNumber = getWeekNumber(new Date(year, month, 1));
 
-    // Legg til ukenummer for den første uken
     const firstWeekRow = document.createElement('div');
     firstWeekRow.classList.add('week-number');
     firstWeekRow.textContent = weekNumber;
-    calendarGrid.appendChild(firstWeekRow);
+    targetGrid.appendChild(firstWeekRow);
 
-    // Fyll inn tomme celler før første dag i måneden
     for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('div');
         emptyCell.classList.add('day');
-        calendarGrid.appendChild(emptyCell);
+        targetGrid.appendChild(emptyCell);
     }
 
-    // Fyll inn dagene i måneden
     for (let day = 1; day <= daysInMonth; day++) {
         const dayElement = document.createElement('div');
         dayElement.classList.add('day');
-        
 
-        // Legg til datotekst
         const dateText = document.createElement('span');
         dateText.classList.add('day-text');
         dateText.textContent = day;
         dayElement.appendChild(dateText);
 
-        // Opprett shiftContainer for skift
         const shiftContainer = document.createElement('div');
         shiftContainer.classList.add('shift-container');
         dayElement.appendChild(shiftContainer);
@@ -562,26 +585,26 @@ function renderCalendar(month, year) {
         ) {
             dayElement.classList.add('today');
         }
-        
-        // Sjekk om dagen er en rød dag
+
         const redDay = getRedDayInfo(date);
         if (redDay) {
-            dayElement.classList.add('red-day'); // Marker dagen som rød
-            const holidayText = document.createElement('span');
-            holidayText.classList.add('holiday-text');
-            holidayText.textContent = redDay.name; // Legg til navnet på den røde dagen
-            dayElement.appendChild(holidayText);
+            dayElement.classList.add('red-day');
+            if (!hideText) {
+                const holidayText = document.createElement('span');
+                holidayText.classList.add('holiday-text');
+                holidayText.textContent = redDay.name;
+                dayElement.appendChild(holidayText);
+            }
         }
-        
+
         const specialDay = getSpecialDayInfo(date);
-        if (specialDay) {
+        if (specialDay && !hideText) {
             const specialText = document.createElement('span');
-            specialText.classList.add('special-text'); // Bruk samme stil som røde dager, men ingen fargeendring
+            specialText.classList.add('special-text');
             specialText.textContent = specialDay.name;
             dayElement.appendChild(specialText);
-        }        
+        }
 
-        // Sjekk om denne dagen passer med noe skift
         shifts.forEach((shift) => {
             if (!shift.visible) return;
 
@@ -592,22 +615,26 @@ function renderCalendar(month, year) {
             if (cyclePosition < (shift.workWeeks * 7)) {
                 const shiftBox = document.createElement('div');
                 shiftBox.classList.add('shift-box');
-                shiftBox.style.backgroundColor = shift.color; // Sørg for riktig farge
+                shiftBox.style.backgroundColor = shift.color;
                 shiftContainer.appendChild(shiftBox);
             }
         });
 
-        calendarGrid.appendChild(dayElement);
+        targetGrid.appendChild(dayElement);
 
-        // Sjekk om vi skal starte en ny uke
         if ((day + firstDay) % 7 === 0 && day !== daysInMonth) {
             weekNumber++;
             const weekRow = document.createElement('div');
             weekRow.classList.add('week-number');
             weekRow.textContent = weekNumber;
-            calendarGrid.appendChild(weekRow);
+            targetGrid.appendChild(weekRow);
         }
     }
+}
+
+function renderCalendar(month, year) {
+    monthYearElement.textContent = `${months[month]} ${year}`;
+    renderMonthInto(calendarGrid, month, year, false);
 }
 
 // Funksjon for å beregne ukenummer
@@ -637,6 +664,59 @@ function renderWeekdayRow() {
     });
 }
 
+function renderYearCalendar(year) {
+    yearContainer.innerHTML = '';
+    monthYearElement.textContent = year;
+
+    for (let m = 0; m < 12; m++) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('month-wrapper');
+
+        const header = document.createElement('h3');
+        header.textContent = months[m];
+        wrapper.appendChild(header);
+
+        const weekdayRow = document.createElement('div');
+        weekdayRow.classList.add('weekday-row');
+        const weekHeader = document.createElement('div');
+        weekHeader.classList.add('weekday');
+        weekHeader.textContent = 'Uke';
+        weekdayRow.appendChild(weekHeader);
+        ['MAN','TIR','ONS','TOR','FRE','LØR','SØN'].forEach(d => {
+            const el = document.createElement('div');
+            el.classList.add('weekday');
+            el.textContent = d;
+            weekdayRow.appendChild(el);
+        });
+        wrapper.appendChild(weekdayRow);
+
+        const grid = document.createElement('div');
+        grid.classList.add('calendar-grid');
+        wrapper.appendChild(grid);
+
+        renderMonthInto(grid, m, year, true);
+        yearContainer.appendChild(wrapper);
+    }
+}
+
+function updateView() {
+    if (isYearView) {
+        container.classList.add('year-view');
+        calendarGrid.style.display = 'none';
+        document.querySelector('.weekday-row').style.display = 'none';
+        yearContainer.style.display = 'grid';
+        renderYearCalendar(currentYear);
+        if (toggleYearButton) toggleYearButton.textContent = 'Vis måned';
+    } else {
+        container.classList.remove('year-view');
+        yearContainer.style.display = 'none';
+        document.querySelector('.weekday-row').style.display = 'grid';
+        calendarGrid.style.display = 'grid';
+        renderCalendar(currentMonth, currentYear);
+        if (toggleYearButton) toggleYearButton.textContent = 'Vis år';
+    }
+}
+
 function renderShiftList() {
     const shiftList = document.getElementById('shift-list');
     shiftList.innerHTML = '';
@@ -662,4 +742,4 @@ function renderShiftList() {
 const maxShifts = 10; // Sett maksgrensen her
 
 // Initialiser kalenderen
-renderCalendar(currentMonth, currentYear);
+updateView();
