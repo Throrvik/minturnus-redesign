@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const userName = localStorage.getItem('userName');
     const userInfoDiv = document.getElementById('user-info');
-    const friendsLink = document.getElementById('friends-link');
+    const friendsItem = document.getElementById('friends-item');
     const loginLink = document.getElementById('login-link');
     const requestAlert = document.getElementById('request-alert');
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // Vis venne-lenken hvis brukeren er logget inn
-        if (friendsLink) friendsLink.style.display = 'list-item';
+        if (friendsItem) friendsItem.style.display = 'list-item';
         if (requestAlert) requestAlert.style.display = 'inline';
 
         // Skjul "Logg inn"-lenken når brukeren er logget inn
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     } else {
         // Skjul venne-lenken hvis brukeren ikke er logget inn
-        if (friendsLink) friendsLink.style.display = 'none';
+        if (friendsItem) friendsItem.style.display = 'none';
         
         // Sørg for at "Logg inn"-lenken vises
         if (loginLink) loginLink.style.display = 'list-item';
