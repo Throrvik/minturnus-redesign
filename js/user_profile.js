@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const avatarInput = document.getElementById('avatar');
     const avatarPreview = document.getElementById('avatar-preview');
     const avatarRemove = document.getElementById('avatar-remove');
+    const avatarRemoveFlag = document.getElementById('avatar-remove-flag');
     const cropperModal = document.getElementById('cropper-modal');
     const cropperImage = document.getElementById('cropper-image');
     const cropperClose = document.getElementById('cropper-close');
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     cropper = new Cropper(cropperImage, { aspectRatio: 1, viewMode: 1 });
                 };
                 reader.readAsDataURL(file);
+                if (avatarRemoveFlag) avatarRemoveFlag.value = '0';
             }
         });
         if (avatarPreview) {
@@ -53,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             avatarPreview.style.backgroundImage = '';
             avatarPreview.textContent = '👤';
             croppedAvatarBlob = null;
+            if (avatarRemoveFlag) avatarRemoveFlag.value = '1';
         });
     }
 
@@ -73,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 canvas.toBlob(blob => {
                     croppedAvatarBlob = blob;
                 }, 'image/jpeg');
+                if (avatarRemoveFlag) avatarRemoveFlag.value = '0';
                 cropperModal.style.display = 'none';
                 cropper.destroy();
                 cropper = null;
@@ -183,6 +187,9 @@ function updateUserProfile() {
         if (avatar) {
             formData.append('avatar', avatar);
         }
+    }
+    if (avatarRemoveFlag) {
+        formData.append('avatar_remove', avatarRemoveFlag.value);
     }
 
     fetch('backend/update_profile.php', {
