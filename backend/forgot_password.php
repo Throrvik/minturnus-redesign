@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
 
             // Lag tilbakestillingslenken
-            $reset_link = "https://kalenderturnus.no/reset_password.html?token=" . $token;
+            $reset_link = "https://minturnus.no/reset_password.html?token=" . $token;
 
             // Bruk PHPMailer til å sende e-post med tilbakestillingslenken
             $mail = new PHPMailer(true);
@@ -55,12 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Port = 465;                                  
 
                 // Mottaker og avsender
-                $mail->setFrom('noreply@kalenderturnus.no', 'KalenderTurnus');
+                $mail->setFrom('noreply@minturnus.no', 'MinTurnus');
                 $mail->addAddress($email); // Send e-post til brukeren som ønsker tilbakestilling
 
                 // Innhold i e-posten
                 $mail->isHTML(true);                                 
-                $mail->Subject = 'Tilbakestill passord - KalenderTurnus';
+                $mail->Subject = 'Tilbakestill passord - MinTurnus';
                 $mail->Body    = "
                     <p>Hei,</p>
                     <p>Klikk på lenken nedenfor for å tilbakestille passordet ditt:</p>

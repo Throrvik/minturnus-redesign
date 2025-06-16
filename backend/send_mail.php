@@ -23,7 +23,7 @@ try {
     $mail->Port = 465;                                    // SMTP-port (465 for SSL fra bildet)
 
     // Mottaker og avsender
-    $mail->setFrom('thomas@kalenderturnus.no', 'KalenderTurnus'); // Avsenderens e-postadresse
+    $mail->setFrom('thomas@minturnus.no', 'MinTurnus'); // Avsenderens e-postadresse
     $mail->addAddress('thomas.rorvik@gmail.com');                // Mottakerens e-postadresse (du kan bytte med noe annet)
 
     // Innhold
