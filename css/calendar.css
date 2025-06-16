@@ -18,6 +18,10 @@
     gap: 10px;
 }
 
+.month-wrapper {
+    margin-bottom: 20px;
+}
+
 .month-wrapper h3 {
     text-align: center;
     margin: 5px 0;
@@ -66,7 +70,7 @@
 
 .calendar-nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
     width: 100%;
 }
@@ -107,6 +111,14 @@
 
     .calendar-top h2 {
         font-size: 1.2rem; /* Reduserer størrelsen for små skjermer */
+    }
+
+    .container.year-view {
+        max-width: 100%;
+    }
+
+    .year-container {
+        grid-template-columns: 1fr;
     }
 }
 
