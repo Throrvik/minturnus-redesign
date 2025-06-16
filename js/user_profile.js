@@ -24,11 +24,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const avatarRemove = document.getElementById('avatar-remove');
     const avatarRemoveFlag = document.getElementById('avatar-remove-flag');
     const cropperModal = document.getElementById('cropper-modal');
-    const cropperImage = document.getElementById('cropper-image');
+    const cropperCanvas = document.getElementById('cropper-canvas');
     const cropperClose = document.getElementById('cropper-close');
     const cropperConfirm = document.getElementById('cropper-confirm');
 
-    let cropper = null;
+    let ctx = null;
+    let imageObj = null;
+    let selection = { x: 0, y: 0, size: 0 };
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
     let croppedAvatarBlob = null;
     if (avatarInput) {
         avatarInput.addEventListener('change', function () {
@@ -36,10 +41,20 @@ document.addEventListener('DOMContentLoaded', function () {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = e => {
-                    cropperImage.src = e.target.result;
-                    cropperModal.style.display = 'block';
-                    if (cropper) cropper.destroy();
-                    cropper = new Cropper(cropperImage, { aspectRatio: 1, viewMode: 1 });
+                    imageObj = new Image();
+                    imageObj.onload = () => {
+                        const maxDim = 400;
+                        const scale = Math.min(maxDim / imageObj.width, maxDim / imageObj.height, 1);
+                        cropperCanvas.width = imageObj.width * scale;
+                        cropperCanvas.height = imageObj.height * scale;
+                        ctx = cropperCanvas.getContext('2d');
+                        selection.size = Math.min(cropperCanvas.width, cropperCanvas.height);
+                        selection.x = (cropperCanvas.width - selection.size) / 2;
+                        selection.y = (cropperCanvas.height - selection.size) / 2;
+                        drawCropper();
+                        cropperModal.style.display = 'block';
+                    };
+                    imageObj.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
                 if (avatarRemoveFlag) avatarRemoveFlag.value = '0';
@@ -59,28 +74,43 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function resetCropper() {
+        cropperModal.style.display = 'none';
+        avatarInput.value = '';
+        ctx = null;
+        imageObj = null;
+    }
+
     if (cropperClose) {
-        cropperClose.addEventListener('click', () => {
-            cropperModal.style.display = 'none';
-            if (cropper) { cropper.destroy(); cropper = null; }
-            avatarInput.value = '';
-        });
+        cropperClose.addEventListener('click', resetCropper);
     }
 
     if (cropperConfirm) {
         cropperConfirm.addEventListener('click', () => {
-            if (cropper) {
-                const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
-                avatarPreview.style.backgroundImage = `url('${canvas.toDataURL('image/jpeg')}')`;
-                avatarPreview.textContent = '';
-                canvas.toBlob(blob => {
-                    croppedAvatarBlob = blob;
-                }, 'image/jpeg');
-                if (avatarRemoveFlag) avatarRemoveFlag.value = '0';
-                cropperModal.style.display = 'none';
-                cropper.destroy();
-                cropper = null;
-            }
+            if (!ctx || !imageObj) return;
+            const output = document.createElement('canvas');
+            output.width = 300;
+            output.height = 300;
+            const scaleX = imageObj.width / cropperCanvas.width;
+            const scaleY = imageObj.height / cropperCanvas.height;
+            output.getContext('2d').drawImage(
+                imageObj,
+                selection.x * scaleX,
+                selection.y * scaleY,
+                selection.size * scaleX,
+                selection.size * scaleY,
+                0,
+                0,
+                300,
+                300
+            );
+            avatarPreview.style.backgroundImage = `url('${output.toDataURL('image/jpeg')}')`;
+            avatarPreview.textContent = '';
+            output.toBlob(blob => {
+                croppedAvatarBlob = blob;
+            }, 'image/jpeg');
+            if (avatarRemoveFlag) avatarRemoveFlag.value = '0';
+            resetCropper();
         });
     }
 
@@ -116,6 +146,45 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleBtn.addEventListener('click', toggleInfoVisibility);
     }
 });
+
+function drawCropper() {
+    if (!ctx || !imageObj) return;
+    ctx.clearRect(0, 0, cropperCanvas.width, cropperCanvas.height);
+    ctx.drawImage(imageObj, 0, 0, cropperCanvas.width, cropperCanvas.height);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fillRect(0, 0, cropperCanvas.width, cropperCanvas.height);
+    ctx.clearRect(selection.x, selection.y, selection.size, selection.size);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(selection.x, selection.y, selection.size, selection.size);
+}
+
+function startDrag(evt) {
+    if (!ctx) return;
+    isDragging = true;
+    dragOffsetX = evt.offsetX - selection.x;
+    dragOffsetY = evt.offsetY - selection.y;
+}
+
+function drag(evt) {
+    if (!isDragging) return;
+    selection.x = evt.offsetX - dragOffsetX;
+    selection.y = evt.offsetY - dragOffsetY;
+    selection.x = Math.max(0, Math.min(selection.x, cropperCanvas.width - selection.size));
+    selection.y = Math.max(0, Math.min(selection.y, cropperCanvas.height - selection.size));
+    drawCropper();
+}
+
+function endDrag() {
+    isDragging = false;
+}
+
+if (cropperCanvas) {
+    cropperCanvas.addEventListener('mousedown', startDrag);
+    cropperCanvas.addEventListener('mousemove', drag);
+    cropperCanvas.addEventListener('mouseup', endDrag);
+    cropperCanvas.addEventListener('mouseleave', endDrag);
+}
 
 // Funksjon for å hente brukerdata fra backend
 function fetchUserData() {
