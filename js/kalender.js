@@ -630,6 +630,14 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
             targetGrid.appendChild(weekRow);
         }
     }
+
+    // Fyll siste uke med tomme ruter om nødvendig
+    const remainingDays = (7 - ((daysInMonth + firstDay) % 7)) % 7;
+    for (let i = 0; i < remainingDays; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.classList.add('day');
+        targetGrid.appendChild(emptyCell);
+    }
 }
 
 function renderCalendar(month, year) {

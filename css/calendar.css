@@ -45,20 +45,35 @@
 
 .calendar-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
     padding: 20px 0;
     margin-bottom: 20px;
-    position: relative;
 }
 
-.calendar-header h2 {
-    margin: 0 auto;
-    font-size: 1.8rem;
-    text-align: center;
+.calendar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.calendar-top h2 {
     flex-grow: 1;
-    color: var(--primary-color);
+    text-align: center;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.calendar-top-buttons {
+    display: flex;
+    gap: 10px;
 }
 
 .nav-button {
@@ -80,8 +95,6 @@
 
 @media (max-width: 600px) {
     .calendar-header {
-        flex-direction: row;
-        justify-content: space-between;
         padding: 15px 0;
         margin-bottom: 15px;
     }
@@ -92,9 +105,8 @@
         width: auto; /* Unngår full bredde */
     }
 
-    .calendar-header h2 {
+    .calendar-top h2 {
         font-size: 1.2rem; /* Reduserer størrelsen for små skjermer */
-        max-width: 40%; /* Unngår at tittelen tar for mye plass */
     }
 }
 
