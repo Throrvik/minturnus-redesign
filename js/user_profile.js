@@ -101,6 +101,11 @@ document.addEventListener('DOMContentLoaded', function () {
         cropperCanvas.addEventListener('mousemove', drag);
         cropperCanvas.addEventListener('mouseup', endDrag);
         cropperCanvas.addEventListener('mouseleave', endDrag);
+        // Touch support for mobile devices
+        cropperCanvas.addEventListener('touchstart', startDrag, {passive: false});
+        cropperCanvas.addEventListener('touchmove', drag, {passive: false});
+        cropperCanvas.addEventListener('touchend', endDrag);
+        cropperCanvas.addEventListener('touchcancel', endDrag);
     }
 
     if (cropperConfirm) {
@@ -191,17 +196,32 @@ function drawCropper() {
     ctx.strokeRect(selection.x, selection.y, selection.size, selection.size);
 }
 
+function getPos(evt) {
+    if (evt.touches && evt.touches.length) {
+        const rect = cropperCanvas.getBoundingClientRect();
+        return {
+            x: evt.touches[0].clientX - rect.left,
+            y: evt.touches[0].clientY - rect.top
+        };
+    }
+    return { x: evt.offsetX, y: evt.offsetY };
+}
+
 function startDrag(evt) {
     if (!ctx) return;
+    evt.preventDefault();
+    const pos = getPos(evt);
     isDragging = true;
-    dragOffsetX = evt.offsetX - selection.x;
-    dragOffsetY = evt.offsetY - selection.y;
+    dragOffsetX = pos.x - selection.x;
+    dragOffsetY = pos.y - selection.y;
 }
 
 function drag(evt) {
     if (!isDragging) return;
-    selection.x = evt.offsetX - dragOffsetX;
-    selection.y = evt.offsetY - dragOffsetY;
+    evt.preventDefault();
+    const pos = getPos(evt);
+    selection.x = pos.x - dragOffsetX;
+    selection.y = pos.y - dragOffsetY;
     selection.x = Math.max(0, Math.min(selection.x, cropperCanvas.width - selection.size));
     selection.y = Math.max(0, Math.min(selection.y, cropperCanvas.height - selection.size));
     drawCropper();

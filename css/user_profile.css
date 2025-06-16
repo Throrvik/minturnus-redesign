@@ -135,6 +135,7 @@
 @media (max-width: 600px) {
     .form-row {
         flex-direction: column;
+        align-items: flex-start;
     }
 }
 
@@ -187,7 +188,7 @@
 .button-row .btn-secondary {
     margin-bottom: 0;
     flex: 1;
-    height: 40px;
+    min-height: 40px;
 }
 
 /* Cropper modal adjustments */
@@ -204,4 +205,5 @@
     display: block;
     margin: 0 auto 10px auto;
     cursor: crosshair;
+    touch-action: none;
 }
