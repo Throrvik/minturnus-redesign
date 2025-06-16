@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Inkluder database.php for å koble til databasen
 require_once 'database.php';
 
@@ -56,7 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':password', $hashed_password, PDO::PARAM_STR);
         $stmt->execute();
 
-        // Send suksessmelding når registreringen er vellykket, inkludert brukernavn
+        // Hent ID-en til den nylig opprettede brukeren
+        $newUserId = $db->lastInsertId();
+
+        // Logg inn brukeren ved å lagre info i sesjonen
+        $_SESSION['user_id'] = $newUserId;
+        $_SESSION['user_name'] = $firstname;
+
+        // Send suksessmelding når registreringen er vellykket
         echo json_encode(["success" => true, "message" => "Bruker er opprettet", "firstname" => $firstname]);
         exit; // Stopp all annen output
 
