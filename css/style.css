@@ -318,15 +318,15 @@ a:hover {
     display: flex;
     gap: 15px;
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     background: var(--light-color);
     align-items: center;
 }
 
 .user-card .avatar-img {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: var(--secondary-color);
     display: flex;
@@ -339,7 +339,33 @@ a:hover {
     flex-shrink: 0;
 }
 
+.user-card button,
+.action-btn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: var(--primary-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.user-card button:hover,
+.action-btn:hover {
+    background: #333;
+}
+
+@media (max-width: 600px) {
+    .user-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
 .user-card .user-info .name {
     font-size: 1.1rem;
     margin-bottom: 5px;
+}
+.user-card .user-info p {
+    margin-bottom: 4px;
 }

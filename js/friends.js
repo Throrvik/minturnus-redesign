@@ -134,10 +134,9 @@ function createCard(user, options = {}) {
     info.className = 'user-info';
     const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
     info.innerHTML = `<p class="name"><strong>${name.trim()}</strong></p>`;
-    if (user.location) info.innerHTML += `<p>${user.location}</p>`;
     if (user.company) info.innerHTML += `<p>${user.company}</p>`;
+    if (user.location) info.innerHTML += `<p>${user.location}</p>`;
     if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
-    if (user.shift_date) info.innerHTML += `<p>${user.shift_date}</p>`;
     card.appendChild(info);
 
     if (options.modal) {
@@ -147,6 +146,7 @@ function createCard(user, options = {}) {
 
     if (options.request) {
         const btn = document.createElement('button');
+        btn.className = 'action-btn';
         btn.textContent = 'Send forespørsel';
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -157,6 +157,7 @@ function createCard(user, options = {}) {
 
     if (options.remove) {
         const btn = document.createElement('button');
+        btn.className = 'action-btn';
         btn.textContent = 'Fjern';
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -170,10 +171,12 @@ function createCard(user, options = {}) {
 function createRequestCard(req) {
     const card = createCard(req.user || req, {});
     const accept = document.createElement('button');
+    accept.className = 'action-btn';
     accept.textContent = 'Godta';
     accept.onclick = () => respondRequest(req.id, true);
 
     const decline = document.createElement('button');
+    decline.className = 'action-btn';
     decline.textContent = 'Avslå';
     decline.onclick = () => respondRequest(req.id, false);
 
@@ -194,6 +197,7 @@ function cancelRequest(id) {
 function createSentRequestCard(req) {
     const card = createCard(req.user || req, {});
     const cancel = document.createElement('button');
+    cancel.className = 'action-btn';
     cancel.textContent = 'Slett';
     cancel.onclick = () => cancelRequest(req.id);
     card.appendChild(cancel);
@@ -210,14 +214,13 @@ function showColleagueInfo(id) {
             const content = document.getElementById('colleague-content');
             let html = `<div class="user-card">`;
             const avatar = u.avatar_url ? `background-image:url('${u.avatar_url}')` : '';
-            html += `<div class="avatar-img" style='${avatar}'>${u.avatar_url ? '' : '👤'}</div>`;
+            html += `<div class="avatar-img" style="${avatar}">${u.avatar_url ? '' : '👤'}</div>`;
             html += `<div class="user-info">`;
             const name = `${u.firstname || ''} ${u.lastname || ''}`.trim();
             html += `<p class="name"><strong>${name}</strong></p>`;
             if (u.company) html += `<p>${u.company}</p>`;
             if (u.location) html += `<p>${u.location}</p>`;
             if (u.shift) html += `<p>${u.shift}</p>`;
-            if (u.shift_date) html += `<p>${u.shift_date}</p>`;
             html += `</div></div>`;
             content.innerHTML = html;
             modal.style.display = 'block';
