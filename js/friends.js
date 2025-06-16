@@ -187,7 +187,7 @@ function showColleagueInfo(id) {
             if (!data || data.status !== 'success') return;
             const modal = document.getElementById('colleague-modal');
             const content = document.getElementById('colleague-content');
-            const card = createCard(data.user, {});
+            const card = createProfileCard(data.user);
             content.innerHTML = '';
             content.appendChild(card);
             modal.style.display = 'block';
