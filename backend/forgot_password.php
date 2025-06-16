@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
 
             // Lag tilbakestillingslenken
-            $reset_link = "https://kalenderturnus.no/reset_password.html?token=" . $token;
+            $reset_link = "https://minturnus.no/reset_password.html?token=" . $token;
 
             // Bruk PHPMailer til å sende e-post med tilbakestillingslenken
             $mail = new PHPMailer(true);
