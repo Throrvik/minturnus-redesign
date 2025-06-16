@@ -35,11 +35,17 @@
     <!-- Kalender -->
     <div class="container">
         <div class="calendar-header">
-            <button id="prev-month" class="nav-button">← Forrige</button>
-            <h2 id="month-year">Oktober 2024</h2>
-            <button id="next-month" class="nav-button">Neste →</button>
-            <button id="today-button" class="nav-button">I dag</button>
-            <button id="toggle-year" class="nav-button">Vis år</button>
+            <div class="calendar-top">
+                <h2 id="month-year" class="page-title">Oktober 2024</h2>
+                <div class="calendar-top-buttons">
+                    <button id="today-button" class="nav-button">I dag</button>
+                    <button id="toggle-year" class="nav-button">Vis år</button>
+                </div>
+            </div>
+            <div class="calendar-nav">
+                <button id="prev-month" class="nav-button">← Forrige</button>
+                <button id="next-month" class="nav-button">Neste →</button>
+            </div>
         </div>
         <div class="weekday-row">
             <div class="weekday">MON</div>
