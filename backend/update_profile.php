@@ -22,7 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $company = $_POST['company'] ?? '';
         $location = $_POST['location'] ?? '';
         $shift = $_POST['shift'] ?? '';
-        $infoHide = isset($_POST['info-hide']) ? 1 : 0;
+        // "info-hide" kommer alltid med i POST-data. Vi må derfor se på
+        // verdien, ikke bare om feltet eksisterer, ellers blir verdien alltid 1.
+        $infoHide = (isset($_POST['info-hide']) && $_POST['info-hide'] === '1') ? 1 : 0;
         $shiftDate = $_POST['shift_date'] ?? null;
         if ($shiftDate === '') {
             $shiftDate = null; // allow empty date field
