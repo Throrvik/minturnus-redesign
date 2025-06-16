@@ -30,6 +30,7 @@
 </nav>
 
 <div class="contact-box friends-page">
+    <h2>Kollegaer</h2>
     <!-- Søkeseksjon -->
     <section class="search-section">
         <input type="text" id="search-input" placeholder="Søk etter navn">
@@ -39,17 +40,21 @@
 
     <!-- Forespørsler-seksjon -->
     <section class="requests-section">
-        <h3>Ventende forespørsler</h3>
+        <h3>Ventende kollegaforespørsel</h3>
         <div id="pending-requests"></div>
-        <h3>Sendte forespørsler</h3>
-        <div id="sent-requests"></div>
     </section>
 
     <!-- Kollegaoversikt -->
     <section class="colleagues-section">
-        <h3>Mine kollegaer</h3>
+        <h3>Mine kollegaer (<span id="colleague-count">0</span>)</h3>
         <div id="colleagues-list" class="colleagues-grid"></div>
     </section>
+    <div id="colleague-modal" class="modal">
+        <div class="modal-content">
+            <span id="colleague-close" class="close">&times;</span>
+            <div id="colleague-content"></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

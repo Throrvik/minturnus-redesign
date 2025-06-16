@@ -1,10 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadPendingRequests();
-    loadSentRequests();
     loadColleagues();
 
     document.getElementById('search-btn')
         .addEventListener('click', searchUsers);
+    document.getElementById('search-input')
+        .addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchUsers();
+            }
+        });
+
+    const closeBtn = document.getElementById('colleague-close');
+    const modal = document.getElementById('colleague-modal');
+    if (closeBtn && modal) {
+        closeBtn.onclick = () => modal.style.display = 'none';
+        window.addEventListener('click', e => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+    }
 });
 
 function searchUsers() {
@@ -85,7 +100,9 @@ function loadColleagues() {
         .then(list => {
             const box = document.getElementById('colleagues-list');
             box.innerHTML = '';
-            list.forEach(c => box.appendChild(createCard(c, { remove: true })));
+            list.forEach(c => box.appendChild(createCard(c, { remove: true, modal: true })));
+            const count = document.getElementById('colleague-count');
+            if (count) count.textContent = list.length;
         });
 }
 
@@ -123,17 +140,28 @@ function createCard(user, options = {}) {
     if (user.shift_date) info.innerHTML += `<p>${user.shift_date}</p>`;
     card.appendChild(info);
 
+    if (options.modal) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => showColleagueInfo(user.id));
+    }
+
     if (options.request) {
         const btn = document.createElement('button');
         btn.textContent = 'Send forespørsel';
-        btn.onclick = () => sendRequest(user.id);
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            sendRequest(user.id);
+        };
         card.appendChild(btn);
     }
 
     if (options.remove) {
         const btn = document.createElement('button');
         btn.textContent = 'Fjern';
-        btn.onclick = () => removeColleague(user.id);
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            removeColleague(user.id);
+        };
         card.appendChild(btn);
     }
     return card;
@@ -170,4 +198,28 @@ function createSentRequestCard(req) {
     cancel.onclick = () => cancelRequest(req.id);
     card.appendChild(cancel);
     return card;
+}
+
+function showColleagueInfo(id) {
+    fetch(`api/user_info.php?id=${id}`, { credentials: 'include' })
+        .then(r => r.json())
+        .then(data => {
+            if (!data || data.status !== 'success') return;
+            const u = data.user;
+            const modal = document.getElementById('colleague-modal');
+            const content = document.getElementById('colleague-content');
+            let html = `<div class="user-card">`;
+            const avatar = u.avatar_url ? `background-image:url('${u.avatar_url}')` : '';
+            html += `<div class="avatar-img" style='${avatar}'>${u.avatar_url ? '' : '👤'}</div>`;
+            html += `<div class="user-info">`;
+            const name = `${u.firstname || ''} ${u.lastname || ''}`.trim();
+            html += `<p class="name"><strong>${name}</strong></p>`;
+            if (u.company) html += `<p>${u.company}</p>`;
+            if (u.location) html += `<p>${u.location}</p>`;
+            if (u.shift) html += `<p>${u.shift}</p>`;
+            if (u.shift_date) html += `<p>${u.shift_date}</p>`;
+            html += `</div></div>`;
+            content.innerHTML = html;
+            modal.style.display = 'block';
+        });
 }
