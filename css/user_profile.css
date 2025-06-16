@@ -198,9 +198,10 @@
     text-align: center;
 }
 
-#cropper-image {
+#cropper-canvas {
     max-width: 400px;
     max-height: 60vh;
     display: block;
     margin: 0 auto 10px auto;
+    cursor: crosshair;
 }
