@@ -297,10 +297,12 @@ a:hover {
     margin: 10% auto;
     padding: 0;
     border-radius: 0;
-    max-width: 500px;
+    width: fit-content;
+    max-width: 90%;
     position: relative;
     z-index: 2001;
 }
+
 .close {
     position: absolute;
     top: 10px;
