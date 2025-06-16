@@ -183,25 +183,22 @@ function updateUserProfile() {
 function showPreview() {
     const modal = document.getElementById('preview-modal');
     const content = document.getElementById('preview-content');
-    const avatar = document.getElementById('avatar-preview').style.backgroundImage;
-    const name = `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`.trim();
-    const company = document.getElementById('company').value;
-    const location = document.getElementById('location').value;
-    const shift = document.getElementById('shift').value;
-    const firstShift = document.getElementById('first-shift').value;
-
-    let html = `<div class="user-card">`;
-    html += `<div class="avatar-img" style='${avatar ? `background-image:${avatar};` : ''}'>${avatar ? '' : '👤'}</div>`;
-    html += `<div class="user-info">`;
-    html += `<p class="name"><strong>${name}</strong></p>`;
-    if (company && document.getElementById('info-hide').value === '0') html += `<p>${company}</p>`;
-    if (location && document.getElementById('info-hide').value === '0') html += `<p>${location}</p>`;
-    if (shift && document.getElementById('info-hide').value === '0') {
-        html += `<p>${shift}</p>`;
-        if (firstShift) html += `<p>${firstShift}</p>`;
+    const avatarStyle = document.getElementById('avatar-preview').style.backgroundImage;
+    const avatarUrl = avatarStyle ? avatarStyle.slice(5, -2) : '';
+    const showInfo = document.getElementById('info-hide').value === '0';
+    const user = {
+        avatar_url: avatarUrl,
+        firstname: document.getElementById('first-name').value,
+        lastname: document.getElementById('last-name').value,
+    };
+    if (showInfo) {
+        user.company = document.getElementById('company').value;
+        user.location = document.getElementById('location').value;
+        user.shift = document.getElementById('shift').value;
     }
-    html += `</div></div>`;
-    content.innerHTML = html;
+    const card = createCard(user, {});
+    content.innerHTML = '';
+    content.appendChild(card);
     modal.style.display = 'block';
     const closeBtn = document.getElementById('modal-close');
     if (closeBtn) {
