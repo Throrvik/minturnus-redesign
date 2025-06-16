@@ -35,6 +35,11 @@ body {
     margin-bottom: 100px; /* Gi litt mer rom for footer slik at den ikke overlapper */
 }
 
+.about-page {
+    background-color: #f5f5f5;
+    font-family: system-ui, sans-serif;
+}
+
 /* Styling for Logg inn boks */
 .login-box {
     max-width: 400px;
@@ -126,6 +131,38 @@ h2 {
     font-size: 1rem;
     line-height: 1.6;
     color: #333;
+}
+.section ul {
+    list-style: disc;
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+}
+
+.about-box {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.feature-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-list li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
 }
 
 /* Styling for Kontakt Oss Section */
