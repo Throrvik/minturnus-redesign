@@ -1,4 +1,14 @@
 
+let ctx = null;
+let imageObj = null;
+let selection = { x: 0, y: 0, size: 0 };
+let isDragging = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+let croppedAvatarBlob = null;
+let avatarRemoveFlag = null;
+let cropperCanvas = null;
+
 document.addEventListener('DOMContentLoaded', function () {
     const allColors = [
         "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
@@ -22,19 +32,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const avatarInput = document.getElementById('avatar');
     const avatarPreview = document.getElementById('avatar-preview');
     const avatarRemove = document.getElementById('avatar-remove');
-    const avatarRemoveFlag = document.getElementById('avatar-remove-flag');
+    avatarRemoveFlag = document.getElementById('avatar-remove-flag');
     const cropperModal = document.getElementById('cropper-modal');
-    const cropperCanvas = document.getElementById('cropper-canvas');
+    cropperCanvas = document.getElementById('cropper-canvas');
     const cropperClose = document.getElementById('cropper-close');
     const cropperConfirm = document.getElementById('cropper-confirm');
 
-    let ctx = null;
-    let imageObj = null;
-    let selection = { x: 0, y: 0, size: 0 };
-    let isDragging = false;
-    let dragOffsetX = 0;
-    let dragOffsetY = 0;
-    let croppedAvatarBlob = null;
+    ctx = null;
+    imageObj = null;
+    selection = { x: 0, y: 0, size: 0 };
+    isDragging = false;
+    dragOffsetX = 0;
+    dragOffsetY = 0;
+    croppedAvatarBlob = null;
     if (avatarInput) {
         avatarInput.addEventListener('change', function () {
             const file = this.files[0];
