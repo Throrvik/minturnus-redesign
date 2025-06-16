@@ -36,7 +36,7 @@ body {
 }
 
 .about-page {
-    background-color: #f5f5f5;
+    background-color: var(--light-color);
     font-family: var(--font-family);
 }
 
@@ -54,6 +54,14 @@ body {
 h2 {
     margin-bottom: 20px;
     color: var(--primary-color); /* Primærfarge for overskrift */
+}
+
+/* Felles stil for sidetitler */
+.page-title {
+    font-size: 2rem;
+    text-align: center;
+    color: var(--accent-color);
+    margin-bottom: 20px;
 }
 
 /* Inputfelt styling */
@@ -186,12 +194,6 @@ section {
     box-shadow: var(--box-shadow);
     background-color: var(--card-bg);
 
-.contact-box h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    text-align: center;
-    color: var(--primary-color);
-}
 
 .contact-box p {
     text-align: center;
