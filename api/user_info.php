@@ -16,19 +16,19 @@ if ($id <= 0) {
     exit;
 }
 
-$sql = "SELECT firstname, lastname, avatar_url, company, company_hidden, location, location_hidden, shift, shift_hidden, shift_date FROM users WHERE id=?";
+$sql = "SELECT firstname, lastname, avatar_url, company, location, shift, shift_date, info_hide FROM users WHERE id=?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $res = $stmt->get_result();
 if ($row = $res->fetch_assoc()) {
-    if ($row['company_hidden']) $row['company'] = null;
-    if ($row['location_hidden']) $row['location'] = null;
-    if ($row['shift_hidden']) {
+    if ($row['info_hide']) {
+        $row['company'] = null;
+        $row['location'] = null;
         $row['shift'] = null;
         $row['shift_date'] = null;
     }
-    unset($row['company_hidden'], $row['location_hidden'], $row['shift_hidden']);
+    unset($row['info_hide']);
     echo json_encode(['status' => 'success', 'user' => $row]);
 } else {
     http_response_code(404);
