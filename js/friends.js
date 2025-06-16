@@ -119,6 +119,7 @@ function removeColleague(id) {
 function createCard(user, options = {}) {
     const card = document.createElement('div');
     card.className = 'user-card fade';
+    if (options.compact) card.classList.add('compact');
 
     const avatar = document.createElement('div');
     avatar.className = 'avatar-img';
@@ -184,7 +185,7 @@ function createCard(user, options = {}) {
 }
 
 function createRequestCard(req) {
-    const card = createCard(req.user || req, {});
+    const card = createCard(req.user || req, { compact: true });
     const accept = document.createElement('button');
     accept.className = 'action-btn';
     accept.textContent = 'Godta';
@@ -210,7 +211,7 @@ function cancelRequest(id) {
 }
 
 function createSentRequestCard(req) {
-    const card = createCard(req.user || req, {});
+    const card = createCard(req.user || req, { compact: true });
     const cancel = document.createElement('button');
     cancel.className = 'action-btn';
     cancel.textContent = 'Slett';
