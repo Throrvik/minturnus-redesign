@@ -196,7 +196,7 @@ function showPreview() {
         user.location = document.getElementById('location').value;
         user.shift = document.getElementById('shift').value;
     }
-    const card = createCard(user, {});
+    const card = createCard(user, { compact: true });
     content.innerHTML = '';
     content.appendChild(card);
     modal.style.display = 'block';

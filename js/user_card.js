@@ -17,7 +17,11 @@ function createCard(user, options = {}) {
     info.className = 'user-info';
     const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
     info.innerHTML = `<p class="name"><strong>${name.trim()}</strong></p>`;
-    if (!options.compact) {
+    if (options.compact) {
+        if (user.company) info.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
+        if (user.location) info.innerHTML += `<p><strong>Arbeidssted:</strong> ${user.location}</p>`;
+        if (user.shift) info.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
+    } else {
         if (user.company) info.innerHTML += `<p>${user.company}</p>`;
         if (user.location) info.innerHTML += `<p>${user.location}</p>`;
         if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
