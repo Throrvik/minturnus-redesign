@@ -147,6 +147,11 @@ h2 {
     box-shadow: var(--box-shadow);
 }
 
+.about-box p:first-of-type {
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
 .feature-list {
     list-style: none;
     padding-left: 0;
@@ -162,7 +167,12 @@ h2 {
     content: "\2713";
     position: absolute;
     left: 0;
-    color: var(--accent-color);
+    margin-right: 0.5em;
+    color: #4CAF50;
+}
+
+section {
+    margin-bottom: 1.5rem;
 }
 
 /* Styling for Kontakt Oss Section */
@@ -304,8 +314,9 @@ h2 {
 
 /* Styling for lenker */
 p {
-    margin-top: 20px;
-    font-size: 14px;
+    margin: 1em 0;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 a {
