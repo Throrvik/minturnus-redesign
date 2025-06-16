@@ -185,18 +185,45 @@ function showPreview() {
     const content = document.getElementById('preview-content');
     const avatarStyle = document.getElementById('avatar-preview').style.backgroundImage;
     const avatarUrl = avatarStyle ? avatarStyle.slice(5, -2) : '';
+
+    const first = document.getElementById('first-name').value;
+    const last = document.getElementById('last-name').value;
+    const company = document.getElementById('company').value;
+    const location = document.getElementById('location').value;
+    const shift = document.getElementById('shift').value;
     const showInfo = document.getElementById('info-hide').value === '0';
-    const user = {
-        avatar_url: avatarUrl,
-        firstname: document.getElementById('first-name').value,
-        lastname: document.getElementById('last-name').value,
-    };
-    if (showInfo) {
-        user.company = document.getElementById('company').value;
-        user.location = document.getElementById('location').value;
-        user.shift = document.getElementById('shift').value;
+
+    const card = document.createElement('div');
+    card.className = 'profile-card';
+
+    const nameEl = document.createElement('h2');
+    nameEl.className = 'profile-name';
+    nameEl.textContent = `${first} ${last}`.trim();
+    card.appendChild(nameEl);
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'profile-content';
+
+    if (avatarUrl) {
+        const img = document.createElement('img');
+        img.className = 'profile-image';
+        img.src = avatarUrl;
+        img.alt = 'Profilbilde';
+        contentDiv.appendChild(img);
     }
-    const card = createCard(user, { compact: true });
+
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'profile-info';
+
+    if (showInfo) {
+        if (company) infoDiv.innerHTML += `<p><strong>Firma:</strong> ${company}</p>`;
+        if (location) infoDiv.innerHTML += `<p><strong>Arbeidssted:</strong> ${location}</p>`;
+        if (shift) infoDiv.innerHTML += `<p><strong>Turnus:</strong> ${shift}</p>`;
+    }
+
+    contentDiv.appendChild(infoDiv);
+    card.appendChild(contentDiv);
+
     content.innerHTML = '';
     content.appendChild(card);
     modal.style.display = 'block';
