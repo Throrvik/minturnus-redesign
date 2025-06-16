@@ -10,7 +10,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $uid = $_SESSION['user_id'];
-$sql = "SELECT u.id, u.firstname, u.lastname, u.avatar_url, u.company, u.location, u.shift
+$sql = "SELECT u.id, u.firstname, u.lastname, u.avatar_url,
+        u.company, u.location, u.shift, u.shift_date, u.info_hide
         FROM friends f
         JOIN users u ON (u.id = IF(f.user1 = ?, f.user2, f.user1))
         WHERE f.user1 = ? OR f.user2 = ?";
@@ -20,6 +21,12 @@ $stmt->execute();
 $result = $stmt->get_result();
 $list = [];
 while ($row = $result->fetch_assoc()) {
+    if ($row['info_hide']) {
+        $row['company'] = null;
+        $row['location'] = null;
+        $row['shift'] = null;
+        $row['shift_date'] = null;
+    }
     $list[] = $row;
 }
 
