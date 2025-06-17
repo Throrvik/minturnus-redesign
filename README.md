@@ -83,8 +83,9 @@ These scripts expect the tables `friend_requests` and `friends` in the database
 as described in `js/friends.js`.
 
 The search endpoint requires at least two characters in `query`.
-Results are filtered with a fuzzy match, allowing a Levenshtein
-distance of one or names starting with the query.
+Results are filtered with a fuzzy match. The query may match any part
+of a user's first or last name (split on spaces or hyphen) if the
+Levenshtein distance is one or the part starts with the query.
 
 ### Creating the friends tables
 

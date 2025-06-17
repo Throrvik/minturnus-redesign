@@ -35,12 +35,22 @@ $stmt->bind_param('iiiissi', $uid, $uid, $uid, $uid, $search, $search, $uid);
 $stmt->execute();
 $result = $stmt->get_result();
 $users = [];
+
+function matches($q, $name) {
+    $name = mb_strtolower($name);
+    $parts = preg_split('/[\s-]+/', $name);
+    foreach ($parts as $part) {
+        if (strpos($part, $q) === 0 || levenshtein($q, $part) <= 1) {
+            return true;
+        }
+    }
+    // check the full name as well
+    return strpos($name, $q) === 0 || levenshtein($q, $name) <= 1;
+}
+
 $q = mb_strtolower($query);
 while ($row = $result->fetch_assoc()) {
-    $first = mb_strtolower($row['firstname']);
-    $last = mb_strtolower($row['lastname']);
-    if (strpos($first, $q) === 0 || strpos($last, $q) === 0 ||
-        levenshtein($q, $first) <= 1 || levenshtein($q, $last) <= 1) {
+    if (matches($q, $row['firstname']) || matches($q, $row['lastname'])) {
         $users[] = $row;
     }
 }
