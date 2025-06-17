@@ -6,12 +6,20 @@
     right: 0;
     padding: 15px;
     background-color: var(--secondary-color);
-    color: var(--light-color);
+    color: var(--text-color);
     z-index: 1000;
     justify-content: space-between;
     align-items: center;
 }
 
-.cookie-banner button {
-    margin-left: 10px;
+.cookie-banner .button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.cookie-banner .btn,
+.cookie-banner .btn-secondary {
+    width: auto;
+    padding: 8px 16px;
+    margin-bottom: 0;
 }
