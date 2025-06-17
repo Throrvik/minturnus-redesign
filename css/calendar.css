@@ -225,28 +225,30 @@
 
 .holiday-text {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    font-size: 0.4rem;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    font-size: 0.35rem;
+    line-height: 1;
     color: #ff0000; /* Rød tekst for helligdager */
     font-style: italic;
     z-index: 2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: visible;
 }
 
 .special-text {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    font-size: 0.4rem;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    font-size: 0.35rem;
+    line-height: 1;
     color: #555; /* Grå tekst for subtil forskjell */
     font-style: italic;
     z-index: 2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: visible;
 }
 
 .container.year-view .holiday-text,
