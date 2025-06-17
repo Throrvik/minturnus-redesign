@@ -19,6 +19,39 @@ document.addEventListener('DOMContentLoaded', function () {
         "#B0C4DE", "#8A2BE2", "#20B2AA", "#FF6347", "#9ACD32"
     ];
 
+    const colorNames = {
+        "#FF6666": "Light Red",
+        "#FFB266": "Light Orange",
+        "#FFFF66": "Light Yellow",
+        "#B2FF66": "Lime",
+        "#66FFB2": "Mint",
+        "#66B2FF": "Sky Blue",
+        "#CC66FF": "Violet",
+        "#FF66B2": "Hot Pink",
+        "#66FF66": "Bright Green",
+        "#CCCCCC": "Gray",
+        "#FF8C00": "Dark Orange",
+        "#FFD700": "Gold",
+        "#7CFC00": "Lawn Green",
+        "#40E0D0": "Turquoise",
+        "#1E90FF": "Dodger Blue",
+        "#BA55D3": "Medium Orchid",
+        "#FF1493": "Deep Pink",
+        "#32CD32": "Lime Green",
+        "#D3D3D3": "Light Gray",
+        "#8B0000": "Dark Red",
+        "#A52A2A": "Brown",
+        "#2E8B57": "Sea Green",
+        "#4682B4": "Steel Blue",
+        "#FF4500": "Orange Red",
+        "#DA70D6": "Orchid",
+        "#B0C4DE": "Light Steel Blue",
+        "#8A2BE2": "Blue Violet",
+        "#20B2AA": "Light Sea Green",
+        "#FF6347": "Tomato",
+        "#9ACD32": "Yellow Green"
+    };
+
     fetchUserData();
 
     const profileForm = document.getElementById('user-profile-form');
@@ -142,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
         allColors.forEach(c => {
             const opt = document.createElement('option');
             opt.value = c;
-            opt.textContent = c;
+            opt.textContent = colorNames[c] || c;
             opt.style.backgroundColor = c;
             colorSelect.appendChild(opt);
         });
