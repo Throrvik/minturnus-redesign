@@ -17,7 +17,11 @@ if ($query === '' || mb_strlen($query) < 2) {
 }
 
 $uid = $_SESSION['user_id'];
-$search = '%' . $conn->real_escape_string($query) . '%';
+
+// Split query into tokens for advanced matching and use the first token for SQL
+$tokens = array_filter(preg_split('/[\s-]+/', mb_strtolower($query)), 'strlen');
+$firstToken = $tokens[0];
+$search = '%' . $conn->real_escape_string($firstToken) . '%';
 $sql = "SELECT u.id, u.firstname, u.lastname, u.avatar_url,
         CASE
             WHEN f.user1 IS NOT NULL THEN 'colleague'
@@ -29,30 +33,35 @@ $sql = "SELECT u.id, u.firstname, u.lastname, u.avatar_url,
         LEFT JOIN friend_requests fr1 ON fr1.sender_id = ? AND fr1.receiver_id = u.id AND fr1.status = 0
         LEFT JOIN friend_requests fr2 ON fr2.sender_id = u.id AND fr2.receiver_id = ? AND fr2.status = 0
         WHERE (u.firstname LIKE ? OR u.lastname LIKE ?) AND u.id != ?
-        ORDER BY u.firstname LIMIT 10";
+        ORDER BY u.firstname LIMIT 50";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('iiiissi', $uid, $uid, $uid, $uid, $search, $search, $uid);
 $stmt->execute();
 $result = $stmt->get_result();
 $users = [];
-
-function matches($q, $name) {
-    $name = mb_strtolower($name);
-    $parts = preg_split('/[\s-]+/', $name);
-    foreach ($parts as $part) {
-        if (strpos($part, $q) === 0 || levenshtein($q, $part) <= 1) {
-            return true;
+function matchesTokens($tokens, $firstname, $lastname) {
+    $name = mb_strtolower(trim($firstname . ' ' . $lastname));
+    $parts = preg_split('/[\\s-]+/', $name);
+    foreach ($tokens as $token) {
+        $found = false;
+        foreach ($parts as $part) {
+            if (strpos($part, $token) === 0 || levenshtein($token, $part) <= 1) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            return false;
         }
     }
-    // check the full name as well
-    return strpos($name, $q) === 0 || levenshtein($q, $name) <= 1;
+    return true;
 }
 
-$q = mb_strtolower($query);
 while ($row = $result->fetch_assoc()) {
-    if (matches($q, $row['firstname']) || matches($q, $row['lastname'])) {
+    if (matchesTokens($tokens, $row['firstname'], $row['lastname'])) {
         $users[] = $row;
     }
 }
+
 
 echo json_encode($users);
