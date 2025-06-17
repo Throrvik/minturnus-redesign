@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const userName = localStorage.getItem('userName');
     const userInfoDiv = document.getElementById('user-info');
     const friendsItem = document.getElementById('friends-item');
+    const profileItem = document.getElementById('profile-item');
     const loginLink = document.getElementById('login-link');
     const requestAlert = document.getElementById('request-alert');
 
@@ -32,8 +33,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${userName}</strong></a></span> <span class="accent-text">|</span> <a href="#" id="logout-btn">Logg ut</a>`;
         }
 
-        // Vis venne-lenken hvis brukeren er logget inn
+        // Vis venne- og profil-lenken hvis brukeren er logget inn
         if (friendsItem) friendsItem.style.display = 'list-item';
+        if (profileItem) profileItem.style.display = 'list-item';
         if (requestAlert) requestAlert.style.display = 'inline';
 
         // Skjul "Logg inn"-lenken når brukeren er logget inn
@@ -42,8 +44,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
     } else {
-        // Skjul venne-lenken hvis brukeren ikke er logget inn
+        // Skjul venne- og profil-lenken hvis brukeren ikke er logget inn
         if (friendsItem) friendsItem.style.display = 'none';
+        if (profileItem) profileItem.style.display = 'none';
         
         // Sørg for at "Logg inn"-lenken vises
         if (loginLink) loginLink.style.display = 'list-item';
