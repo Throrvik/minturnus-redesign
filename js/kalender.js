@@ -388,6 +388,16 @@ function loadColleaguesList() {
             selectedColleagues = selectedColleagues.filter(sc =>
                 colleagues.some(c => c.id === sc.id && c.shift && c.shift_date)
             );
+
+            // Legg til eventuelle nye kollegaer som mangler i listen
+            colleagues.forEach(c => {
+                if (!c.shift || !c.shift_date) return;
+                if (!selectedColleagues.some(sc => sc.id === c.id)) {
+                    const pref = colleagueColorPref[c.id];
+                    selectedColleagues.push({ id: c.id, color: pref || getNextAvailableColor() });
+                }
+            });
+
             saveSelectedColleagues();
             renderColleagueList();
             applySelectedColleagueShifts();
