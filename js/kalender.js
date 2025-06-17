@@ -370,6 +370,9 @@ function loadSelectedColleagues() {
     const stored = localStorage.getItem('selectedColleagues');
     if (stored) {
         selectedColleagues = JSON.parse(stored);
+        selectedColleagues.forEach(sc => {
+            if (sc.visible === undefined) sc.visible = true;
+        });
     }
 }
 
@@ -394,7 +397,7 @@ function loadColleaguesList() {
                 if (!c.shift || !c.shift_date) return;
                 if (!selectedColleagues.some(sc => sc.id === c.id)) {
                     const pref = colleagueColorPref[c.id];
-                    selectedColleagues.push({ id: c.id, color: pref || getNextAvailableColor() });
+                    selectedColleagues.push({ id: c.id, color: pref || getNextAvailableColor(), visible: true });
                 }
             });
 
@@ -417,7 +420,7 @@ function renderColleagueList(filter = '') {
             item.className = 'colleague-item';
             const cb = document.createElement('input');
             cb.type = 'checkbox';
-            cb.checked = selectedColleagues.some(sc => sc.id === c.id);
+            cb.checked = selectedColleagues.some(sc => sc.id === c.id && sc.visible);
             cb.addEventListener('change', () => toggleColleagueSelection(c.id, cb.checked));
             const label = document.createElement('label');
             label.textContent = `${c.firstname} ${c.lastname}`.trim();
@@ -451,13 +454,20 @@ function showColleagueCard(id) {
 }
 
 function toggleColleagueSelection(id, checked) {
+    let obj = selectedColleagues.find(c => c.id === id);
     if (checked) {
-        if (!selectedColleagues.some(c => c.id === id)) {
+        if (obj) {
+            obj.visible = true;
+        } else {
             const pref = colleagueColorPref[id];
-            selectedColleagues.push({ id, color: pref || getNextAvailableColor() });
+            selectedColleagues.push({ id, color: pref || getNextAvailableColor(), visible: true });
         }
     } else {
-        selectedColleagues = selectedColleagues.filter(c => c.id !== id);
+        if (obj) {
+            obj.visible = false;
+        } else {
+            selectedColleagues.push({ id, color: getNextAvailableColor(), visible: false });
+        }
     }
     saveSelectedColleagues();
     applySelectedColleagueShifts();
@@ -466,6 +476,7 @@ function toggleColleagueSelection(id, checked) {
 function applySelectedColleagueShifts() {
     shifts = shifts.filter(s => !s.isColleagueShift);
     selectedColleagues.forEach(sel => {
+        if (!sel.visible) return;
         const c = colleagues.find(col => col.id === sel.id);
         if (!c || !c.shift || !c.shift_date) return;
         const { work, off, isWeekdays } = parseShiftString(c.shift);
@@ -660,10 +671,12 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
             }
 
             const daysSinceStart = Math.floor((date - shift.startDate) / (1000 * 60 * 60 * 24));
-            const cycleLength = (shift.workWeeks + shift.offWeeks) * 7;
+            const extraDay = (shift.type === 'dagbasert' || shift.weekdays) ? 0 : 1;
+            const workDays = (shift.workWeeks * 7) + extraDay;
+            const cycleLength = (shift.workWeeks * 7) + (shift.offWeeks * 7) + extraDay;
 
             let cyclePosition = ((daysSinceStart % cycleLength) + cycleLength) % cycleLength;
-            if (cyclePosition < (shift.workWeeks * 7)) {
+            if (cyclePosition < workDays) {
                 const shiftBox = document.createElement('div');
                 shiftBox.classList.add('shift-box');
                 shiftBox.style.backgroundColor = shift.color;
