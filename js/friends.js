@@ -47,7 +47,11 @@ function updateColorOptions() {
 
 function searchUsers() {
     const query = document.getElementById('search-input').value.trim();
-    if (!query) return;
+    const box = document.getElementById('search-results');
+    if (query.length < 2) {
+        box.innerHTML = '<p>Skriv minst to bokstaver.</p>';
+        return;
+    }
 
     fetch(`api/search_users.php?query=${encodeURIComponent(query)}`, {
         credentials: 'include'
