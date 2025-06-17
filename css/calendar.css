@@ -452,6 +452,12 @@ option {
     cursor: pointer;
 }
 
+.colleague-name {
+    color: var(--accent-color);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .colleague-name:hover {
     text-decoration: underline;
 }
