@@ -83,6 +83,7 @@ function parseShiftString(str) {
         const parts = str.substring(1).split('-').map(Number);
         if (parts.length === 2 && !parts.some(isNaN)) {
             return { work: parts[0] / 7, off: parts[1] / 7, isWeekdays: false };
+
         }
     }
     const parts = str.split('-').map(Number);
@@ -458,6 +459,7 @@ function applySelectedColleagueShifts() {
         const c = colleagues.find(col => col.id === sel.id);
         if (!c || !c.shift || !c.shift_date) return;
         const { work, off, isWeekdays } = parseShiftString(c.shift);
+
         if (work === null || off === null) return;
         const startDate = new Date(c.shift_date + 'T00:00:00');
         const prefColor = colleagueColorPref[sel.id];
@@ -493,7 +495,6 @@ function loadUserShift() {
             const label = document.getElementById('user-shift-label');
             const checkbox = document.getElementById('show-user-shift');
             const toggleDiv = document.getElementById('user-shift-toggle');
-
             const { work, off, isWeekdays } = parseShiftString(data.user.shift);
             if (work === null || off === null) return;
             const startDate = new Date(data.user.shift_date + 'T00:00:00');
