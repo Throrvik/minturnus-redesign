@@ -328,7 +328,7 @@ function updateUserProfile() {
             localStorage.setItem('userName', first);
             const userInfoDiv = document.getElementById('user-info');
             if (userInfoDiv) {
-                userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${first}</strong></a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
+                userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${first}</strong></a></span> <span class="accent-text">|</span> <a href="#" id="logout-btn">Logg ut</a>`;
             }
         } else {
             showMessage(`Kunne ikke oppdatere profil: ${data.message}`, 'error');

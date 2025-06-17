@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (userName) {
         // Oppdater header for å vise velkomstmelding og logg ut-knapp
         if (userInfoDiv) {
-            userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${userName}</strong></a></span> | <a href="#" id="logout-btn">Logg ut</a>`;
+            userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${userName}</strong></a></span> <span class="accent-text">|</span> <a href="#" id="logout-btn">Logg ut</a>`;
         }
 
         // Vis venne-lenken hvis brukeren er logget inn

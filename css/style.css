@@ -21,6 +21,11 @@
     --box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+/* Generic class for highlighting text with accent color */
+.accent-text {
+    color: var(--accent-color);
+}
+
 footer {
     position: relative;
     bottom: 0;
