@@ -12,6 +12,12 @@
     margin-bottom: 10px;
 }
 
+/* Sørger for at "Min"-teksten i logoen er hvit og klikkbar */
+.header h1 a {
+    color: var(--light-color);
+    text-decoration: none;
+}
+
 .user-container {
     display: flex;
     align-items: center;
