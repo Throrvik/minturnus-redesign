@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $query = isset($_GET['query']) ? trim($_GET['query']) : '';
-if ($query === '') {
+if ($query === '' || mb_strlen($query) < 2) {
     echo json_encode([]);
     exit;
 }
@@ -31,12 +31,18 @@ $sql = "SELECT u.id, u.firstname, u.lastname, u.avatar_url,
         WHERE (u.firstname LIKE ? OR u.lastname LIKE ?) AND u.id != ?
         ORDER BY u.firstname LIMIT 10";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('iiisssi', $uid, $uid, $uid, $uid, $search, $search, $uid);
+$stmt->bind_param('iiiissi', $uid, $uid, $uid, $uid, $search, $search, $uid);
 $stmt->execute();
 $result = $stmt->get_result();
 $users = [];
+$q = mb_strtolower($query);
 while ($row = $result->fetch_assoc()) {
-    $users[] = $row;
+    $first = mb_strtolower($row['firstname']);
+    $last = mb_strtolower($row['lastname']);
+    if (strpos($first, $q) === 0 || strpos($last, $q) === 0 ||
+        levenshtein($q, $first) <= 1 || levenshtein($q, $last) <= 1) {
+        $users[] = $row;
+    }
 }
 
 echo json_encode($users);
