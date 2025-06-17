@@ -225,10 +225,11 @@
 
 .holiday-text {
     position: absolute;
-    bottom: 4px;
+    bottom: 2px;
     left: 2px;
     right: 2px;
-    font-size: 0.45rem;
+    font-size: 0.35rem;
+    line-height: 1;
     color: #ff0000; /* Rød tekst for helligdager */
     font-style: italic;
     z-index: 2;
@@ -238,10 +239,11 @@
 
 .special-text {
     position: absolute;
-    bottom: 4px;
+    bottom: 2px;
     left: 2px;
     right: 2px;
-    font-size: 0.45rem;
+    font-size: 0.35rem;
+    line-height: 1;
     color: #555; /* Grå tekst for subtil forskjell */
     font-style: italic;
     z-index: 2;
