@@ -7,10 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/cookie-consent.css">
     <script defer src="js/message.js"></script>
     <script defer src="js/session.js"></script>
     <script defer src="js/login.js"></script>
     <script defer src="js/forgot_password.js"></script>
+    <script defer src="js/cookie-consent.js"></script>
 
 </head>
 <body>
@@ -45,7 +47,13 @@
             <div id="message"></div>
             <button type="button" class="btn-secondary" id="reset-password-btn">Glemt passord?</button>
             <p>Har du ikke bruker? <a href="register.html">Registrer ny bruker</a></p>
-        </form>
+</form>
+    </div>
+
+    <div id="cookie-banner" class="cookie-banner">
+        <p>Dette nettstedet bruker cookies og localStorage for å gi deg en bedre opplevelse.</p>
+        <button id="accept-cookies">Godta</button>
+        <button id="reject-cookies">Avslå</button>
     </div>
 </body>
 </html>
