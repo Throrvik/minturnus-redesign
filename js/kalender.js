@@ -74,6 +74,24 @@ const specialDays = [
     { name: 'Bursdag Thomas', date: '06-28' } // Bursdag Thomas
 ];
 
+function parseShiftString(str) {
+    if (!str) return [null, null];
+    if (str === 'mandag-fredag') {
+        return [5 / 7, 2 / 7];
+    }
+    if (str.startsWith('D')) {
+        const parts = str.substring(1).split('-').map(Number);
+        if (parts.length === 2 && !parts.some(isNaN)) {
+            return [parts[0] / 7, parts[1] / 7];
+        }
+    }
+    const parts = str.split('-').map(Number);
+    if (parts.length === 2 && !parts.some(isNaN)) {
+        return parts;
+    }
+    return [null, null];
+}
+
 
 // Funksjon for å beregne påsken
 function calculateEaster(year, offset = 0) {
@@ -285,7 +303,8 @@ function addNewShift() {
         startDate,
         color,
         visible: true,
-        type: isDayBased ? 'dagbasert' : 'ukebasert'
+        type: isDayBased ? 'dagbasert' : 'ukebasert',
+        raw: isDayBased ? `D${workPeriod}-${offPeriod}` : `${workPeriod}-${offPeriod}`
     };
 
     shifts.push(shift);
@@ -435,7 +454,8 @@ function applySelectedColleagueShifts() {
     selectedColleagues.forEach(sel => {
         const c = colleagues.find(col => col.id === sel.id);
         if (!c || !c.shift || !c.shift_date) return;
-        const [work, off] = c.shift.split('-').map(Number);
+        const [work, off] = parseShiftString(c.shift);
+        if (work === null || off === null) return;
         const startDate = new Date(c.shift_date + 'T00:00:00');
         const prefColor = colleagueColorPref[sel.id];
         const shift = {
@@ -446,7 +466,8 @@ function applySelectedColleagueShifts() {
             color: prefColor || sel.color || getNextAvailableColor(),
             visible: true,
             isColleagueShift: true,
-            colleagueId: c.id
+            colleagueId: c.id,
+            raw: c.shift
         };
         sel.color = shift.color;
         shifts.push(shift);
@@ -469,7 +490,8 @@ function loadUserShift() {
             const checkbox = document.getElementById('show-user-shift');
             const toggleDiv = document.getElementById('user-shift-toggle');
 
-            const [work, off] = data.user.shift.split('-').map(Number);
+            const [work, off] = parseShiftString(data.user.shift);
+            if (work === null || off === null) return;
             const startDate = new Date(data.user.shift_date + 'T00:00:00');
             const pref = localStorage.getItem('userColor');
             currentUserFirstName = data.user.firstname || '';
@@ -480,7 +502,8 @@ function loadUserShift() {
                 startDate,
                 color: pref || getNextAvailableColor(),
                 visible: localStorage.getItem('showUserShift') !== '0',
-                isUserShift: true
+                isUserShift: true,
+                raw: data.user.shift
             };
             // Fjern tidligere lagret brukerskift og legg til den nye
             shifts = shifts.filter(s => !s.isUserShift);
@@ -518,7 +541,8 @@ function updateTurnusOversikt() {
 
         const nameText = document.createElement('span');
         const firstName = shift.name.split(' ')[0];
-        nameText.textContent = `${firstName} (${shift.workWeeks}-${shift.offWeeks})`;
+        const label = shift.raw || `${shift.workWeeks}-${shift.offWeeks}`;
+        nameText.textContent = `${firstName} (${label})`;
 
         turnusItem.appendChild(colorBox);
         turnusItem.appendChild(nameText);
@@ -737,7 +761,7 @@ function renderShiftList() {
         listItem.innerHTML = `
             <input type="checkbox" ${shift.visible ? 'checked' : ''} onclick="toggleShiftVisibility(${index})">
             <span style="color:${shift.color}; font-weight: bold;">${shift.name}</span>
-            <span>(${shift.workWeeks}-${shift.offWeeks})</span>
+            <span>(${shift.raw || `${shift.workWeeks}-${shift.offWeeks}`})</span>
             <button onclick="deleteShift(${index})">Slett</button>
         `;
         
