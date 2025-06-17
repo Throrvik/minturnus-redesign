@@ -75,21 +75,22 @@ const specialDays = [
 ];
 
 function parseShiftString(str) {
-    if (!str) return [null, null];
+    if (!str) return { work: null, off: null, isWeekdays: false };
     if (str === 'mandag-fredag') {
-        return [5 / 7, 2 / 7];
+        return { work: 5 / 7, off: 2 / 7, isWeekdays: true };
     }
     if (str.startsWith('D')) {
         const parts = str.substring(1).split('-').map(Number);
         if (parts.length === 2 && !parts.some(isNaN)) {
-            return [parts[0] / 7, parts[1] / 7];
+            return { work: parts[0] / 7, off: parts[1] / 7, isWeekdays: false };
+
         }
     }
     const parts = str.split('-').map(Number);
     if (parts.length === 2 && !parts.some(isNaN)) {
-        return parts;
+        return { work: parts[0], off: parts[1], isWeekdays: false };
     }
-    return [null, null];
+    return { work: null, off: null, isWeekdays: false };
 }
 
 
@@ -340,6 +341,9 @@ function loadShiftsFromLocalStorage() {
         shifts = JSON.parse(storedShifts);
         shifts.forEach(shift => {
             shift.startDate = new Date(shift.startDate);
+            if (shift.raw === 'mandag-fredag' && shift.weekdays === undefined) {
+                shift.weekdays = true;
+            }
         });
         // Fjern eventuelle duplikater
         const seen = new Set();
@@ -454,7 +458,8 @@ function applySelectedColleagueShifts() {
     selectedColleagues.forEach(sel => {
         const c = colleagues.find(col => col.id === sel.id);
         if (!c || !c.shift || !c.shift_date) return;
-        const [work, off] = parseShiftString(c.shift);
+        const { work, off, isWeekdays } = parseShiftString(c.shift);
+
         if (work === null || off === null) return;
         const startDate = new Date(c.shift_date + 'T00:00:00');
         const prefColor = colleagueColorPref[sel.id];
@@ -467,7 +472,8 @@ function applySelectedColleagueShifts() {
             visible: true,
             isColleagueShift: true,
             colleagueId: c.id,
-            raw: c.shift
+            raw: c.shift,
+            weekdays: isWeekdays
         };
         sel.color = shift.color;
         shifts.push(shift);
@@ -489,8 +495,7 @@ function loadUserShift() {
             const label = document.getElementById('user-shift-label');
             const checkbox = document.getElementById('show-user-shift');
             const toggleDiv = document.getElementById('user-shift-toggle');
-
-            const [work, off] = parseShiftString(data.user.shift);
+            const { work, off, isWeekdays } = parseShiftString(data.user.shift);
             if (work === null || off === null) return;
             const startDate = new Date(data.user.shift_date + 'T00:00:00');
             const pref = localStorage.getItem('userColor');
@@ -503,7 +508,8 @@ function loadUserShift() {
                 color: pref || getNextAvailableColor(),
                 visible: localStorage.getItem('showUserShift') !== '0',
                 isUserShift: true,
-                raw: data.user.shift
+                raw: data.user.shift,
+                weekdays: isWeekdays
             };
             // Fjern tidligere lagret brukerskift og legg til den nye
             shifts = shifts.filter(s => !s.isUserShift);
@@ -631,6 +637,17 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
 
         shifts.forEach((shift) => {
             if (!shift.visible) return;
+
+            if (shift.weekdays) {
+                const d = date.getDay();
+                if (d >= 1 && d <= 5) {
+                    const shiftBox = document.createElement('div');
+                    shiftBox.classList.add('shift-box');
+                    shiftBox.style.backgroundColor = shift.color;
+                    shiftContainer.appendChild(shiftBox);
+                }
+                return;
+            }
 
             const daysSinceStart = Math.floor((date - shift.startDate) / (1000 * 60 * 60 * 24));
             const cycleLength = (shift.workWeeks + shift.offWeeks) * 7;
