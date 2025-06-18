@@ -64,14 +64,15 @@
         <div id="turnus-oversikt" class="turnus-oversikt"></div>
 
         <div class="colleague-section">
-            <h3>Vis/skjul kollegaer i kalender <span class="info-icon" title="Dette gjelder kun kollegaer du allerede har lagt til. For å søke etter nye kollegaer, gå til kollega-siden.">ℹ️</span></h3>
-            <p class="colleague-info">Dette gjelder kun kollegaer du allerede har lagt til. For å søke etter nye kollegaer, gå til kollega-siden.</p>
-            <div id="user-shift-toggle" class="user-shift-toggle" style="display:none;">
-                <label><input type="checkbox" id="show-user-shift"> <span id="user-shift-label"></span></label>
-            </div>
+            <h3>Kollegaer i kalenderen</h3>
+            <p class="colleague-info">Her ser du kollegaer du allerede har lagt til. For å legge til nye kollegaer, gå til kollega-siden eller <a href="friends.html">trykk her</a>.</p>
             <label for="colleague-search">Filtrer kollegaene nedenfor</label>
             <input type="text" id="colleague-search" placeholder="Filtrer blant eksisterende kollegaer">
-            <div id="colleague-list" class="colleague-list"></div>
+            <div id="colleague-list" class="colleague-list">
+                <div id="user-shift-toggle" class="user-shift-toggle" style="display:none;">
+                    <label><input type="checkbox" id="show-user-shift"> <span id="user-shift-label"></span></label>
+                </div>
+            </div>
         </div>
 
     <div class="shift-form">
