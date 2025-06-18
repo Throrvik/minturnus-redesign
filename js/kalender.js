@@ -22,6 +22,8 @@ let colleagues = [];
 let selectedColleagues = [];
 let colleagueColorPref = {};
 let currentUserFirstName = '';
+const CLOSE_COLLEAGUES = ['Pål', 'Espen', 'Jørn'];
+let initialColleagueMode = null;
 const allColors = [
   "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
   "#66B2FF", "#CC66FF", "#FF66B2", "#66FF66", "#CCCCCC",
@@ -208,6 +210,13 @@ function initializeEventListeners() {
     // Event Listener for reset button
     const resetButton = document.getElementById('reset');
     resetButton.addEventListener('click', resetShifts);
+
+    const btnAll = document.getElementById('colleagues-all');
+    const btnNone = document.getElementById('colleagues-none');
+    const btnClose = document.getElementById('colleagues-close');
+    if (btnAll) btnAll.addEventListener('click', () => setColleagueMode('all'));
+    if (btnNone) btnNone.addEventListener('click', () => setColleagueMode('none'));
+    if (btnClose) btnClose.addEventListener('click', () => setColleagueMode('close'));
 }
 
 
@@ -373,6 +382,8 @@ function loadSelectedColleagues() {
         selectedColleagues.forEach(sc => {
             if (sc.visible === undefined) sc.visible = true;
         });
+    } else {
+        initialColleagueMode = 'close';
     }
 }
 
@@ -401,9 +412,14 @@ function loadColleaguesList() {
                 }
             });
 
-            saveSelectedColleagues();
-            renderColleagueList();
-            applySelectedColleagueShifts();
+            if (initialColleagueMode) {
+                setColleagueMode(initialColleagueMode);
+                initialColleagueMode = null;
+            } else {
+                saveSelectedColleagues();
+                renderColleagueList();
+                applySelectedColleagueShifts();
+            }
         });
 }
 
@@ -508,6 +524,39 @@ function applySelectedColleagueShifts() {
     renderShiftList();
     updateTurnusOversikt();
     updateView();
+}
+
+function setColleagueMode(mode) {
+    if (mode === 'all') {
+        colleagues.forEach(c => {
+            if (!c.shift || !c.shift_date) return;
+            let obj = selectedColleagues.find(sc => sc.id === c.id);
+            if (obj) {
+                obj.visible = true;
+            } else {
+                const pref = colleagueColorPref[c.id];
+                selectedColleagues.push({ id: c.id, color: pref || getNextAvailableColor(), visible: true });
+            }
+        });
+    } else if (mode === 'none') {
+        selectedColleagues.forEach(sc => sc.visible = false);
+    } else if (mode === 'close') {
+        const names = CLOSE_COLLEAGUES.map(n => n.toLowerCase());
+        colleagues.forEach(c => {
+            if (!c.shift || !c.shift_date) return;
+            const visible = names.includes((c.firstname || '').toLowerCase());
+            let obj = selectedColleagues.find(sc => sc.id === c.id);
+            if (obj) {
+                obj.visible = visible;
+            } else {
+                const pref = colleagueColorPref[c.id];
+                selectedColleagues.push({ id: c.id, color: pref || getNextAvailableColor(), visible });
+            }
+        });
+    }
+    saveSelectedColleagues();
+    applySelectedColleagueShifts();
+    renderColleagueList();
 }
 
 function loadUserShift() {
