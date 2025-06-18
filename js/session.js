@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const friendsItem = document.getElementById('friends-item');
     const profileItem = document.getElementById('profile-item');
     const loginLink = document.getElementById('login-link');
-    const requestAlert = document.getElementById('request-alert');
+    const pendingBadge = document.getElementById('pending-count');
     const colleagueSection = document.getElementById('colleague-section');
 
     // Håndter innloggingsstatus
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Vis venne- og profil-lenken hvis brukeren er logget inn
         if (friendsItem) friendsItem.style.display = 'list-item';
         if (profileItem) profileItem.style.display = 'list-item';
-        if (requestAlert) requestAlert.style.display = 'inline';
+        if (pendingBadge) pendingBadge.style.display = 'inline';
         if (colleagueSection) colleagueSection.style.display = 'block';
 
         // Skjul "Logg inn"-lenken når brukeren er logget inn
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         
         // Sørg for at "Logg inn"-lenken vises
         if (loginLink) loginLink.style.display = 'list-item';
-        if (requestAlert) requestAlert.style.display = 'none';
+        if (pendingBadge) pendingBadge.style.display = 'none';
         if (colleagueSection) colleagueSection.style.display = 'none';
     }
 
@@ -81,32 +81,27 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    if (requestAlert) {
-        requestAlert.addEventListener('click', function () {
-            window.location.href = 'friends.html';
-        });
-        updateRequestAlert();
-        setInterval(updateRequestAlert, 60000);
+    if (pendingBadge) {
+        updatePendingBadge();
+        setInterval(updatePendingBadge, 60000);
     }
 });
 
-async function updateRequestAlert() {
-    const icon = document.getElementById('request-alert');
-    if (!icon) return;
+async function updatePendingBadge() {
+    const badge = document.getElementById('pending-count');
+    if (!badge) return;
     try {
         const res = await fetch('api/pending_count.php', { credentials: 'include' });
         if (!res.ok) {
-            icon.classList.remove('active');
-            icon.style.display = 'none';
+            badge.style.display = 'none';
             return;
         }
         const data = await res.json();
         if (data.count > 0) {
-            icon.classList.add('active');
-            icon.style.display = 'inline';
+            badge.textContent = data.count;
+            badge.style.display = 'block';
         } else {
-            icon.classList.remove('active');
-            icon.style.display = 'none';
+            badge.style.display = 'none';
         }
     } catch (e) {
         console.error('Failed to fetch pending count:', e);

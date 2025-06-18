@@ -21,8 +21,8 @@ let userShift = null;
 let colleagues = [];
 let selectedColleagues = [];
 let colleagueColorPref = {};
+let closeColleagues = {};
 let currentUserFirstName = '';
-const CLOSE_COLLEAGUES = ['Pål', 'Espen', 'Jørn'];
 let initialColleagueMode = null;
 const allColors = [
   "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
@@ -43,6 +43,15 @@ function getNextAvailableColor() {
 function loadColleagueColorPrefs() {
   const s = localStorage.getItem('colleagueColorPref');
   colleagueColorPref = s ? JSON.parse(s) : {};
+}
+
+function loadCloseColleagues() {
+  const s = localStorage.getItem('closeColleagues');
+  closeColleagues = s ? JSON.parse(s) : {};
+}
+
+function saveCloseColleagues() {
+  localStorage.setItem('closeColleagues', JSON.stringify(closeColleagues));
 }
 
 function saveColleagueColorPrefs() {
@@ -150,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     loadShiftsFromLocalStorage();
     loadSelectedColleagues();
     loadColleagueColorPrefs();
+    loadCloseColleagues();
     loadColleaguesList();
     loadUserShift();
     renderCalendar(currentMonth, currentYear);
@@ -541,10 +551,9 @@ function setColleagueMode(mode) {
     } else if (mode === 'none') {
         selectedColleagues.forEach(sc => sc.visible = false);
     } else if (mode === 'close') {
-        const names = CLOSE_COLLEAGUES.map(n => n.toLowerCase());
         colleagues.forEach(c => {
             if (!c.shift || !c.shift_date) return;
-            const visible = names.includes((c.firstname || '').toLowerCase());
+            const visible = !!closeColleagues[c.id];
             let obj = selectedColleagues.find(sc => sc.id === c.id);
             if (obj) {
                 obj.visible = visible;

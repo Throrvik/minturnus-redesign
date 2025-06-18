@@ -121,6 +121,20 @@ function createCard(user, options = {}) {
         };
         content.appendChild(sel);
 
+        const lbl = document.createElement('label');
+        lbl.className = 'close-label';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = closePrefs[user.id] || false;
+        cb.addEventListener('click', e => e.stopPropagation());
+        cb.onchange = e => {
+            if (e.target.checked) closePrefs[user.id] = true; else delete closePrefs[user.id];
+            localStorage.setItem('closeColleagues', JSON.stringify(closePrefs));
+        };
+        lbl.appendChild(cb);
+        lbl.appendChild(document.createTextNode(' Nær kollega'));
+        content.appendChild(lbl);
+
         const btn = document.createElement('button');
         btn.className = 'action-btn';
         btn.textContent = 'Fjern';
