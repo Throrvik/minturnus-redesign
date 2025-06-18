@@ -410,7 +410,11 @@ function loadColleaguesList() {
 function renderColleagueList(filter = '') {
     const list = document.getElementById('colleague-list');
     if (!list) return;
+    const toggleDiv = document.getElementById('user-shift-toggle');
     list.innerHTML = '';
+    if (toggleDiv) {
+        list.appendChild(toggleDiv);
+    }
     const term = filter.toLowerCase();
     colleagues
         .filter(c => (`${c.firstname} ${c.lastname}`.trim()).toLowerCase().includes(term))
