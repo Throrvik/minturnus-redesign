@@ -20,8 +20,17 @@ const initColleagueSuggestions = async () => {
         if (!res.ok) return;
         const users = await res.json();
 
-        // Filter out ignored users
-        const others = users.filter(u => !ignored.includes(String(u.id)) && u.id !== currentUser.id);
+        // Fetch existing colleagues to exclude them from suggestions
+        const colRes = await fetch('api/my_colleagues.php', { credentials: 'include' });
+        const colleagues = colRes.ok ? await colRes.json() : [];
+        const colleagueIds = new Set(colleagues.map(c => String(c.id)));
+
+        // Filter out ignored users and already added colleagues
+        const others = users.filter(u =>
+            !ignored.includes(String(u.id)) &&
+            u.id !== currentUser.id &&
+            !colleagueIds.has(String(u.id))
+        );
 
         // Score users based on profile similarity
         others.forEach(u => {
