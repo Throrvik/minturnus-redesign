@@ -7,10 +7,13 @@ const allColors = [
     "#B0C4DE", "#8A2BE2", "#20B2AA", "#FF6347", "#9ACD32"
 ];
 let colorPrefs = {};
+let closePrefs = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     const stored = localStorage.getItem('colleagueColorPref');
     colorPrefs = stored ? JSON.parse(stored) : {};
+    const closeStored = localStorage.getItem('closeColleagues');
+    closePrefs = closeStored ? JSON.parse(closeStored) : {};
     loadPendingRequests();
     loadColleagues();
 
@@ -96,7 +99,7 @@ function loadPendingRequests() {
             const box = document.getElementById('pending-requests');
             box.innerHTML = '';
             requests.forEach(r => box.appendChild(createRequestCard(r)));
-            if (typeof updateRequestAlert === 'function') updateRequestAlert();
+            if (typeof updatePendingBadge === 'function') updatePendingBadge();
         });
 }
 
@@ -121,7 +124,7 @@ function respondRequest(id, accept) {
         .then(() => {
             loadPendingRequests();
             loadColleagues();
-            if (typeof updateRequestAlert === 'function') updateRequestAlert();
+            if (typeof updatePendingBadge === 'function') updatePendingBadge();
         });
 }
 
