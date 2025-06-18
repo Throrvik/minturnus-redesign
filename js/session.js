@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const profileItem = document.getElementById('profile-item');
     const loginLink = document.getElementById('login-link');
     const requestAlert = document.getElementById('request-alert');
+    const colleagueSection = document.getElementById('colleague-section');
 
     // Håndter innloggingsstatus
     if (userName) {
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (friendsItem) friendsItem.style.display = 'list-item';
         if (profileItem) profileItem.style.display = 'list-item';
         if (requestAlert) requestAlert.style.display = 'inline';
+        if (colleagueSection) colleagueSection.style.display = 'block';
 
         // Skjul "Logg inn"-lenken når brukeren er logget inn
         if (loginLink) {
@@ -51,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Sørg for at "Logg inn"-lenken vises
         if (loginLink) loginLink.style.display = 'list-item';
         if (requestAlert) requestAlert.style.display = 'none';
+        if (colleagueSection) colleagueSection.style.display = 'none';
     }
 
     // Global event listener for utlogging
