@@ -109,4 +109,13 @@ CREATE TABLE `friends` (
   `user2` INT NOT NULL,
   PRIMARY KEY (`user1`, `user2`)
 );
+
+-- Persistent login tokens used by the "remember me" feature
+CREATE TABLE `remember_tokens` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `token_hash` CHAR(64) NOT NULL,
+  `expires_at` DATETIME NOT NULL,
+  KEY `user_id` (`user_id`)
+);
 ```
