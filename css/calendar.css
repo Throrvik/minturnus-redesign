@@ -453,6 +453,16 @@ option {
     color: #555;
 }
 
+.colleague-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.colleague-buttons .action-btn {
+    margin-top: 0;
+}
+
 .colleague-item {
     display: flex;
     align-items: center;
