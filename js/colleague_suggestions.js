@@ -61,7 +61,22 @@ const initColleagueSuggestions = async () => {
             requestBtn.textContent = 'Send forespørsel';
             requestBtn.onclick = e => {
                 e.stopPropagation();
-                sendRequest(user.id, requestBtn);
+                sendRequest(user.id, requestBtn).then(() => {
+                    // Add to ignored suggestions so it won't appear again
+                    const list = JSON.parse(localStorage.getItem('ignoredSuggestions') || '[]');
+                    if (!list.includes(String(user.id))) {
+                        list.push(String(user.id));
+                        localStorage.setItem('ignoredSuggestions', JSON.stringify(list));
+                    }
+
+                    // Replace buttons with status text
+                    requestBtn.remove();
+                    removeBtn.remove();
+                    const span = document.createElement('span');
+                    span.className = 'status-text';
+                    span.textContent = 'Ventende forespørsel';
+                    card.content.appendChild(span);
+                });
             };
 
             const removeBtn = document.createElement('button');
