@@ -65,7 +65,8 @@ function showSearchResults(users) {
     const box = document.getElementById('search-results');
     box.innerHTML = '';
     users.forEach(u => {
-        const card = createCard(u, { search: true, compact: true });
+        const card = createCard(u, { search: true, mini: true });
+        card.classList.add('search-card');
         box.appendChild(card);
     });
 }
@@ -160,8 +161,8 @@ function createRequestCard(req) {
     decline.textContent = 'Avslå';
     decline.onclick = () => respondRequest(req.id, false);
 
-    card.appendChild(accept);
-    card.appendChild(decline);
+    card.content.appendChild(accept);
+    card.content.appendChild(decline);
     return card;
 }
 
@@ -180,7 +181,7 @@ function createSentRequestCard(req) {
     cancel.className = 'action-btn';
     cancel.textContent = 'Slett';
     cancel.onclick = () => cancelRequest(req.id);
-    card.appendChild(cancel);
+    card.content.appendChild(cancel);
     return card;
 }
 

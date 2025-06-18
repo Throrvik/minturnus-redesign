@@ -393,6 +393,25 @@ a:hover {
     flex-direction: column;
     text-align: center;
 }
+.user-card.mini {
+    flex-direction: row;
+    aspect-ratio: 3/1;
+    padding: 10px;
+}
+.user-card.mini .card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.user-card.mini .avatar-img {
+    width: 60px;
+    height: 60px;
+}
+.user-card.mini button,
+.user-card.mini .action-btn,
+.user-card.mini .status-text {
+    width: 100%;
+}
 .user-card.compact button,
 .user-card.compact .action-btn {
     width: 100%;
@@ -438,6 +457,10 @@ a:hover {
     .user-card {
         flex-direction: column;
         text-align: center;
+    }
+    .user-card.mini {
+        flex-direction: row;
+        text-align: left;
     }
 }
 

@@ -53,7 +53,7 @@ const initColleagueSuggestions = async () => {
 
         const suggestions = top.slice(0, 5);
         suggestions.forEach(user => {
-            const card = createCard(user, { compact: true });
+            const card = createCard(user, { mini: true });
             card.classList.add('suggestion-card');
 
             const requestBtn = document.createElement('button');
@@ -76,8 +76,8 @@ const initColleagueSuggestions = async () => {
                 }
             };
 
-            card.appendChild(requestBtn);
-            card.appendChild(removeBtn);
+            card.content.appendChild(requestBtn);
+            card.content.appendChild(removeBtn);
             container.appendChild(card);
         });
     } catch (e) {

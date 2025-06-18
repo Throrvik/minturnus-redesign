@@ -35,6 +35,7 @@ function createCard(user, options = {}) {
     const card = document.createElement('div');
     card.className = 'user-card fade';
     if (options.compact) card.classList.add('compact');
+    if (options.mini) card.classList.add('mini');
 
     const avatar = document.createElement('div');
     avatar.className = 'avatar-img';
@@ -46,21 +47,28 @@ function createCard(user, options = {}) {
     }
     card.appendChild(avatar);
 
+    const content = document.createElement('div');
+    content.className = 'card-content';
+    card.content = content;
+
     const info = document.createElement('div');
     info.className = 'user-info';
     const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
     info.innerHTML = `<p class="name"><strong>${name.trim()}</strong></p>`;
-    if (options.compact) {
-        if (user.company) info.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
-        if (user.location) info.innerHTML += `<p><strong>Arbeidssted:</strong> ${user.location}</p>`;
-        if (user.shift) info.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
-    } else {
-        if (user.company) info.innerHTML += `<p>${user.company}</p>`;
-        if (user.location) info.innerHTML += `<p>${user.location}</p>`;
-        if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
-        // shift_date intentionally ignored
+    if (!options.mini) {
+        if (options.compact) {
+            if (user.company) info.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
+            if (user.location) info.innerHTML += `<p><strong>Arbeidssted:</strong> ${user.location}</p>`;
+            if (user.shift) info.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
+        } else {
+            if (user.company) info.innerHTML += `<p>${user.company}</p>`;
+            if (user.location) info.innerHTML += `<p>${user.location}</p>`;
+            if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
+            // shift_date intentionally ignored
+        }
     }
-    card.appendChild(info);
+    content.appendChild(info);
+    card.appendChild(content);
 
     if (options.modal) {
         card.style.cursor = 'pointer';
@@ -72,12 +80,12 @@ function createCard(user, options = {}) {
             const span = document.createElement('span');
             span.className = 'status-text';
             span.textContent = 'Kollega';
-            card.appendChild(span);
+            content.appendChild(span);
         } else if (user.relation === 'pending') {
             const span = document.createElement('span');
             span.className = 'status-text';
             span.textContent = 'Ventende forespørsel';
-            card.appendChild(span);
+            content.appendChild(span);
         } else {
             const btn = document.createElement('button');
             btn.className = 'action-btn';
@@ -86,7 +94,7 @@ function createCard(user, options = {}) {
                 e.stopPropagation();
                 sendRequest(user.id, btn);
             };
-            card.appendChild(btn);
+            content.appendChild(btn);
         }
     }
 
@@ -111,7 +119,7 @@ function createCard(user, options = {}) {
             localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
             updateColorOptions();
         };
-        card.appendChild(sel);
+        content.appendChild(sel);
 
         const btn = document.createElement('button');
         btn.className = 'action-btn';
@@ -120,7 +128,7 @@ function createCard(user, options = {}) {
             e.stopPropagation();
             removeColleague(user.id);
         };
-        card.appendChild(btn);
+        content.appendChild(btn);
     }
     return card;
 }
