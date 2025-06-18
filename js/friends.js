@@ -72,21 +72,21 @@ function showSearchResults(users) {
 }
 
 function sendRequest(id, btn) {
-    fetch('api/send_request.php', {
+    return fetch('api/send_request.php', {
         credentials: 'include',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
     })
-    .then(r => r.json())
-    .then(() => {
-        if (btn) {
-            btn.textContent = 'Ventende forespørsel';
-            btn.disabled = true;
-        }
-        loadSentRequests();
-    })
-    .catch(() => alert('Noe gikk galt'));
+        .then(r => r.json())
+        .then(() => {
+            if (btn) {
+                btn.textContent = 'Ventende forespørsel';
+                btn.disabled = true;
+            }
+            loadSentRequests();
+        })
+        .catch(() => alert('Noe gikk galt'));
 }
 
 function loadPendingRequests() {
