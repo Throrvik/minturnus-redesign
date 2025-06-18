@@ -434,10 +434,23 @@ option {
 
 #colleague-search {
     width: 100%;
-    padding: 8px;
+    padding: 6px;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.info-icon {
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 4px;
+}
+
+.colleague-info {
+    font-size: 0.85rem;
+    margin: 5px 0 10px;
+    color: #555;
 }
 
 .colleague-item {
