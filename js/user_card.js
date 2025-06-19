@@ -58,7 +58,7 @@ function createCard(user, options = {}) {
     if (!options.mini) {
         if (options.compact) {
             if (user.company) info.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
-            if (user.location) info.innerHTML += `<p><strong>Arbeidssted:</strong> ${user.location}</p>`;
+            if (user.location) info.innerHTML += `<p><strong>Lokasjon:</strong> ${user.location}</p>`;
             if (user.shift) info.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
         } else {
             if (user.company) info.innerHTML += `<p>${user.company}</p>`;
@@ -177,7 +177,7 @@ function createProfileCard(user) {
     infoDiv.className = 'profile-info';
     if (!user.info_hide) {
         if (user.company) infoDiv.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
-        if (user.location) infoDiv.innerHTML += `<p><strong>Arbeidssted:</strong> ${user.location}</p>`;
+        if (user.location) infoDiv.innerHTML += `<p><strong>Lokasjon:</strong> ${user.location}</p>`;
         if (user.shift) infoDiv.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
     }
 

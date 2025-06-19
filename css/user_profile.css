@@ -49,6 +49,37 @@
     color: #666;
 }
 
+/* Tooltip info icon */
+.info-icon {
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 4px;
+    position: relative;
+    user-select: none;
+}
+
+.info-icon::after {
+    content: attr(data-info);
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: normal;
+    width: 240px;
+    z-index: 10;
+}
+
+.info-icon:hover::after,
+.info-icon:focus::after {
+    display: block;
+}
+
 /* Kort for forhåndsvisning av profil */
 .profile-card {
     width: 100%;
