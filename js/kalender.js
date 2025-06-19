@@ -735,7 +735,7 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
             const daysSinceStart = Math.floor((date - shift.startDate) / (1000 * 60 * 60 * 24));
             const extraDay = (shift.type === 'dagbasert' || shift.weekdays) ? 0 : 1;
             const workDays = (shift.workWeeks * 7) + extraDay;
-            const cycleLength = (shift.workWeeks * 7) + (shift.offWeeks * 7) + extraDay;
+            const cycleLength = (shift.workWeeks * 7) + (shift.offWeeks * 7);
 
             let cyclePosition = ((daysSinceStart % cycleLength) + cycleLength) % cycleLength;
             if (cyclePosition < workDays) {
