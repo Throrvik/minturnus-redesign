@@ -410,7 +410,7 @@ function showPreview() {
 
     if (showInfo) {
         if (company) infoDiv.innerHTML += `<p><strong>Firma:</strong> ${company}</p>`;
-        if (location) infoDiv.innerHTML += `<p><strong>Arbeidssted:</strong> ${location}</p>`;
+        if (location) infoDiv.innerHTML += `<p><strong>Lokasjon:</strong> ${location}</p>`;
         if (shift) infoDiv.innerHTML += `<p><strong>Turnus:</strong> ${shift}</p>`;
     }
 
