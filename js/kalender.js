@@ -422,6 +422,18 @@ function loadColleaguesList() {
                 }
             });
 
+            // Sørg for at kollegaer markert som "nære" alltid er synlige
+            selectedColleagues.forEach(sc => {
+                if (closeColleagues[sc.id]) sc.visible = true;
+            });
+            colleagues.forEach(c => {
+                if (!c.shift || !c.shift_date) return;
+                if (closeColleagues[c.id] && !selectedColleagues.some(sc => sc.id === c.id)) {
+                    const pref = colleagueColorPref[c.id];
+                    selectedColleagues.push({ id: c.id, color: pref || getNextAvailableColor(), visible: true });
+                }
+            });
+
             if (initialColleagueMode) {
                 setColleagueMode(initialColleagueMode);
                 initialColleagueMode = null;
