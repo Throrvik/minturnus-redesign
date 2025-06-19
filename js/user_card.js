@@ -99,6 +99,9 @@ function createCard(user, options = {}) {
     }
 
     if (options.remove) {
+        const settings = document.createElement('div');
+        settings.className = 'settings-row';
+
         const sel = document.createElement('select');
         const autoOpt = document.createElement('option');
         autoOpt.value = '';
@@ -119,7 +122,7 @@ function createCard(user, options = {}) {
             localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
             updateColorOptions();
         };
-        content.appendChild(sel);
+        settings.appendChild(sel);
 
         const lbl = document.createElement('label');
         lbl.className = 'close-label';
@@ -127,13 +130,15 @@ function createCard(user, options = {}) {
         cb.type = 'checkbox';
         cb.checked = closePrefs[user.id] || false;
         cb.addEventListener('click', e => e.stopPropagation());
+        lbl.addEventListener('click', e => e.stopPropagation());
         cb.onchange = e => {
             if (e.target.checked) closePrefs[user.id] = true; else delete closePrefs[user.id];
             localStorage.setItem('closeColleagues', JSON.stringify(closePrefs));
         };
         lbl.appendChild(cb);
         lbl.appendChild(document.createTextNode(' Nær kollega'));
-        content.appendChild(lbl);
+        settings.appendChild(lbl);
+        content.appendChild(settings);
 
         const btn = document.createElement('button');
         btn.className = 'action-btn';
