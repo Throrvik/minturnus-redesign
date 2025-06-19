@@ -453,14 +453,25 @@ option {
     color: #555;
 }
 
+
 .colleague-buttons {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .colleague-buttons .action-btn {
     margin-top: 0;
+}
+
+#colleagues-close {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+#colleagues-close:hover {
+    background-color: #e19600;
 }
 
 .colleague-item {
