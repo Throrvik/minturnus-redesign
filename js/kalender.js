@@ -77,7 +77,7 @@ function loadShiftDeviations() {
     .then(list => {
       shiftDeviations = list.map(d => ({
         id: d.id,
-        startDate: new Date(d.start_date),
+        startDate: new Date(d.start_date + 'T00:00'),
         workWeeks: parseInt(d.work_weeks, 10),
         offWeeks: parseInt(d.off_weeks, 10),
         durationDays: parseInt(d.duration_days, 10),
@@ -91,14 +91,19 @@ function loadShiftDeviations() {
       const s = localStorage.getItem('shiftDeviations');
       if (s) {
         shiftDeviations = JSON.parse(s);
-        shiftDeviations.forEach(d => d.startDate = new Date(d.startDate));
+        shiftDeviations.forEach(d => d.startDate = new Date(d.startDate + 'T00:00'));
       }
     });
 }
 
 function saveShiftDeviations() {
   // persisted via API; localStorage acts as cache
-  localStorage.setItem('shiftDeviations', JSON.stringify(shiftDeviations));
+  const cache = shiftDeviations.map(d => {
+    const local = new Date(d.startDate.getTime() - d.startDate.getTimezoneOffset() * 60000)
+                      .toISOString().split('T')[0];
+    return Object.assign({}, d, { startDate: local });
+  });
+  localStorage.setItem('shiftDeviations', JSON.stringify(cache));
 }
 const predefinedShifts = [
     'mandag-fredag', '1-1', '1-2', '1-3', '1-4', '2-1', '2-2', '2-3', '2-4', '2-6', '3-1', '3-2', '3-3', '3-4', '4-4', '4-5', '4-8', '5-5']; 
@@ -462,7 +467,8 @@ function renderDeviationList() {
     shiftDeviations.forEach((d, idx) => {
         const item = document.createElement('div');
         item.className = 'shift-item';
-        const start = d.startDate.toISOString().slice(0, 10);
+        const start = new Date(d.startDate.getTime() - d.startDate.getTimezoneOffset() * 60000)
+                        .toISOString().split('T')[0];
         const pattern = `${d.workWeeks}-${d.offWeeks}`;
         const span1 = document.createElement('span');
         span1.textContent = start;
