@@ -75,9 +75,7 @@ function saveShiftDeviations() {
   localStorage.setItem('shiftDeviations', JSON.stringify(shiftDeviations));
 }
 const predefinedShifts = [
-    '1-1', '1-2', '1-3', '1-4', '2-2', '2-3', '2-4', '2-6', 
-    '3-3', '3-4', '4-4', '4-5', '4-8', '5-5'
-]; 
+    'mandag-fredag', '1-1', '1-2', '1-3', '1-4', '2-1', '2-2', '2-3', '2-4', '2-6', '3-1', '3-2', '3-3', '3-4', '4-4', '4-5', '4-8', '5-5']; 
 
 const redDays = [
     { name: '1.Nyttårsdag', date: '01-01' },
@@ -182,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
     loadColleagueColorPrefs();
     loadCloseColleagues();
     loadShiftDeviations();
+    renderDeviationList();
     loadColleaguesList();
     loadUserShift();
     renderCalendar(currentMonth, currentYear);
@@ -255,11 +254,9 @@ function initializeEventListeners() {
     if (toggleDev) {
         toggleDev.addEventListener('click', () => {
             const form = document.getElementById('deviation-form');
-            if (form.style.display === 'none' || form.style.display === '') {
-                form.style.display = 'block';
-            } else {
-                form.style.display = 'none';
-            }
+            const show = form.style.display === 'none' || form.style.display === '';
+            form.style.display = show ? 'block' : 'none';
+            toggleDev.textContent = show ? 'Lukk skjema for avvik fra turnus' : 'Legg til avvik fra turnus';
         });
     }
     if (saveDev) saveDev.addEventListener('click', addDeviation);
@@ -394,7 +391,38 @@ function addDeviation() {
     });
     saveShiftDeviations();
     document.getElementById('deviation-form').reset();
+    renderDeviationList();
     updateView();
+}
+
+function deleteDeviation(index) {
+    shiftDeviations.splice(index, 1);
+    saveShiftDeviations();
+    renderDeviationList();
+    updateView();
+}
+
+function renderDeviationList() {
+    const list = document.getElementById('deviation-list');
+    if (!list) return;
+    list.innerHTML = '';
+    shiftDeviations.forEach((d, idx) => {
+        const item = document.createElement('div');
+        item.className = 'shift-item';
+        const start = d.startDate.toISOString().slice(0, 10);
+        const pattern = `${d.workWeeks}-${d.offWeeks}`;
+        const span1 = document.createElement('span');
+        span1.textContent = start;
+        const span2 = document.createElement('span');
+        span2.textContent = pattern;
+        const btn = document.createElement('button');
+        btn.textContent = 'Fjern';
+        btn.addEventListener('click', () => deleteDeviation(idx));
+        item.appendChild(span1);
+        item.appendChild(span2);
+        item.appendChild(btn);
+        list.appendChild(item);
+    });
 }
 
 
