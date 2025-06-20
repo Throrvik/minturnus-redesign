@@ -895,12 +895,12 @@ function renderShiftList() {
 // Legg til ny turnus
 const maxShifts = 10; // Sett maksgrensen her
 
-// Initialiser kalenderen
-updateView();
-
 // ----- Dag-popup funksjonalitet -----
 const dayPopup = document.getElementById('day-popup');
 let outsideHandler = null;
+
+// Initialiser kalenderen
+updateView();
 
 function getShiftsForDate(date) {
     const result = [];
