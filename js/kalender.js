@@ -673,6 +673,7 @@ function toggleShiftVisibility(index) {
 
 function renderMonthInto(targetGrid, month, year, hideText = false) {
     targetGrid.innerHTML = '';
+    hideDayPopup();
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
@@ -704,6 +705,7 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
         dayElement.appendChild(shiftContainer);
 
         const date = new Date(year, month, day);
+        addDayClickEvent(dayElement, date);
 
         if (
             date.getFullYear() === currentDate.getFullYear() &&
@@ -895,3 +897,97 @@ const maxShifts = 10; // Sett maksgrensen her
 
 // Initialiser kalenderen
 updateView();
+
+// ----- Dag-popup funksjonalitet -----
+const dayPopup = document.getElementById('day-popup');
+let outsideHandler = null;
+
+function getShiftsForDate(date) {
+    const result = [];
+    shifts.forEach(shift => {
+        if (!shift.visible) return;
+
+        if (shift.weekdays) {
+            const d = date.getDay();
+            if (d >= 1 && d <= 5) result.push(shift);
+            return;
+        }
+
+        const daysSinceStart = Math.floor(
+            (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
+             Date.UTC(shift.startDate.getFullYear(), shift.startDate.getMonth(), shift.startDate.getDate())) /
+            msPerDay
+        );
+        const extraDay = (shift.type === 'dagbasert' || shift.weekdays) ? 0 : 1;
+        const workDays = (shift.workWeeks * 7) + extraDay;
+        const cycleLength = (shift.workWeeks * 7) + (shift.offWeeks * 7);
+        let cyclePos = ((daysSinceStart % cycleLength) + cycleLength) % cycleLength;
+        if (cyclePos < workDays) result.push(shift);
+    });
+    return result;
+}
+
+function hideDayPopup() {
+    if (dayPopup) {
+        dayPopup.style.display = 'none';
+        dayPopup.innerHTML = '';
+        dayPopup.classList.remove('mobile');
+    }
+    if (outsideHandler) {
+        document.removeEventListener('click', outsideHandler);
+        outsideHandler = null;
+    }
+}
+
+function showDayPopup(date, anchorEl) {
+    if (!dayPopup) return;
+    hideDayPopup();
+
+    const list = getShiftsForDate(date);
+    if (list.length === 0) return;
+
+    const closeSpan = document.createElement('span');
+    closeSpan.className = 'close-popup';
+    closeSpan.textContent = '\u00d7';
+    closeSpan.addEventListener('click', hideDayPopup);
+    dayPopup.appendChild(closeSpan);
+
+    list.forEach(shift => {
+        const item = document.createElement('div');
+        item.className = 'turnus-item';
+
+        const colorBox = document.createElement('div');
+        colorBox.className = 'color-box';
+        colorBox.style.backgroundColor = shift.color;
+
+        const span = document.createElement('span');
+        const first = shift.name.split(' ')[0];
+        const label = shift.raw || `${shift.workWeeks}-${shift.offWeeks}`;
+        span.textContent = `${first} (${label})`;
+
+        item.appendChild(colorBox);
+        item.appendChild(span);
+        dayPopup.appendChild(item);
+    });
+
+    const rect = anchorEl.getBoundingClientRect();
+    if (window.innerWidth <= 600) {
+        dayPopup.classList.add('mobile');
+    } else {
+        dayPopup.style.top = `${rect.bottom + window.scrollY + 5}px`;
+        dayPopup.style.left = `${rect.left + window.scrollX}px`;
+    }
+    dayPopup.style.display = 'block';
+
+    outsideHandler = (e) => {
+        if (!dayPopup.contains(e.target)) hideDayPopup();
+    };
+    setTimeout(() => document.addEventListener('click', outsideHandler), 0);
+}
+
+function addDayClickEvent(el, date) {
+    el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showDayPopup(date, el);
+    });
+}
