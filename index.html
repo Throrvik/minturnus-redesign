@@ -122,37 +122,38 @@
         <div id="message"></div>
     </div>
 
-    <form id="override-form" class="shift-form">
-        <h3>Legg til midlertidig overstyring</h3>
-        <label for="override-name">Navn på turnus:</label>
-        <input type="text" id="override-name" placeholder="Eks: Thomas">
+    <button id="toggle-deviation" class="btn" style="display:none;">Legg til avvik fra turnus</button>
+    <form id="deviation-form" class="shift-form" style="display:none;">
+        <h3>Avvik fra egen turnus</h3>
+        <label for="deviation-start">Startdato</label>
+        <input type="date" id="deviation-start">
 
-        <label for="override-start">Startdato</label>
-        <input type="date" id="override-start">
-
-        <label for="override-length">Varighet</label>
-        <input type="number" id="override-length" value="1" min="1">
-        <select id="override-unit">
-            <option value="days">Dager</option>
-            <option value="weeks">Uker</option>
+        <label for="deviation-pattern">Midlertidig turnus</label>
+        <select id="deviation-pattern">
+            <option value="1-1">1-1</option>
+            <option value="1-2">1-2</option>
+            <option value="1-3">1-3</option>
+            <option value="1-4">1-4</option>
+            <option value="2-2">2-2</option>
+            <option value="2-3">2-3</option>
+            <option value="2-4">2-4</option>
+            <option value="2-6">2-6</option>
+            <option value="3-3">3-3</option>
+            <option value="3-4">3-4</option>
+            <option value="4-4">4-4</option>
+            <option value="4-5">4-5</option>
+            <option value="4-8">4-8</option>
+            <option value="5-5">5-5</option>
         </select>
 
-        <label for="override-pattern">Ny turnus</label>
-        <input type="text" id="override-pattern" placeholder="2-2">
+        <label for="deviation-behavior">Etter avvik</label>
+        <select id="deviation-behavior">
+            <option value="keep">Fortsett med original rytme</option>
+            <option value="shift">Fortsett fra slutten av avviket</option>
+        </select>
 
-        <label for="override-color">Farge</label>
-        <input type="color" id="override-color">
-
-        <button type="button" id="add-override" class="btn">Lagre overstyring</button>
+        <button type="button" id="save-deviation" class="btn">Lagre avvik</button>
     </form>
-
-    <div class="shift-list-header">
-        <span class="shift-header">Navn</span>
-        <span class="shift-header">Periode</span>
-        <span class="shift-header">Turnus</span>
-        <span class="shift-header">Handling</span>
-    </div>
-    <div id="override-list" class="shift-list"></div>
 
     <!-- Kolonnetitler for turnuslisten -->
     <div class="shift-list-header">

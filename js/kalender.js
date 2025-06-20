@@ -26,7 +26,7 @@ let colleagueColorPref = {};
 let closeColleagues = {};
 let currentUserFirstName = '';
 let initialColleagueMode = null;
-let shiftOverrides = [];
+let shiftDeviations = [];
 const allColors = [
   "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
   "#66B2FF", "#CC66FF", "#FF66B2", "#66FF66", "#CCCCCC",
@@ -59,6 +59,20 @@ function saveCloseColleagues() {
 
 function saveColleagueColorPrefs() {
   localStorage.setItem('colleagueColorPref', JSON.stringify(colleagueColorPref));
+}
+
+function loadShiftDeviations() {
+  const s = localStorage.getItem('shiftDeviations');
+  if (s) {
+    shiftDeviations = JSON.parse(s);
+    shiftDeviations.forEach(d => {
+      d.startDate = new Date(d.startDate);
+    });
+  }
+}
+
+function saveShiftDeviations() {
+  localStorage.setItem('shiftDeviations', JSON.stringify(shiftDeviations));
 }
 const predefinedShifts = [
     '1-1', '1-2', '1-3', '1-4', '2-2', '2-3', '2-4', '2-6', 
@@ -167,12 +181,11 @@ document.addEventListener('DOMContentLoaded', function () {
     loadSelectedColleagues();
     loadColleagueColorPrefs();
     loadCloseColleagues();
+    loadShiftDeviations();
     loadColleaguesList();
-    loadShiftOverrides();
     loadUserShift();
     renderCalendar(currentMonth, currentYear);
     renderShiftList();
-    renderOverrideList();
 });
 
 function initializeEventListeners() {
@@ -237,8 +250,19 @@ function initializeEventListeners() {
     if (btnNone) btnNone.addEventListener('click', () => setColleagueMode('none'));
     if (btnClose) btnClose.addEventListener('click', () => setColleagueMode('close'));
 
-    const addOverrideBtn = document.getElementById('add-override');
-    if (addOverrideBtn) addOverrideBtn.addEventListener('click', addOrUpdateOverride);
+    const toggleDev = document.getElementById('toggle-deviation');
+    const saveDev = document.getElementById('save-deviation');
+    if (toggleDev) {
+        toggleDev.addEventListener('click', () => {
+            const form = document.getElementById('deviation-form');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        });
+    }
+    if (saveDev) saveDev.addEventListener('click', addDeviation);
 }
 
 
@@ -353,46 +377,23 @@ function addNewShift() {
 
 }
 
-function addOrUpdateOverride() {
-    const name = document.getElementById('override-name').value.trim();
-    const startInput = document.getElementById('override-start').value;
-    const durationVal = parseInt(document.getElementById('override-length').value, 10);
-    const unit = document.getElementById('override-unit').value;
-    const pattern = document.getElementById('override-pattern').value.trim();
-    const color = document.getElementById('override-color').value || null;
-
-    if (!name || !startInput || !durationVal || !pattern) return;
-    if (!/^(\d+-\d+|D\d+-\d+)$/.test(pattern)) return;
-
+function addDeviation() {
+    const startInput = document.getElementById('deviation-start').value;
+    const pattern = document.getElementById('deviation-pattern').value.trim();
+    const behavior = document.getElementById('deviation-behavior').value;
+    if (!startInput || !/^\d+-\d+$/.test(pattern)) return;
+    const [w, o] = pattern.split('-').map(Number);
     const startDate = new Date(startInput + 'T00:00:00');
-    const isDay = pattern.startsWith('D');
-    let work, off;
-    if (isDay) {
-        [work, off] = pattern.substring(1).split('-').map(Number);
-    } else {
-        [work, off] = pattern.split('-').map(Number);
-    }
-    const obj = {
-        name,
+    const durationDays = (w + o) * 7;
+    shiftDeviations.push({
         startDate,
-        duration: durationVal,
-        unit,
-        durationDays: durationVal * (unit === 'weeks' ? 7 : 1),
-        workWeeks: isDay ? work / 7 : work,
-        offWeeks: isDay ? off / 7 : off,
-        type: isDay ? 'dagbasert' : 'ukebasert',
-        raw: pattern,
-        color
-    };
-
-    if (editingOverride >= 0) {
-        shiftOverrides[editingOverride] = obj;
-        editingOverride = -1;
-    } else {
-        shiftOverrides.push(obj);
-    }
-    document.getElementById('override-form').reset();
-    renderOverrideList();
+        workWeeks: w,
+        offWeeks: o,
+        durationDays,
+        keepRhythm: behavior === 'keep'
+    });
+    saveShiftDeviations();
+    document.getElementById('deviation-form').reset();
     updateView();
 }
 
@@ -406,25 +407,6 @@ function deleteShift(index) {
     renderShiftList();
     updateView();
     updateTurnusOversikt();
-}
-
-let editingOverride = -1;
-
-function deleteOverride(index) {
-    shiftOverrides.splice(index, 1);
-    renderOverrideList();
-    updateView();
-}
-
-function editOverride(index) {
-    const o = shiftOverrides[index];
-    editingOverride = index;
-    document.getElementById('override-name').value = o.name;
-    document.getElementById('override-start').value = o.startDate.toISOString().slice(0,10);
-    document.getElementById('override-length').value = o.duration;
-    document.getElementById('override-unit').value = o.unit;
-    document.getElementById('override-pattern').value = o.raw || `${o.workWeeks}-${o.offWeeks}`;
-    if (o.color) document.getElementById('override-color').value = o.color;
 }
 
 // Laste eksisterende turnuser fra localStorage
@@ -473,20 +455,6 @@ function loadSelectedColleagues() {
 
 function saveSelectedColleagues() {
     localStorage.setItem('selectedColleagues', JSON.stringify(selectedColleagues));
-}
-
-function loadShiftOverrides() {
-    const stored = localStorage.getItem('shiftOverrides');
-    if (stored) {
-        shiftOverrides = JSON.parse(stored);
-        shiftOverrides.forEach(o => {
-            o.startDate = new Date(o.startDate);
-        });
-    }
-}
-
-function saveShiftOverrides() {
-    localStorage.setItem('shiftOverrides', JSON.stringify(shiftOverrides));
 }
 
 
@@ -704,6 +672,8 @@ function loadUserShift() {
                 label.textContent = `${userShift.name} (meg)`;
                 checkbox.checked = userShift.visible;
                 toggleDiv.style.display = 'block';
+                const devBtn = document.getElementById('toggle-deviation');
+                if (devBtn) devBtn.style.display = 'block';
                 checkbox.addEventListener('change', () => {
                     userShift.visible = checkbox.checked;
                     localStorage.setItem('showUserShift', checkbox.checked ? '1' : '0');
@@ -824,7 +794,7 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
         list.forEach(shift => {
             const shiftBox = document.createElement('div');
             shiftBox.classList.add('shift-box');
-            if (shift.overrideActive) shiftBox.classList.add('shift-override');
+            if (shift.deviationActive) shiftBox.classList.add('shift-deviation');
             shiftBox.style.backgroundColor = shift.color;
             shiftContainer.appendChild(shiftBox);
         });
@@ -955,26 +925,6 @@ function renderShiftList() {
     saveShiftsToLocalStorage(); // Husk å lagre etter hver endring
 }
 
-function renderOverrideList() {
-    const list = document.getElementById('override-list');
-    if (!list) return;
-    list.innerHTML = '';
-    shiftOverrides.forEach((o, index) => {
-        const item = document.createElement('div');
-        item.className = 'shift-item';
-        const label = o.raw || `${o.workWeeks}-${o.offWeeks}`;
-        item.innerHTML = `
-            <span style="color:${o.color || '#000'}; font-weight:bold;">${o.name}</span>
-            <span>${o.startDate.toISOString().slice(0,10)} (${o.durationDays}d)</span>
-            <span>${label}</span>
-            <button onclick="editOverride(${index})">Rediger</button>
-            <button onclick="deleteOverride(${index})">Slett</button>
-        `;
-        list.appendChild(item);
-    });
-    saveShiftOverrides();
-}
-
 // Legg til ny turnus
 const maxShifts = 10; // Sett maksgrensen her
 
@@ -987,31 +937,36 @@ updateView();
 
 function getShiftsForDate(date) {
     const result = [];
-    const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
     shifts.forEach(shift => {
         if (!shift.visible) return;
 
-        let o = shiftOverrides.find(s => s.name === shift.name && date >= s.startDate && date < new Date(s.startDate.getTime() + s.durationDays * msPerDay));
+        let startDate = shift.startDate;
         let workWeeks = shift.workWeeks;
         let offWeeks = shift.offWeeks;
-        let startDate = shift.startDate;
         let type = shift.type;
-        let color = shift.color;
-        let raw = shift.raw;
-        let overrideActive = false;
-        if (o) {
-            workWeeks = o.workWeeks;
-            offWeeks = o.offWeeks;
-            startDate = o.startDate;
-            type = o.type;
-            raw = o.raw;
-            if (o.color) color = o.color;
-            overrideActive = true;
+        let deviationActive = false;
+
+        if (shift.isUserShift && shiftDeviations.length) {
+            const dev = shiftDeviations.find(d => date >= d.startDate && date < new Date(d.startDate.getTime() + d.durationDays * msPerDay));
+            if (dev) {
+                workWeeks = dev.workWeeks;
+                offWeeks = dev.offWeeks;
+                startDate = dev.startDate;
+                type = 'ukebasert';
+                deviationActive = true;
+            } else {
+                shiftDeviations.forEach(d => {
+                    const end = new Date(d.startDate.getTime() + d.durationDays * msPerDay);
+                    if (!d.keepRhythm && end <= date) {
+                        startDate = new Date(startDate.getTime() + d.durationDays * msPerDay);
+                    }
+                });
+            }
         }
 
-        if (shift.weekdays && !overrideActive) {
+        if (shift.weekdays && !deviationActive) {
             const d = date.getDay();
-            if (d >= 1 && d <= 5) result.push(Object.assign({}, shift, {color}));
+            if (d >= 1 && d <= 5) result.push(Object.assign({}, shift, {deviationActive}));
             return;
         }
 
@@ -1027,8 +982,8 @@ function getShiftsForDate(date) {
         if (cyclePos < workDays) {
             result.push({
                 name: shift.name,
-                workWeeks, offWeeks, startDate, color, type, raw,
-                overrideActive
+                workWeeks, offWeeks, startDate, color: shift.color, type, raw: shift.raw,
+                deviationActive
             });
         }
     });
@@ -1070,12 +1025,12 @@ function showDayPopup(date, anchorEl) {
     list.forEach(shift => {
         const item = document.createElement('div');
         item.className = 'turnus-item';
-        if (shift.overrideActive) item.classList.add('shift-override');
+        if (shift.deviationActive) item.classList.add('shift-deviation');
 
         const colorBox = document.createElement('div');
         colorBox.className = 'color-box';
         colorBox.style.backgroundColor = shift.color;
-        if (shift.overrideActive) colorBox.classList.add('shift-override');
+        if (shift.deviationActive) colorBox.classList.add('shift-deviation');
 
         const span = document.createElement('span');
         const first = shift.name.split(' ')[0];
