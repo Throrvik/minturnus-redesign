@@ -412,7 +412,10 @@ function addDeviation() {
     if (!startInput || !/^\d+-\d+$/.test(pattern)) return;
     const [w, o] = pattern.split('-').map(Number);
     const startDate = new Date(startInput + 'T00:00:00');
-    const durationDays = (w + o) * 7;
+    let durationDays = (w + o) * 7;
+    if (w === 0) {
+        durationDays += 1; // include travel day when skipping an entire work period
+    }
     const payload = {
         start_date: startInput,
         work_weeks: w,
