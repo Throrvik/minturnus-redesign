@@ -49,11 +49,21 @@ function loadColleagueColorPrefs() {
 }
 
 function loadCloseColleagues() {
-  const s = localStorage.getItem('closeColleagues');
-  closeColleagues = s ? JSON.parse(s) : {};
+  fetch('api/close_colleagues.php', { credentials: 'include' })
+    .then(r => r.json())
+    .then(ids => {
+      closeColleagues = {};
+      ids.forEach(id => closeColleagues[id] = true);
+      localStorage.setItem('closeColleagues', JSON.stringify(closeColleagues));
+    })
+    .catch(() => {
+      const s = localStorage.getItem('closeColleagues');
+      closeColleagues = s ? JSON.parse(s) : {};
+    });
 }
 
 function saveCloseColleagues() {
+  // server persistence
   localStorage.setItem('closeColleagues', JSON.stringify(closeColleagues));
 }
 
@@ -62,16 +72,32 @@ function saveColleagueColorPrefs() {
 }
 
 function loadShiftDeviations() {
-  const s = localStorage.getItem('shiftDeviations');
-  if (s) {
-    shiftDeviations = JSON.parse(s);
-    shiftDeviations.forEach(d => {
-      d.startDate = new Date(d.startDate);
+  fetch('api/shift_deviations.php', { credentials: 'include' })
+    .then(r => r.json())
+    .then(list => {
+      shiftDeviations = list.map(d => ({
+        id: d.id,
+        startDate: new Date(d.start_date),
+        workWeeks: parseInt(d.work_weeks, 10),
+        offWeeks: parseInt(d.off_weeks, 10),
+        durationDays: parseInt(d.duration_days, 10),
+        keepRhythm: d.keep_rhythm == 1
+      }));
+      localStorage.setItem('shiftDeviations', JSON.stringify(shiftDeviations));
+      renderDeviationList();
+      updateView();
+    })
+    .catch(() => {
+      const s = localStorage.getItem('shiftDeviations');
+      if (s) {
+        shiftDeviations = JSON.parse(s);
+        shiftDeviations.forEach(d => d.startDate = new Date(d.startDate));
+      }
     });
-  }
 }
 
 function saveShiftDeviations() {
+  // persisted via API; localStorage acts as cache
   localStorage.setItem('shiftDeviations', JSON.stringify(shiftDeviations));
 }
 const predefinedShifts = [
@@ -382,24 +408,51 @@ function addDeviation() {
     const [w, o] = pattern.split('-').map(Number);
     const startDate = new Date(startInput + 'T00:00:00');
     const durationDays = (w + o) * 7;
-    shiftDeviations.push({
-        startDate,
-        workWeeks: w,
-        offWeeks: o,
-        durationDays,
-        keepRhythm: behavior === 'keep'
+    const payload = {
+        start_date: startInput,
+        work_weeks: w,
+        off_weeks: o,
+        duration_days: durationDays,
+        keep_rhythm: behavior === 'keep'
+    };
+    fetch('api/shift_deviations.php', {
+        credentials: 'include',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(r => r.json())
+    .then(res => {
+        shiftDeviations.push({
+            id: res.id,
+            startDate,
+            workWeeks: w,
+            offWeeks: o,
+            durationDays,
+            keepRhythm: behavior === 'keep'
+        });
+        saveShiftDeviations();
+        document.getElementById('deviation-form').reset();
+        renderDeviationList();
+        updateView();
     });
-    saveShiftDeviations();
-    document.getElementById('deviation-form').reset();
-    renderDeviationList();
-    updateView();
 }
 
 function deleteDeviation(index) {
-    shiftDeviations.splice(index, 1);
-    saveShiftDeviations();
-    renderDeviationList();
-    updateView();
+    const dev = shiftDeviations[index];
+    if (!dev) return;
+    fetch('api/shift_deviations.php', {
+        credentials: 'include',
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: dev.id })
+    })
+    .then(() => {
+        shiftDeviations.splice(index, 1);
+        saveShiftDeviations();
+        renderDeviationList();
+        updateView();
+    });
 }
 
 function renderDeviationList() {

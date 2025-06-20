@@ -26,3 +26,22 @@ CREATE TABLE `remember_tokens` (
   `expires_at` DATETIME NOT NULL,
   KEY `user_id` (`user_id`)
 );
+
+-- Table storing temporary shift deviations per user
+CREATE TABLE `shift_deviations` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `start_date` DATE NOT NULL,
+  `work_weeks` INT NOT NULL,
+  `off_weeks` INT NOT NULL,
+  `duration_days` INT NOT NULL,
+  `keep_rhythm` TINYINT NOT NULL DEFAULT 0,
+  KEY `user_id` (`user_id`)
+);
+
+-- Table marking close colleagues for each user
+CREATE TABLE `close_colleagues` (
+  `user_id` INT NOT NULL,
+  `colleague_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `colleague_id`)
+);

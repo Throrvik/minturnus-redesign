@@ -132,8 +132,16 @@ function createCard(user, options = {}) {
         cb.addEventListener('click', e => e.stopPropagation());
         lbl.addEventListener('click', e => e.stopPropagation());
         cb.onchange = e => {
-            if (e.target.checked) closePrefs[user.id] = true; else delete closePrefs[user.id];
-            localStorage.setItem('closeColleagues', JSON.stringify(closePrefs));
+            const checked = e.target.checked;
+            fetch('api/close_colleagues.php', {
+                credentials: 'include',
+                method: checked ? 'POST' : 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: user.id })
+            }).then(() => {
+                if (checked) closePrefs[user.id] = true; else delete closePrefs[user.id];
+                localStorage.setItem('closeColleagues', JSON.stringify(closePrefs));
+            });
         };
         lbl.appendChild(cb);
         lbl.appendChild(document.createTextNode(' Nær kollega'));

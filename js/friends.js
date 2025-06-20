@@ -12,8 +12,17 @@ let closePrefs = {};
 document.addEventListener('DOMContentLoaded', () => {
     const stored = localStorage.getItem('colleagueColorPref');
     colorPrefs = stored ? JSON.parse(stored) : {};
-    const closeStored = localStorage.getItem('closeColleagues');
-    closePrefs = closeStored ? JSON.parse(closeStored) : {};
+    fetch('api/close_colleagues.php', { credentials: 'include' })
+        .then(r => r.json())
+        .then(ids => {
+            closePrefs = {};
+            ids.forEach(id => closePrefs[id] = true);
+            localStorage.setItem('closeColleagues', JSON.stringify(closePrefs));
+        })
+        .catch(() => {
+            const closeStored = localStorage.getItem('closeColleagues');
+            closePrefs = closeStored ? JSON.parse(closeStored) : {};
+        });
     loadPendingRequests();
     loadColleagues();
 

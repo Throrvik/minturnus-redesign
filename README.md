@@ -87,6 +87,10 @@ Results are filtered with a fuzzy match. The query may match any part
 of a user's first or last name (split on spaces or hyphen) if the
 Levenshtein distance is one or the part starts with the query.
 
+Close colleagues that you mark on the friends page are stored in the
+`close_colleagues` table so that your preferences are available on any
+device.
+
 ## Shift deviations
 
 Logged in users can register temporary deviations from their own shift.
@@ -94,7 +98,8 @@ On the calendar page a button appears when your profile has a shift set.
 Choose a start date, a temporary pattern like `1-2` and whether the
 regular rhythm should continue unaffected or resume from the end of the
 deviation. Days affected by a deviation are highlighted with a thick
-border in the calendar.
+border in the calendar. Deviation entries are stored in the
+`shift_deviations` table so they follow you across devices.
 
 ### Creating the friends tables
 
@@ -126,5 +131,24 @@ CREATE TABLE `remember_tokens` (
   `token_hash` CHAR(64) NOT NULL,
   `expires_at` DATETIME NOT NULL,
   KEY `user_id` (`user_id`)
+);
+
+-- Temporary shift deviations registered by users
+CREATE TABLE `shift_deviations` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `start_date` DATE NOT NULL,
+  `work_weeks` INT NOT NULL,
+  `off_weeks` INT NOT NULL,
+  `duration_days` INT NOT NULL,
+  `keep_rhythm` TINYINT NOT NULL DEFAULT 0,
+  KEY `user_id` (`user_id`)
+);
+
+-- Marked close colleagues for each user
+CREATE TABLE `close_colleagues` (
+  `user_id` INT NOT NULL,
+  `colleague_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `colleague_id`)
 );
 ```
