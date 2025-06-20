@@ -159,24 +159,13 @@
     position: absolute;
     top: 5px;
     left: 5px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 kolonner */
-    grid-template-rows: repeat(5, 1fr); /* 5 rader */
+    right: 5px;
+    display: flex;
+    flex-wrap: wrap;
     gap: 2px;
-    width: 90%;
-    height: 90%;
     z-index: 1;
 }
 
-.shift-container .shift-box {
-    width: 100%; /* Fyll cellen i grid-systemet */
-    height: 100%; /* Fyll cellen i grid-systemet */
-    border-radius: 4px;
-}
-
-.shift-container .shift-box:nth-child(13) {
-    display: none; /* Hold midten tom for datoen */
-}
 
 .day .day-text {
     position: absolute;
@@ -189,9 +178,9 @@
 }
 
 .shift-box {
-    width: 20%; /* Passer for en grid med 5x5 */
-    height: 20%;
-    border-radius: 4px;
+    flex: 0 0 calc(25% - 2px); /* Fire prikker per rad */
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
 }
 
 
