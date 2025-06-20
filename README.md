@@ -87,6 +87,19 @@ Results are filtered with a fuzzy match. The query may match any part
 of a user's first or last name (split on spaces or hyphen) if the
 Levenshtein distance is one or the part starts with the query.
 
+## Shift overrides
+
+The calendar supports temporary overrides to any shift. An override
+defines a start date, a duration in days or weeks and an alternative
+shift pattern. When a date falls within an override period the
+specified pattern is used instead of the regular one and the day is
+highlighted in the calendar.
+
+Overrides can be added from the calendar page below the manual shift
+form. Fill in the shift name to override, choose the period and enter
+the replacement pattern (e.g. `2-2` or `D5-2`). Overrides appear in a
+list where they can be edited or removed.
+
 ### Creating the friends tables
 
 You can create the required tables manually or import the provided

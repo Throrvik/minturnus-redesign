@@ -26,6 +26,7 @@ let colleagueColorPref = {};
 let closeColleagues = {};
 let currentUserFirstName = '';
 let initialColleagueMode = null;
+let shiftOverrides = [];
 const allColors = [
   "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
   "#66B2FF", "#CC66FF", "#FF66B2", "#66FF66", "#CCCCCC",
@@ -167,9 +168,11 @@ document.addEventListener('DOMContentLoaded', function () {
     loadColleagueColorPrefs();
     loadCloseColleagues();
     loadColleaguesList();
+    loadShiftOverrides();
     loadUserShift();
     renderCalendar(currentMonth, currentYear);
     renderShiftList();
+    renderOverrideList();
 });
 
 function initializeEventListeners() {
@@ -233,6 +236,9 @@ function initializeEventListeners() {
     if (btnAll) btnAll.addEventListener('click', () => setColleagueMode('all'));
     if (btnNone) btnNone.addEventListener('click', () => setColleagueMode('none'));
     if (btnClose) btnClose.addEventListener('click', () => setColleagueMode('close'));
+
+    const addOverrideBtn = document.getElementById('add-override');
+    if (addOverrideBtn) addOverrideBtn.addEventListener('click', addOrUpdateOverride);
 }
 
 
@@ -347,6 +353,49 @@ function addNewShift() {
 
 }
 
+function addOrUpdateOverride() {
+    const name = document.getElementById('override-name').value.trim();
+    const startInput = document.getElementById('override-start').value;
+    const durationVal = parseInt(document.getElementById('override-length').value, 10);
+    const unit = document.getElementById('override-unit').value;
+    const pattern = document.getElementById('override-pattern').value.trim();
+    const color = document.getElementById('override-color').value || null;
+
+    if (!name || !startInput || !durationVal || !pattern) return;
+    if (!/^(\d+-\d+|D\d+-\d+)$/.test(pattern)) return;
+
+    const startDate = new Date(startInput + 'T00:00:00');
+    const isDay = pattern.startsWith('D');
+    let work, off;
+    if (isDay) {
+        [work, off] = pattern.substring(1).split('-').map(Number);
+    } else {
+        [work, off] = pattern.split('-').map(Number);
+    }
+    const obj = {
+        name,
+        startDate,
+        duration: durationVal,
+        unit,
+        durationDays: durationVal * (unit === 'weeks' ? 7 : 1),
+        workWeeks: isDay ? work / 7 : work,
+        offWeeks: isDay ? off / 7 : off,
+        type: isDay ? 'dagbasert' : 'ukebasert',
+        raw: pattern,
+        color
+    };
+
+    if (editingOverride >= 0) {
+        shiftOverrides[editingOverride] = obj;
+        editingOverride = -1;
+    } else {
+        shiftOverrides.push(obj);
+    }
+    document.getElementById('override-form').reset();
+    renderOverrideList();
+    updateView();
+}
+
 
 // Funksjon for å slette en turnus
 function deleteShift(index) {
@@ -357,6 +406,25 @@ function deleteShift(index) {
     renderShiftList();
     updateView();
     updateTurnusOversikt();
+}
+
+let editingOverride = -1;
+
+function deleteOverride(index) {
+    shiftOverrides.splice(index, 1);
+    renderOverrideList();
+    updateView();
+}
+
+function editOverride(index) {
+    const o = shiftOverrides[index];
+    editingOverride = index;
+    document.getElementById('override-name').value = o.name;
+    document.getElementById('override-start').value = o.startDate.toISOString().slice(0,10);
+    document.getElementById('override-length').value = o.duration;
+    document.getElementById('override-unit').value = o.unit;
+    document.getElementById('override-pattern').value = o.raw || `${o.workWeeks}-${o.offWeeks}`;
+    if (o.color) document.getElementById('override-color').value = o.color;
 }
 
 // Laste eksisterende turnuser fra localStorage
@@ -405,6 +473,20 @@ function loadSelectedColleagues() {
 
 function saveSelectedColleagues() {
     localStorage.setItem('selectedColleagues', JSON.stringify(selectedColleagues));
+}
+
+function loadShiftOverrides() {
+    const stored = localStorage.getItem('shiftOverrides');
+    if (stored) {
+        shiftOverrides = JSON.parse(stored);
+        shiftOverrides.forEach(o => {
+            o.startDate = new Date(o.startDate);
+        });
+    }
+}
+
+function saveShiftOverrides() {
+    localStorage.setItem('shiftOverrides', JSON.stringify(shiftOverrides));
 }
 
 
@@ -738,36 +820,13 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
             dayElement.appendChild(specialText);
         }
 
-        shifts.forEach((shift) => {
-            if (!shift.visible) return;
-
-            if (shift.weekdays) {
-                const d = date.getDay();
-                if (d >= 1 && d <= 5) {
-                    const shiftBox = document.createElement('div');
-                    shiftBox.classList.add('shift-box');
-                    shiftBox.style.backgroundColor = shift.color;
-                    shiftContainer.appendChild(shiftBox);
-                }
-                return;
-            }
-
-            const daysSinceStart = Math.floor(
-                (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
-                 Date.UTC(shift.startDate.getFullYear(), shift.startDate.getMonth(), shift.startDate.getDate())) /
-                msPerDay
-            );
-            const extraDay = (shift.type === 'dagbasert' || shift.weekdays) ? 0 : 1;
-            const workDays = (shift.workWeeks * 7) + extraDay;
-            const cycleLength = (shift.workWeeks * 7) + (shift.offWeeks * 7);
-
-            let cyclePosition = ((daysSinceStart % cycleLength) + cycleLength) % cycleLength;
-            if (cyclePosition < workDays) {
-                const shiftBox = document.createElement('div');
-                shiftBox.classList.add('shift-box');
-                shiftBox.style.backgroundColor = shift.color;
-                shiftContainer.appendChild(shiftBox);
-            }
+        const list = getShiftsForDate(date);
+        list.forEach(shift => {
+            const shiftBox = document.createElement('div');
+            shiftBox.classList.add('shift-box');
+            if (shift.overrideActive) shiftBox.classList.add('shift-override');
+            shiftBox.style.backgroundColor = shift.color;
+            shiftContainer.appendChild(shiftBox);
         });
 
         targetGrid.appendChild(dayElement);
@@ -896,6 +955,26 @@ function renderShiftList() {
     saveShiftsToLocalStorage(); // Husk å lagre etter hver endring
 }
 
+function renderOverrideList() {
+    const list = document.getElementById('override-list');
+    if (!list) return;
+    list.innerHTML = '';
+    shiftOverrides.forEach((o, index) => {
+        const item = document.createElement('div');
+        item.className = 'shift-item';
+        const label = o.raw || `${o.workWeeks}-${o.offWeeks}`;
+        item.innerHTML = `
+            <span style="color:${o.color || '#000'}; font-weight:bold;">${o.name}</span>
+            <span>${o.startDate.toISOString().slice(0,10)} (${o.durationDays}d)</span>
+            <span>${label}</span>
+            <button onclick="editOverride(${index})">Rediger</button>
+            <button onclick="deleteOverride(${index})">Slett</button>
+        `;
+        list.appendChild(item);
+    });
+    saveShiftOverrides();
+}
+
 // Legg til ny turnus
 const maxShifts = 10; // Sett maksgrensen her
 
@@ -908,25 +987,50 @@ updateView();
 
 function getShiftsForDate(date) {
     const result = [];
+    const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
     shifts.forEach(shift => {
         if (!shift.visible) return;
 
-        if (shift.weekdays) {
+        let o = shiftOverrides.find(s => s.name === shift.name && date >= s.startDate && date < new Date(s.startDate.getTime() + s.durationDays * msPerDay));
+        let workWeeks = shift.workWeeks;
+        let offWeeks = shift.offWeeks;
+        let startDate = shift.startDate;
+        let type = shift.type;
+        let color = shift.color;
+        let raw = shift.raw;
+        let overrideActive = false;
+        if (o) {
+            workWeeks = o.workWeeks;
+            offWeeks = o.offWeeks;
+            startDate = o.startDate;
+            type = o.type;
+            raw = o.raw;
+            if (o.color) color = o.color;
+            overrideActive = true;
+        }
+
+        if (shift.weekdays && !overrideActive) {
             const d = date.getDay();
-            if (d >= 1 && d <= 5) result.push(shift);
+            if (d >= 1 && d <= 5) result.push(Object.assign({}, shift, {color}));
             return;
         }
 
         const daysSinceStart = Math.floor(
             (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
-             Date.UTC(shift.startDate.getFullYear(), shift.startDate.getMonth(), shift.startDate.getDate())) /
+             Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())) /
             msPerDay
         );
-        const extraDay = (shift.type === 'dagbasert' || shift.weekdays) ? 0 : 1;
-        const workDays = (shift.workWeeks * 7) + extraDay;
-        const cycleLength = (shift.workWeeks * 7) + (shift.offWeeks * 7);
+        const extraDay = (type === 'dagbasert' || shift.weekdays) ? 0 : 1;
+        const workDays = (workWeeks * 7) + extraDay;
+        const cycleLength = (workWeeks * 7) + (offWeeks * 7);
         let cyclePos = ((daysSinceStart % cycleLength) + cycleLength) % cycleLength;
-        if (cyclePos < workDays) result.push(shift);
+        if (cyclePos < workDays) {
+            result.push({
+                name: shift.name,
+                workWeeks, offWeeks, startDate, color, type, raw,
+                overrideActive
+            });
+        }
     });
     return result;
 }
@@ -966,10 +1070,12 @@ function showDayPopup(date, anchorEl) {
     list.forEach(shift => {
         const item = document.createElement('div');
         item.className = 'turnus-item';
+        if (shift.overrideActive) item.classList.add('shift-override');
 
         const colorBox = document.createElement('div');
         colorBox.className = 'color-box';
         colorBox.style.backgroundColor = shift.color;
+        if (shift.overrideActive) colorBox.classList.add('shift-override');
 
         const span = document.createElement('span');
         const first = shift.name.split(' ')[0];

@@ -183,6 +183,20 @@
     border-radius: 50%;
 }
 
+.shift-override {
+    border: 2px solid #000;
+    position: relative;
+}
+
+.shift-override::after {
+    content: "★";
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 0.6rem;
+    color: #000;
+}
+
 
 .today {
     background-color: var(--accent-color);
