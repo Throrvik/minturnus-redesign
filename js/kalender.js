@@ -15,6 +15,8 @@ let isYearView = false;
 
 console.log("🚀 kalender.js er lastet!");
 
+const msPerDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+
 // Turnuser
 let shifts = [];
 let userShift = null;
@@ -744,7 +746,11 @@ function renderMonthInto(targetGrid, month, year, hideText = false) {
                 return;
             }
 
-            const daysSinceStart = Math.floor((date - shift.startDate) / (1000 * 60 * 60 * 24));
+            const daysSinceStart = Math.floor(
+                (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
+                 Date.UTC(shift.startDate.getFullYear(), shift.startDate.getMonth(), shift.startDate.getDate())) /
+                msPerDay
+            );
             const extraDay = (shift.type === 'dagbasert' || shift.weekdays) ? 0 : 1;
             const workDays = (shift.workWeeks * 7) + extraDay;
             const cycleLength = (shift.workWeeks * 7) + (shift.offWeeks * 7);
