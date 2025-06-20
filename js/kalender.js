@@ -932,6 +932,8 @@ function hideDayPopup() {
         dayPopup.style.display = 'none';
         dayPopup.innerHTML = '';
         dayPopup.classList.remove('mobile');
+        dayPopup.style.top = '';
+        dayPopup.style.left = '';
     }
     if (outsideHandler) {
         document.removeEventListener('click', outsideHandler);
@@ -973,7 +975,10 @@ function showDayPopup(date, anchorEl) {
     const rect = anchorEl.getBoundingClientRect();
     if (window.innerWidth <= 600) {
         dayPopup.classList.add('mobile');
+        dayPopup.style.top = '';
+        dayPopup.style.left = '';
     } else {
+        dayPopup.classList.remove('mobile');
         dayPopup.style.top = `${rect.bottom + window.scrollY + 5}px`;
         dayPopup.style.left = `${rect.left + window.scrollX}px`;
     }
@@ -988,6 +993,7 @@ function showDayPopup(date, anchorEl) {
 function addDayClickEvent(el, date) {
     el.addEventListener('click', (e) => {
         e.stopPropagation();
+        e.preventDefault();
         showDayPopup(date, el);
     });
 }
