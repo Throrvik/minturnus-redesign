@@ -1062,7 +1062,7 @@ function getShiftsForDate(date) {
              Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())) /
             msPerDay
         );
-        const extraDay = (type === 'dagbasert' || shift.weekdays) ? 0 : 1;
+        const extraDay = (type === 'dagbasert' || shift.weekdays || workWeeks === 0) ? 0 : 1;
         const workDays = (workWeeks * 7) + extraDay;
         const cycleLength = (workWeeks * 7) + (offWeeks * 7);
         let cyclePos = ((daysSinceStart % cycleLength) + cycleLength) % cycleLength;
