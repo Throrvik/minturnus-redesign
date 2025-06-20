@@ -199,6 +199,28 @@
     border-radius: 50%;
 }
 
+.container.year-view .shift-deviation {
+    border-width: 1px;
+}
+.container.year-view .shift-deviation::after {
+    top: -2px;
+    right: -2px;
+    width: 4px;
+    height: 4px;
+}
+
+@media (max-width: 600px) {
+    .shift-deviation {
+        border-width: 1px;
+    }
+    .shift-deviation::after {
+        top: -2px;
+        right: -2px;
+        width: 4px;
+        height: 4px;
+    }
+}
+
 
 .today {
     background-color: var(--accent-color);

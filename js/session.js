@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const loginLink = document.getElementById('login-link');
     const pendingBadge = document.getElementById('pending-count');
     const colleagueSection = document.getElementById('colleague-section');
+    const manualShiftInfo = document.getElementById('manual-shift-info');
 
     // Håndter innloggingsstatus
     if (userName) {
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (profileItem) profileItem.style.display = 'list-item';
         if (pendingBadge) pendingBadge.style.display = 'inline';
         if (colleagueSection) colleagueSection.style.display = 'block';
+        if (manualShiftInfo) manualShiftInfo.style.display = 'none';
 
         // Skjul "Logg inn"-lenken når brukeren er logget inn
         if (loginLink) {
@@ -54,6 +56,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (loginLink) loginLink.style.display = 'list-item';
         if (pendingBadge) pendingBadge.style.display = 'none';
         if (colleagueSection) colleagueSection.style.display = 'none';
+        if (manualShiftInfo) manualShiftInfo.style.display = 'block';
     }
 
     // Global event listener for utlogging
