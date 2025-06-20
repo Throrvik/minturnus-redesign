@@ -122,6 +122,38 @@
         <div id="message"></div>
     </div>
 
+    <form id="override-form" class="shift-form">
+        <h3>Legg til midlertidig overstyring</h3>
+        <label for="override-name">Navn på turnus:</label>
+        <input type="text" id="override-name" placeholder="Eks: Thomas">
+
+        <label for="override-start">Startdato</label>
+        <input type="date" id="override-start">
+
+        <label for="override-length">Varighet</label>
+        <input type="number" id="override-length" value="1" min="1">
+        <select id="override-unit">
+            <option value="days">Dager</option>
+            <option value="weeks">Uker</option>
+        </select>
+
+        <label for="override-pattern">Ny turnus</label>
+        <input type="text" id="override-pattern" placeholder="2-2">
+
+        <label for="override-color">Farge</label>
+        <input type="color" id="override-color">
+
+        <button type="button" id="add-override" class="btn">Lagre overstyring</button>
+    </form>
+
+    <div class="shift-list-header">
+        <span class="shift-header">Navn</span>
+        <span class="shift-header">Periode</span>
+        <span class="shift-header">Turnus</span>
+        <span class="shift-header">Handling</span>
+    </div>
+    <div id="override-list" class="shift-list"></div>
+
     <!-- Kolonnetitler for turnuslisten -->
     <div class="shift-list-header">
         <span class="shift-header">Velg</span>
