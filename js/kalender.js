@@ -155,6 +155,10 @@ const months = [
     'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'
 ];
 
+const dayNames = [
+    'Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'
+];
+
 document.addEventListener('DOMContentLoaded', function () {
     renderWeekdayRow();
     initializeEventListeners();
@@ -953,6 +957,11 @@ function showDayPopup(date, anchorEl) {
     closeSpan.textContent = '\u00d7';
     closeSpan.addEventListener('click', hideDayPopup);
     dayPopup.appendChild(closeSpan);
+
+    const header = document.createElement('div');
+    header.className = 'popup-date';
+    header.textContent = `${dayNames[date.getDay()]} ${date.getDate()}. ${months[date.getMonth()]}`;
+    dayPopup.appendChild(header);
 
     list.forEach(shift => {
         const item = document.createElement('div');
