@@ -1,3 +1,15 @@
+// Handle localStorage versioning for shift and color data
+const APP_VERSION = '1.0'; // Increase when releasing a new version
+const savedVersion = localStorage.getItem('appVersion');
+if (savedVersion !== APP_VERSION) {
+  localStorage.removeItem('shifts');
+  localStorage.removeItem('availableColors');
+  localStorage.setItem('appVersion', APP_VERSION);
+  if (savedVersion !== null) {
+    location.reload();
+  }
+}
+
 // JavaScript for kalenderen
 const currentDate = new Date();
 let currentMonth = currentDate.getMonth();
