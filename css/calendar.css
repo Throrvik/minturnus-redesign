@@ -485,6 +485,25 @@ option {
     text-decoration: underline;
 }
 
+/* Informational box for the shift form */
+.info-box {
+    background-color: #fffbea;
+    border-left: 4px solid var(--accent-color);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.info-box .info-icon {
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
 .colleague-item input[type="checkbox"] {
     margin-right: 10px;
 }
