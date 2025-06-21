@@ -35,6 +35,12 @@ if ($stmt->affected_rows > 0) {
     $userStmt->execute();
     $res = $userStmt->get_result();
     if ($row = $res->fetch_assoc()) {
+        $senderStmt = $conn->prepare('SELECT firstname, lastname FROM users WHERE id = ?');
+        $senderStmt->bind_param('i', $sender);
+        $senderStmt->execute();
+        $sres = $senderStmt->get_result();
+        $senderRow = $sres->fetch_assoc();
+        $fromName = trim($senderRow['firstname'] . ' ' . $senderRow['lastname']);
         require_once __DIR__ . '/../backend/PHPMailer/src/Exception.php';
         require_once __DIR__ . '/../backend/PHPMailer/src/PHPMailer.php';
         require_once __DIR__ . '/../backend/PHPMailer/src/SMTP.php';
@@ -57,8 +63,19 @@ if ($stmt->affected_rows > 0) {
 
             $mail->isHTML(true);
             $mail->Subject = 'Ny kollegaforespørsel';
-            $mail->Body    = '<p>Hei ' . htmlspecialchars($row['firstname']) . ',</p><p>Du har mottatt en ny kollegaforespørsel i MinTurnus.</p><p>Logg inn for å godta eller avslå forespørselen.</p>';
-            $mail->AltBody = "Hei {$row['firstname']},\nDu har mottatt en ny kollegaforespørsel i MinTurnus. Logg inn for å godta eller avslå forespørselen.";
+            $accept = 'https://minturnus.no/friends.html';
+            $decline = 'https://minturnus.no/friends.html';
+            $body  = '<div style="font-family:Arial,sans-serif;color:#333">';
+            $body .= '<p>Hei ' . htmlspecialchars($row['firstname']) . ',</p>';
+            $body .= '<p>' . htmlspecialchars($fromName) . ' har sendt deg en kollegaforespørsel i MinTurnus.</p>';
+            $body .= '<p>';
+            $body .= '<a href="' . $accept . '" style="background-color:#F4A300;color:#ffffff;padding:10px 20px;text-decoration:none;border-radius:4px;">Godta</a> ';
+            $body .= '<a href="' . $decline . '" style="background-color:#F4A300;color:#ffffff;padding:10px 20px;text-decoration:none;border-radius:4px;margin-left:10px;">Avslå</a>';
+            $body .= '</p>';
+            $body .= '<p>Av sikkerhetsmessige grunner anbefaler vi å gå til <a href="https://minside.no" style="color:#F4A300;">minside.no</a> for å finne kollega-siden.</p>';
+            $body .= '</div>';
+            $mail->Body    = $body;
+            $mail->AltBody = "Hei {$row['firstname']},\n{$fromName} har sendt deg en kollegaforespørsel. Gå til minside.no for å håndtere forespørselen.";
             $mail->send();
         } catch (Exception $e) {
             // ignore email errors
