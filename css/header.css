@@ -163,3 +163,9 @@
         display: block;
     }
 }
+
+@media (min-width: 769px) {
+    .request-bell {
+        display: none !important;
+    }
+}
