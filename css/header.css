@@ -51,6 +51,12 @@
     position: relative;
 }
 
+/* Position badge relative to the link so it stays next to the text on mobile */
+#friends-link {
+    position: relative;
+    display: inline-block;
+}
+
 .badge {
     position: absolute;
     top: -8px;
