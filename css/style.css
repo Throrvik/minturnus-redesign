@@ -169,7 +169,7 @@ h2 {
 }
 
 .about-box {
-    max-width: 600px;
+    max-width: 700px;
     margin: 40px auto;
     padding: 30px;
     background-color: var(--card-bg);
@@ -188,21 +188,62 @@ h2 {
 }
 
 .feature-list li {
-    position: relative;
-    padding-left: 1.5rem;
+    display: flex;
+    align-items: flex-start;
     margin-bottom: 0.5rem;
 }
 
-.feature-list li::before {
-    content: "\2713";
-    position: absolute;
-    left: 0;
-    margin-right: 0.5em;
-    color: #4CAF50;
+.feature-icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    line-height: 1.4;
 }
 
 section {
     margin-bottom: 1.5rem;
+}
+
+/* Personlig introduksjon */
+.personal-intro {
+    background-color: #f9f9f9;
+    border-left: 4px solid var(--accent-color);
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Eksempelbilder */
+.example-image {
+    width: 100%;
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
+}
+
+.example-caption {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: #555;
+}
+
+/* Call to action */
+.cta-section {
+    background-color: var(--accent-color);
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: var(--border-radius);
+    margin-top: 2rem;
+}
+
+.cta-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.cta-section .btn {
+    width: auto;
+    padding: 12px 30px;
 }
 
 /* Styling for Kontakt Oss Section */
