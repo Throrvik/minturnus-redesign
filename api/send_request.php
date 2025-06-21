@@ -19,6 +19,24 @@ if ($receiver <= 0 || $receiver === $sender) {
     exit;
 }
 
+$check = $conn->prepare('SELECT 1 FROM friend_requests WHERE sender_id = ? AND receiver_id = ? AND status = 0');
+$check->bind_param('ii', $sender, $receiver);
+$check->execute();
+$check->store_result();
+if ($check->num_rows > 0) {
+    echo json_encode(['status' => 'error', 'message' => 'Allerede sendt']);
+    exit;
+}
+
+$friend = $conn->prepare('SELECT 1 FROM friends WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)');
+$friend->bind_param('iiii', $sender, $receiver, $receiver, $sender);
+$friend->execute();
+$friend->store_result();
+if ($friend->num_rows > 0) {
+    echo json_encode(['status' => 'error', 'message' => 'Allerede kollegaer']);
+    exit;
+}
+
 $stmt = $conn->prepare("INSERT INTO friend_requests (sender_id, receiver_id, status) VALUES (?, ?, 0)");
 if (!$stmt) {
     http_response_code(500);
