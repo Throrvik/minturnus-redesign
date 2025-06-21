@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const profileItem = document.getElementById('profile-item');
     const loginLink = document.getElementById('login-link');
     const pendingBadge = document.getElementById('pending-count');
+    const requestBell = document.getElementById('request-bell');
+    const requestCount = document.getElementById('request-count');
     const colleagueSection = document.getElementById('colleague-section');
     const manualShiftInfo = document.getElementById('manual-shift-info');
 
@@ -39,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (friendsItem) friendsItem.style.display = 'list-item';
         if (profileItem) profileItem.style.display = 'list-item';
         if (pendingBadge) pendingBadge.style.display = 'inline';
+        if (requestBell) requestBell.style.display = 'none';
         if (colleagueSection) colleagueSection.style.display = 'block';
         if (manualShiftInfo) manualShiftInfo.style.display = 'none';
 
@@ -55,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Sørg for at "Logg inn"-lenken vises
         if (loginLink) loginLink.style.display = 'list-item';
         if (pendingBadge) pendingBadge.style.display = 'none';
+        if (requestBell) requestBell.style.display = 'none';
         if (colleagueSection) colleagueSection.style.display = 'none';
         if (manualShiftInfo) manualShiftInfo.style.display = 'block';
     }
@@ -84,7 +88,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    if (pendingBadge) {
+    if (requestBell) {
+        requestBell.addEventListener('click', function () {
+            window.location.href = 'friends.html';
+        });
+    }
+
+    if (pendingBadge || requestCount) {
         updatePendingBadge();
         setInterval(updatePendingBadge, 60000);
     }
@@ -92,19 +102,26 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 async function updatePendingBadge() {
     const badge = document.getElementById('pending-count');
-    if (!badge) return;
+    const bellBadge = document.getElementById('request-count');
+    const requestBell = document.getElementById('request-bell');
+    if (!badge && !bellBadge) return;
     try {
         const res = await fetch('api/pending_count.php', { credentials: 'include' });
         if (!res.ok) {
-            badge.style.display = 'none';
+            if (badge) badge.style.display = 'none';
+            if (bellBadge) bellBadge.style.display = 'none';
+            if (requestBell) requestBell.style.display = 'none';
             return;
         }
         const data = await res.json();
         if (data.count > 0) {
-            badge.textContent = data.count;
-            badge.style.display = 'block';
+            if (badge) { badge.textContent = data.count; badge.style.display = 'block'; }
+            if (bellBadge) { bellBadge.textContent = data.count; bellBadge.style.display = 'block'; }
+            if (requestBell) requestBell.style.display = 'block';
         } else {
-            badge.style.display = 'none';
+            if (badge) badge.style.display = 'none';
+            if (bellBadge) bellBadge.style.display = 'none';
+            if (requestBell) requestBell.style.display = 'none';
         }
     } catch (e) {
         console.error('Failed to fetch pending count:', e);
