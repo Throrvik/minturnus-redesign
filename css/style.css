@@ -218,6 +218,7 @@ section {
     border: 2px solid var(--secondary-color);
     border-radius: var(--border-radius);
     margin-top: 1rem;
+    cursor: zoom-in;
 }
 
 .example-caption {
@@ -419,6 +420,12 @@ a:hover {
     right: 10px;
     font-size: 1.5rem;
     cursor: pointer;
+}
+
+#image-modal-content {
+    max-width: 90vw;
+    max-height: 80vh;
+    display: block;
 }
 
 /* Toggle for user shift in calendar */
