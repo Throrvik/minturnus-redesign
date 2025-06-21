@@ -77,7 +77,7 @@ All endpoints require the user to be logged in via PHP sessions.
 | `api/pending_requests.php` | GET | List incoming colleague requests. |
 | `api/respond_request.php` | POST | Accept or decline a request. JSON body `{id, accept}`. |
 | `api/my_colleagues.php` | GET | List confirmed colleagues. |
-| `api/remove_colleague.php` | DELETE | Remove a colleague. JSON body `{id}`. |
+| `api/remove_colleague.php` | DELETE | Remove a colleague. JSON body `{id}`. Any associated request entry is also deleted so a new request can be made. |
 
 These scripts expect the tables `friend_requests` and `friends` in the database
 as described in `js/friends.js`.

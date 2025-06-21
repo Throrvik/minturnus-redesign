@@ -13,8 +13,19 @@ $data = json_decode(file_get_contents('php://input'), true);
 $other = isset($data['id']) ? (int)$data['id'] : 0;
 $uid = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("DELETE FROM friends WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)");
+
+// Remove the colleague relationship
+$stmt = $conn->prepare(
+    'DELETE FROM friends WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)'
+);
 $stmt->bind_param('iiii', $uid, $other, $other, $uid);
 $stmt->execute();
+
+// Also remove any existing friend request records so a new request can be sent
+$req = $conn->prepare(
+    'DELETE FROM friend_requests WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)'
+);
+$req->bind_param('iiii', $uid, $other, $other, $uid);
+$req->execute();
 
 echo json_encode(['status' => 'success']);
