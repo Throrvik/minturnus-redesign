@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/cookie-consent.css">
     <script defer src="js/session.js"></script>
     <script defer src="js/cookie-consent.js"></script>
+    <script defer src="js/about.js"></script>
 </head>
 <body class="about-page">
     <header class="header">
@@ -57,6 +58,7 @@
                     <li><span class="feature-icon">&#10003;</span>Marker nære kollegaer for rask tilgang.</li>
                     <li><span class="feature-icon">&#10003;</span>Angi midlertidige avvik som ferie eller bytte av skift.</li>
                     <li><span class="feature-icon">&#10003;</span>Data lagres trygt på serveren slik at den følger deg på tvers av enheter.</li>
+                    <li><span class="feature-icon">&#10003;</span>Legg til lokasjon som båt, rigg eller plattform på profilen slik at venner vet hvor du jobber.</li>
                 </ul>
             </section>
 
@@ -80,6 +82,13 @@
                 <a href="register.html" class="btn">Registrer deg</a>
             </section>
         </main>
+
+    <div id="image-modal" class="modal">
+        <div class="modal-content">
+            <span id="image-close" class="close">&times;</span>
+            <img id="image-modal-content" src="" alt="Forstørret bilde">
+        </div>
+    </div>
 
     <div id="cookie-banner" class="cookie-banner">
         <p>Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
