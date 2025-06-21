@@ -115,7 +115,8 @@ CREATE TABLE `friend_requests` (
   `status` TINYINT NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   KEY `sender_id` (`sender_id`),
-  KEY `receiver_id` (`receiver_id`)
+  KEY `receiver_id` (`receiver_id`),
+  UNIQUE KEY `unique_pair` (`sender_id`, `receiver_id`)
 );
 
 CREATE TABLE `friends` (
