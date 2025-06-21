@@ -72,7 +72,7 @@ if ($stmt->affected_rows > 0) {
             $body .= '<a href="' . $accept . '" style="background-color:#F4A300;color:#ffffff;padding:10px 20px;text-decoration:none;border-radius:4px;">Godta</a> ';
             $body .= '<a href="' . $decline . '" style="background-color:#F4A300;color:#ffffff;padding:10px 20px;text-decoration:none;border-radius:4px;margin-left:10px;">Avslå</a>';
             $body .= '</p>';
-            $body .= '<p>Av sikkerhetsmessige grunner anbefaler vi å gå til <a href="https://minside.no" style="color:#F4A300;">minside.no</a> for å finne kollega-siden.</p>';
+            $body .= '<p>Av sikkerhetsmessige grunner anbefaler vi å gå til <a href="https://minturnus.no" style="color:#F4A300;">MinTurnus.no</a> for å finne kollega-siden.</p>';
             $body .= '</div>';
             $mail->Body    = $body;
             $mail->AltBody = "Hei {$row['firstname']},\n{$fromName} har sendt deg en kollegaforespørsel. Gå til minside.no for å håndtere forespørselen.";
