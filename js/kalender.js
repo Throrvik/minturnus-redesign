@@ -64,11 +64,19 @@ function loadColleagueColorPrefs() {
 }
 
 function loadCloseColleagues() {
+  if (!localStorage.getItem('userName')) {
+    const s = localStorage.getItem('closeColleagues');
+    closeColleagues = s ? JSON.parse(s) : {};
+    return;
+  }
   fetch('api/close_colleagues.php', { credentials: 'include' })
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) throw new Error('unauthorized');
+      return r.json();
+    })
     .then(ids => {
       closeColleagues = {};
-      ids.forEach(id => closeColleagues[id] = true);
+      ids.forEach(id => (closeColleagues[id] = true));
       localStorage.setItem('closeColleagues', JSON.stringify(closeColleagues));
     })
     .catch(() => {
@@ -87,8 +95,19 @@ function saveColleagueColorPrefs() {
 }
 
 function loadShiftDeviations() {
+  if (!localStorage.getItem('userName')) {
+    const s = localStorage.getItem('shiftDeviations');
+    if (s) {
+      shiftDeviations = JSON.parse(s);
+      shiftDeviations.forEach(d => (d.startDate = new Date(d.startDate + 'T00:00')));
+    }
+    return;
+  }
   fetch('api/shift_deviations.php', { credentials: 'include' })
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) throw new Error('unauthorized');
+      return r.json();
+    })
     .then(list => {
       shiftDeviations = list.map(d => ({
         id: d.id,
@@ -564,8 +583,16 @@ function saveSelectedColleagues() {
 
 
 function loadColleaguesList() {
+    if (!localStorage.getItem('userName')) {
+        colleagues = [];
+        renderColleagueList();
+        return;
+    }
     fetch('api/my_colleagues.php', { credentials: 'include' })
-        .then(r => r.json())
+        .then(r => {
+            if (!r.ok) throw new Error('unauthorized');
+            return r.json();
+        })
         .then(data => {
             if (!Array.isArray(data)) return;
             colleagues = data.filter(c => !c.info_hide);
