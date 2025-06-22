@@ -59,3 +59,27 @@
 .suggestion-card button {
     width: 100%;
 }
+
+/* Share modal */
+.share-btn {
+    margin-bottom: 20px;
+}
+
+#share-link {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+}
+
+#share-modal .share-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+#qr-code {
+    margin-top: 10px;
+}

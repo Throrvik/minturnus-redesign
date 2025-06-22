@@ -44,6 +44,38 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === modal) modal.style.display = 'none';
         });
     }
+
+    // Share modal setup
+    const shareBtn = document.getElementById('share-btn');
+    const shareModal = document.getElementById('share-modal');
+    const shareClose = document.getElementById('share-close');
+    const shareLink = document.getElementById('share-link');
+    const copyBtn = document.getElementById('copy-link-btn');
+    const messengerLink = document.getElementById('messenger-link');
+    const qrBox = document.getElementById('qr-code');
+    const shareURL = 'https://minturnus.no/venn';
+
+    if (shareLink) shareLink.value = shareURL;
+    if (messengerLink) messengerLink.href = 'https://m.me/?link=' + encodeURIComponent(shareURL);
+
+    function openShare() {
+        if (shareModal) shareModal.style.display = 'block';
+        if (qrBox) {
+            qrBox.innerHTML = '';
+            if (typeof QRCode === 'function') {
+                new QRCode(qrBox, { text: shareURL, width: 160, height: 160 });
+            } else {
+                const img = document.createElement('img');
+                img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(shareURL);
+                qrBox.appendChild(img);
+            }
+        }
+    }
+
+    if (shareBtn) shareBtn.onclick = openShare;
+    if (shareClose) shareClose.onclick = () => { if (shareModal) shareModal.style.display = 'none'; };
+    window.addEventListener('click', e => { if (e.target === shareModal) shareModal.style.display = 'none'; });
+    if (copyBtn) copyBtn.onclick = () => { shareLink.select(); shareLink.setSelectionRange(0, 99999); document.execCommand('copy'); };
 });
 
 function updateColorOptions() {
