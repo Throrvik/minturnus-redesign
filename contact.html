@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/cookie-consent.css">
     <script defer src="js/session.js"></script>
+    <script defer src="js/csrf.js"></script>
     <script defer src="js/contact.js"></script>
     <script defer src="js/cookie-consent.js"></script>
 
@@ -41,6 +42,7 @@
         <div class="contact-box">
             <h1 class="page-title">Kontakt oss</h1>
             <form id="contactForm" onsubmit="sendMail(event)">
+                <input type="hidden" name="csrf_token" value="">
    
                 <p>Har du spørsmål, tilbakemeldinger eller ønsker å komme i kontakt med oss? Fyll ut skjemaet nedenfor eller send mail til <a href="mailto:thomas@minturnus.no">thomas@minturnus.no</a>.</p>
                 
@@ -75,7 +77,8 @@
 
             fetch('backend/send_mail.php', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: { 'X-CSRF-Token': window.CSRF_TOKEN }
             })
             .then(response => {
                 if (!response.ok) {

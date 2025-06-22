@@ -11,6 +11,8 @@ if ($devMode) {
     error_reporting(0);
 }
 session_start();
+require_once 'csrf.php';
+validate_csrf();
 require_once 'database.php';
 
 // Start session variables only after the user has been authenticated

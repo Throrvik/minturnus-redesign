@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/cookie-consent.css">
     <script defer src="js/message.js"></script>
     <script defer src="js/session.js"></script>
+    <script defer src="js/csrf.js"></script>
     <script defer src="js/user_card.js"></script>
     <script defer src="js/user_profile.js"></script>
     <script defer src="js/cookie-consent.js"></script>
@@ -41,6 +42,7 @@
 
     <div class="contact-box user-profile-box">
         <form id="user-profile-form" class="user-profile" novalidate>
+            <input type="hidden" name="csrf_token" value="">
             <h1 class="page-title">Brukerprofil</h1>
 
             <div class="avatar-section">

@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
+                        'X-CSRF-Token': window.CSRF_TOKEN
                     },
                     body: formData,
                     credentials: 'include'

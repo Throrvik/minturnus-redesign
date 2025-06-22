@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('backend/forgot_password.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': window.CSRF_TOKEN
             },
             body: JSON.stringify({ email })
         })

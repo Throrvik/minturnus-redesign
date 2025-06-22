@@ -87,7 +87,7 @@ function sendRequest(id, btn) {
     return fetch('api/send_request.php', {
         credentials: 'include',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id })
     })
         .then(r => r.json())
@@ -127,7 +127,7 @@ function respondRequest(id, accept) {
     fetch('api/respond_request.php', {
         credentials: 'include',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id, accept })
     })
         .then(() => {
@@ -154,7 +154,7 @@ function removeColleague(id) {
     fetch('api/remove_colleague.php', {
         credentials: 'include',
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id })
     })
     .then(() => loadColleagues());
@@ -182,7 +182,7 @@ function cancelRequest(id) {
     fetch('api/cancel_request.php', {
         credentials: 'include',
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id })
     }).then(() => loadSentRequests());
 }

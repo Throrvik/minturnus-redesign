@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'csrf.php';
+validate_csrf();
 ob_clean();
 
 header('Content-Type: application/json');

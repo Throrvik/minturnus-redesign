@@ -460,7 +460,7 @@ function addDeviation() {
     fetch('api/shift_deviations.php', {
         credentials: 'include',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify(payload)
     })
     .then(r => r.json())
@@ -486,7 +486,7 @@ function deleteDeviation(index) {
     fetch('api/shift_deviations.php', {
         credentials: 'include',
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id: dev.id })
     })
     .then(() => {

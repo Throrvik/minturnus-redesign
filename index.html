@@ -17,6 +17,7 @@
     <script defer src="js/user_card.js"></script>
     <script defer src="js/kalender.js"></script>
     <script defer src="js/session.js"></script>
+    <script defer src="js/csrf.js"></script>
     <script defer src="js/cookie-consent.js"></script>
 </head>
 <body>
@@ -87,6 +88,7 @@
     <div id="deviation-section">
         <button id="toggle-deviation" class="btn" style="display:none;">Legg til avvik fra turnus</button>
         <form id="deviation-form" class="shift-form" style="display:none;">
+            <input type="hidden" name="csrf_token" value="">
             <h3>Avvik fra egen turnus</h3>
             <label for="deviation-start">Startdato</label>
             <input type="date" id="deviation-start">
