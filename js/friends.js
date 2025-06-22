@@ -53,10 +53,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copy-link-btn');
     const messengerLink = document.getElementById('messenger-link');
     const qrBox = document.getElementById('qr-code');
-    const shareURL = 'https://minturnus.no/venn';
+    const copyFeedback = document.getElementById('copy-feedback');
+
+    let shareURL = 'https://minturnus.no/venn';
+    const refName = localStorage.getItem('userName');
+    if (refName) {
+        shareURL += '?ref=' + encodeURIComponent(refName);
+    }
 
     if (shareLink) shareLink.value = shareURL;
-    if (messengerLink) messengerLink.href = 'https://m.me/?link=' + encodeURIComponent(shareURL);
+
+    fetch('backend/get_config.php')
+        .then(r => r.json())
+        .then(cfg => {
+            const appId = cfg.facebook_app_id || '';
+            if (messengerLink) {
+                if (appId) {
+                    messengerLink.href =
+                        `https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareURL)}&app_id=${appId}&redirect_uri=https://minturnus.no/`;
+                } else {
+                    messengerLink.href = 'https://m.me/?link=' + encodeURIComponent(shareURL);
+                }
+            }
+        });
 
     function openShare() {
         if (shareModal) shareModal.style.display = 'block';
@@ -75,7 +94,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (shareBtn) shareBtn.onclick = openShare;
     if (shareClose) shareClose.onclick = () => { if (shareModal) shareModal.style.display = 'none'; };
     window.addEventListener('click', e => { if (e.target === shareModal) shareModal.style.display = 'none'; });
-    if (copyBtn) copyBtn.onclick = () => { shareLink.select(); shareLink.setSelectionRange(0, 99999); document.execCommand('copy'); };
+    if (copyBtn) copyBtn.onclick = () => {
+        shareLink.select();
+        shareLink.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        if (copyFeedback) {
+            copyFeedback.textContent = 'Lenke kopiert!';
+            copyFeedback.style.display = 'block';
+            setTimeout(() => { copyFeedback.style.display = 'none'; }, 3000);
+        }
+    };
 });
 
 function updateColorOptions() {
