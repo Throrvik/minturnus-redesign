@@ -54,16 +54,54 @@ function createCard(user, options = {}) {
     const info = document.createElement('div');
     info.className = 'user-info';
     const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
-    info.innerHTML = `<p class="name"><strong>${name.trim()}</strong></p>`;
+    const nameP = document.createElement('p');
+    nameP.className = 'name';
+    const strongName = document.createElement('strong');
+    strongName.textContent = name.trim();
+    nameP.appendChild(strongName);
+    info.appendChild(nameP);
     if (!options.mini) {
         if (options.compact) {
-            if (user.company) info.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
-            if (user.location) info.innerHTML += `<p><strong>Lokasjon:</strong> ${user.location}</p>`;
-            if (user.shift) info.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
+            if (user.company) {
+                const p = document.createElement('p');
+                const s = document.createElement('strong');
+                s.textContent = 'Firma:';
+                p.appendChild(s);
+                p.append(' ' + user.company);
+                info.appendChild(p);
+            }
+            if (user.location) {
+                const p = document.createElement('p');
+                const s = document.createElement('strong');
+                s.textContent = 'Lokasjon:';
+                p.appendChild(s);
+                p.append(' ' + user.location);
+                info.appendChild(p);
+            }
+            if (user.shift) {
+                const p = document.createElement('p');
+                const s = document.createElement('strong');
+                s.textContent = 'Turnus:';
+                p.appendChild(s);
+                p.append(' ' + user.shift);
+                info.appendChild(p);
+            }
         } else {
-            if (user.company) info.innerHTML += `<p>${user.company}</p>`;
-            if (user.location) info.innerHTML += `<p>${user.location}</p>`;
-            if (user.shift) info.innerHTML += `<p>${user.shift}</p>`;
+            if (user.company) {
+                const p = document.createElement('p');
+                p.textContent = user.company;
+                info.appendChild(p);
+            }
+            if (user.location) {
+                const p = document.createElement('p');
+                p.textContent = user.location;
+                info.appendChild(p);
+            }
+            if (user.shift) {
+                const p = document.createElement('p');
+                p.textContent = user.shift;
+                info.appendChild(p);
+            }
             // shift_date intentionally ignored
         }
     }
@@ -184,9 +222,30 @@ function createProfileCard(user) {
     const infoDiv = document.createElement('div');
     infoDiv.className = 'profile-info';
     if (!user.info_hide) {
-        if (user.company) infoDiv.innerHTML += `<p><strong>Firma:</strong> ${user.company}</p>`;
-        if (user.location) infoDiv.innerHTML += `<p><strong>Lokasjon:</strong> ${user.location}</p>`;
-        if (user.shift) infoDiv.innerHTML += `<p><strong>Turnus:</strong> ${user.shift}</p>`;
+        if (user.company) {
+            const p = document.createElement('p');
+            const s = document.createElement('strong');
+            s.textContent = 'Firma:';
+            p.appendChild(s);
+            p.append(' ' + user.company);
+            infoDiv.appendChild(p);
+        }
+        if (user.location) {
+            const p = document.createElement('p');
+            const s = document.createElement('strong');
+            s.textContent = 'Lokasjon:';
+            p.appendChild(s);
+            p.append(' ' + user.location);
+            infoDiv.appendChild(p);
+        }
+        if (user.shift) {
+            const p = document.createElement('p');
+            const s = document.createElement('strong');
+            s.textContent = 'Turnus:';
+            p.appendChild(s);
+            p.append(' ' + user.shift);
+            infoDiv.appendChild(p);
+        }
     }
 
     contentDiv.appendChild(infoDiv);

@@ -365,7 +365,25 @@ function updateUserProfile() {
             localStorage.setItem('userName', first);
             const userInfoDiv = document.getElementById('user-info');
             if (userInfoDiv) {
-                userInfoDiv.innerHTML = `<span>Velkommen, <a href="user_profile.html"><strong>${first}</strong></a></span> <span class="accent-text">|</span> <a href="#" id="logout-btn">Logg ut</a>`;
+                userInfoDiv.textContent = '';
+                const welcomeSpan = document.createElement('span');
+                welcomeSpan.textContent = 'Velkommen, ';
+                const nameLink = document.createElement('a');
+                nameLink.href = 'user_profile.html';
+                const strong = document.createElement('strong');
+                strong.textContent = first;
+                nameLink.appendChild(strong);
+                welcomeSpan.appendChild(nameLink);
+                const sep = document.createElement('span');
+                sep.className = 'accent-text';
+                sep.textContent = ' | ';
+                const logout = document.createElement('a');
+                logout.href = '#';
+                logout.id = 'logout-btn';
+                logout.textContent = 'Logg ut';
+                userInfoDiv.appendChild(welcomeSpan);
+                userInfoDiv.appendChild(sep);
+                userInfoDiv.appendChild(logout);
             }
         } else {
             showMessage(`Kunne ikke oppdatere profil: ${data.message}`, 'error');
@@ -413,9 +431,30 @@ function showPreview() {
     infoDiv.className = 'profile-info';
 
     if (showInfo) {
-        if (company) infoDiv.innerHTML += `<p><strong>Firma:</strong> ${company}</p>`;
-        if (location) infoDiv.innerHTML += `<p><strong>Lokasjon:</strong> ${location}</p>`;
-        if (shift) infoDiv.innerHTML += `<p><strong>Turnus:</strong> ${shift}</p>`;
+        if (company) {
+            const p = document.createElement('p');
+            const s = document.createElement('strong');
+            s.textContent = 'Firma:';
+            p.appendChild(s);
+            p.append(' ' + company);
+            infoDiv.appendChild(p);
+        }
+        if (location) {
+            const p = document.createElement('p');
+            const s = document.createElement('strong');
+            s.textContent = 'Lokasjon:';
+            p.appendChild(s);
+            p.append(' ' + location);
+            infoDiv.appendChild(p);
+        }
+        if (shift) {
+            const p = document.createElement('p');
+            const s = document.createElement('strong');
+            s.textContent = 'Turnus:';
+            p.appendChild(s);
+            p.append(' ' + shift);
+            infoDiv.appendChild(p);
+        }
     }
 
     contentDiv.appendChild(infoDiv);

@@ -1045,13 +1045,27 @@ function renderShiftList() {
         const listItem = document.createElement('div');
         listItem.className = 'shift-item';
 
-        listItem.innerHTML = `
-            <input type="checkbox" ${shift.visible ? 'checked' : ''} onclick="toggleShiftVisibility(${index})">
-            <span style="color:${shift.color}; font-weight: bold;">${shift.name}</span>
-            <span>(${shift.raw || `${shift.workWeeks}-${shift.offWeeks}`})</span>
-            <button onclick="deleteShift(${index})">Slett</button>
-        `;
-        
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!shift.visible;
+        cb.addEventListener('click', () => toggleShiftVisibility(index));
+        listItem.appendChild(cb);
+
+        const nameSpan = document.createElement('span');
+        nameSpan.style.color = shift.color;
+        nameSpan.style.fontWeight = 'bold';
+        nameSpan.textContent = shift.name;
+        listItem.appendChild(nameSpan);
+
+        const infoSpan = document.createElement('span');
+        infoSpan.textContent = `(${shift.raw || `${shift.workWeeks}-${shift.offWeeks}`})`;
+        listItem.appendChild(infoSpan);
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Slett';
+        delBtn.addEventListener('click', () => deleteShift(index));
+        listItem.appendChild(delBtn);
+
         shiftList.appendChild(listItem);
     });
     saveShiftsToLocalStorage(); // Husk å lagre etter hver endring
