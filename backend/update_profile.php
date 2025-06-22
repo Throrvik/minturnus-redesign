@@ -45,6 +45,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $avatarUrl = null;
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $maxFileSize = 2 * 1024 * 1024; // 2 MB
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($_FILES['avatar']['tmp_name']);
+            if (!in_array($mimeType, $allowedTypes)) {
+                http_response_code(400);
+                echo json_encode(['status' => 'error', 'message' => 'Ugyldig filtype for avatar']);
+                exit;
+            }
+
+            if ($_FILES['avatar']['size'] > $maxFileSize) {
+                http_response_code(400);
+                echo json_encode(['status' => 'error', 'message' => 'Avatarfilen er for stor']);
+                exit;
+            }
+
             $uploadDir = __DIR__ . '/../uploads/avatars/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
