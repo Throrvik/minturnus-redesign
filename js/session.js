@@ -1,5 +1,6 @@
 // Global debug flag
-const DEBUG = false;
+window.DEBUG = window.DEBUG || false;
+var DEBUG = window.DEBUG;
 
 document.addEventListener('DOMContentLoaded', async function () {
     // Verify the current session with the backend

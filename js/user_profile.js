@@ -10,7 +10,8 @@ let avatarRemoveFlag = null;
 let cropperCanvas = null;
 
 // Debugging flag
-const DEBUG = false;
+window.DEBUG = window.DEBUG || false;
+var DEBUG = window.DEBUG;
 
 document.addEventListener('DOMContentLoaded', function () {
     const allColors = [

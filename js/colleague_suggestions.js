@@ -1,5 +1,6 @@
 // JS module for colleague suggestions based on user profile
-const DEBUG = false;
+window.DEBUG = window.DEBUG || false;
+var DEBUG = window.DEBUG;
 
 const initColleagueSuggestions = async () => {
     const container = document.getElementById('colleague-suggestions');

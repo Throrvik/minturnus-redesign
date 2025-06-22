@@ -1,5 +1,6 @@
 // Global debug flag
-const DEBUG = false;
+window.DEBUG = window.DEBUG || false;
+var DEBUG = window.DEBUG;
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('forgot-password-form').addEventListener('submit', function (event) {
