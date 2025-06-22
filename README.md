@@ -103,8 +103,7 @@ border in the calendar. Deviation entries are stored in the
 
 ### Creating the friends tables
 
-You can create the required tables manually or import the provided
-`schema.sql` file using phpMyAdmin's **Import** feature. The SQL definition is
+You can create the required tables manually. The SQL definition is
 shown below:
 
 ```sql
