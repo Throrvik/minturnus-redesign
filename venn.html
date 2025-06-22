@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitasjon - MinTurnus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/icon-512.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/cookie-consent.css">
+    <script defer src="js/session.js"></script>
+    <script defer src="js/invite.js"></script>
+    <script defer src="js/cookie-consent.js"></script>
+</head>
+<body>
+<header class="header">
+    <h1><a href="index.html">Min<span class="accent-text">Turnus</span></a></h1>
+    <div class="user-container">
+        <div id="user-info"></div>
+    </div>
+    <div id="request-bell" class="request-bell">&#128276;<span id="request-count" class="badge"></span></div>
+    <div id="hamburger" class="hamburger">&#9776;</div>
+</header>
+<nav id="navbar" class="navbar">
+    <ul>
+        <li><a href="index.html">Kalender</a></li>
+        <li><a href="about.html">Om oss</a></li>
+        <li><a href="contact.html">Kontakt</a></li>
+        <li id="friends-item" style="display:none;"><a href="friends.html" id="friends-link">Kollegaer<span id="pending-count" class="badge"></span></a></li>
+        <li id="profile-item" style="display:none;"><a href="user_profile.html">Min profil</a></li>
+        <li><a href="login.html" id="login-link">Logg inn</a></li>
+    </ul>
+</nav>
+<main class="contact-box invite-box">
+    <h1 class="page-title">Du er invitert til MinTurnus</h1>
+    <p>MinTurnus gjør det enkelt å holde oversikt over turnusen din – og dele den med kollegaer.</p>
+    <p id="ref-info"></p>
+    <img src="https://via.placeholder.com/400x250?text=MinTurnus" alt="Skjermbilde" class="invite-image">
+    <button class="btn" onclick="window.location.href='register.html'">Lag gratis profil</button>
+</main>
+<div id="cookie-banner" class="cookie-banner">
+    <p>Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
+    <div class="button-group">
+        <button id="accept-cookies" class="btn">Godta</button>
+        <button id="reject-cookies" class="btn-secondary">Avslå</button>
+    </div>
+</div>
+</body>
+</html>

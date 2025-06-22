@@ -228,6 +228,17 @@ section {
     color: #555;
 }
 
+/* Invite page */
+.invite-box {
+    text-align: center;
+}
+
+.invite-image {
+    width: 100%;
+    border-radius: var(--border-radius);
+    margin: 1rem 0;
+}
+
 /* Call to action */
 .cta-section {
     background-color: var(--accent-color);

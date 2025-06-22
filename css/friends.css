@@ -83,3 +83,9 @@
 #qr-code {
     margin-top: 10px;
 }
+
+.copy-feedback {
+    margin-top: 10px;
+    color: green;
+    display: none;
+}
