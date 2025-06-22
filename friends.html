@@ -17,6 +17,7 @@
     <script defer src="js/user_card.js"></script>
     <script defer src="js/friends.js"></script><!-- new -->
     <script defer src="js/colleague_suggestions.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
     <script defer src="js/cookie-consent.js"></script>
 </head>
 <body>
@@ -42,6 +43,7 @@
 
 <div class="contact-box friends-page">
     <h1 class="page-title">Kollegaer</h1>
+    <button id="share-btn" class="btn-secondary share-btn">Del MinTurnus</button>
     <!-- Søkeseksjon -->
     <section class="search-section">
         <input type="text" id="search-input" placeholder="Søk etter navn">
@@ -69,6 +71,18 @@
         <div class="modal-content">
             <span id="colleague-close" class="close">&times;</span>
             <div id="colleague-content"></div>
+        </div>
+    </div>
+    <div id="share-modal" class="modal">
+        <div class="modal-content share-content">
+            <span id="share-close" class="close">&times;</span>
+            <h3>Del MinTurnus</h3>
+            <input type="text" id="share-link" readonly>
+            <div class="button-row">
+                <button id="copy-link-btn" class="btn">Kopier lenke</button>
+                <a id="messenger-link" class="btn" target="_blank">Send på Messenger</a>
+            </div>
+            <div id="qr-code"></div>
         </div>
     </div>
 </div>
