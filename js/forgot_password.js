@@ -1,3 +1,6 @@
+// Global debug flag
+const DEBUG = false;
+
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('forgot-password-form').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -19,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             errorMessages.style.color = data.success ? 'green' : 'red';
         })
         .catch(error => {
-            console.error('Feil ved tilbakestilling:', error);
+            if (DEBUG) console.error('Feil ved tilbakestilling:', error);
         });
     });
 });

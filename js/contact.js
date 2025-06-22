@@ -1,3 +1,6 @@
+// Global debug flag
+const DEBUG = false;
+
 document.addEventListener('DOMContentLoaded', async function () {
     try {
         const res = await fetch('backend/get_user_data.php', { credentials: 'include' });
@@ -17,6 +20,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
     } catch (e) {
-        console.error('Failed to pre-fill contact form:', e);
+        if (DEBUG) console.error('Failed to pre-fill contact form:', e);
     }
 });

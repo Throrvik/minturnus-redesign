@@ -25,7 +25,9 @@ const todayButton = document.getElementById('today-button');
 const toggleYearButton = document.getElementById('toggle-year');
 let isYearView = false;
 
-console.log("🚀 kalender.js er lastet!");
+// Debugging flag to enable verbose logging when needed
+const DEBUG = false;
+if (DEBUG) console.log("🚀 kalender.js er lastet!");
 
 const msPerDay = 24 * 60 * 60 * 1000; // milliseconds in a day
 
