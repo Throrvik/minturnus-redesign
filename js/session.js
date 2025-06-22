@@ -109,6 +109,12 @@ async function updatePendingBadge() {
     const bellBadge = document.getElementById('request-count');
     const requestBell = document.getElementById('request-bell');
     if (!badge && !bellBadge) return;
+    if (!localStorage.getItem('userName')) {
+        if (badge) badge.style.display = 'none';
+        if (bellBadge) bellBadge.style.display = 'none';
+        if (requestBell) requestBell.style.display = 'none';
+        return;
+    }
     try {
         const res = await fetch('api/pending_count.php', { credentials: 'include' });
         if (!res.ok) {

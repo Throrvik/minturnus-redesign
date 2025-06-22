@@ -3,7 +3,9 @@ window.DEBUG = window.DEBUG || false;
 var DEBUG = window.DEBUG;
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('forgot-password-form').addEventListener('submit', function (event) {
+    const form = document.getElementById('forgot-password-form');
+    if (!form) return; // Script may be loaded on other pages
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
 
         const email = document.getElementById('email').value;
