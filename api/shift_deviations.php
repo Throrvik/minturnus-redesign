@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__ . '/../backend/csrf.php';
+validate_csrf();
 header('Content-Type: application/json');
 require_once __DIR__ . '/../backend/database.php';
 

@@ -347,7 +347,8 @@ function updateUserProfile() {
     fetch('backend/update_profile.php', {
         method: 'POST',
         body: formData,
-        credentials: 'include'
+        credentials: 'include',
+        headers: { 'X-CSRF-Token': window.CSRF_TOKEN }
     })
     .then(response => {
         if (DEBUG) console.log('HTTP response status:', response.status);
@@ -440,7 +441,8 @@ function deleteProfile() {
 
     fetch('backend/delete_profile.php', {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
+        headers: { 'X-CSRF-Token': window.CSRF_TOKEN }
     })
     .then(r => r.json())
     .then(data => {

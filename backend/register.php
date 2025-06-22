@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'csrf.php';
+validate_csrf();
 // Inkluder database.php for å koble til databasen
 require_once 'database.php';
 

@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'csrf.php';
+validate_csrf();
 header('Content-Type: application/json');
 require_once 'database.php';
 
