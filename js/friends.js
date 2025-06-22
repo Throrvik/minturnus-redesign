@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const qrBox = document.getElementById('qr-code');
     const copyFeedback = document.getElementById('copy-feedback');
 
-    let shareURL = 'https://minturnus.no/venn';
+    let shareURL = 'https://minturnus.no/venn.html';
     const refName = localStorage.getItem('userName');
     if (refName) {
         shareURL += '?ref=' + encodeURIComponent(refName);
