@@ -1,4 +1,5 @@
 // JS module for colleague suggestions based on user profile
+const DEBUG = false;
 
 const initColleagueSuggestions = async () => {
     const container = document.getElementById('colleague-suggestions');
@@ -96,7 +97,7 @@ const initColleagueSuggestions = async () => {
             container.appendChild(card);
         });
     } catch (e) {
-        console.error('Failed to load colleague suggestions', e);
+        if (DEBUG) console.error('Failed to load colleague suggestions', e);
     }
 };
 

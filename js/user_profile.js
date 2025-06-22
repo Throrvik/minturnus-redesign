@@ -9,6 +9,9 @@ let croppedAvatarBlob = null;
 let avatarRemoveFlag = null;
 let cropperCanvas = null;
 
+// Debugging flag
+const DEBUG = false;
+
 document.addEventListener('DOMContentLoaded', function () {
     const allColors = [
         "#FF6666", "#FFB266", "#FFFF66", "#B2FF66", "#66FFB2",
@@ -269,14 +272,14 @@ function endDrag() {
 function fetchUserData() {
     fetch('backend/get_user_data.php', { credentials: 'include' })
         .then(response => {
-            console.log('HTTP response status:', response.status);
+            if (DEBUG) console.log('HTTP response status:', response.status);
             if (!response.ok) {
                 throw new Error('Server returnerte en feil.');
             }
             return response.json();
         })
         .then(data => {
-            console.log('Server response:', data);
+            if (DEBUG) console.log('Server response:', data);
             if (data.status === 'success') {
                 document.getElementById('first-name').value = data.user.firstname || '';
                 document.getElementById('last-name').value = data.user.lastname || '';
@@ -301,7 +304,7 @@ function fetchUserData() {
             }
         })
         .catch(error => {
-            console.error('Feil ved henting av data:', error);
+            if (DEBUG) console.error('Feil ved henting av data:', error);
             showMessage('En feil oppstod ved henting av brukerdata.', 'error');
         });
 }
@@ -346,14 +349,14 @@ function updateUserProfile() {
         credentials: 'include'
     })
     .then(response => {
-        console.log('HTTP response status:', response.status);
+        if (DEBUG) console.log('HTTP response status:', response.status);
         if (!response.ok) {
             throw new Error('Server returnerte en feil.');
         }
         return response.json();
     })
     .then(data => {
-        console.log('Server response:', data);
+        if (DEBUG) console.log('Server response:', data);
         if (data.status === 'success') {
             showMessage('Profilen ble oppdatert!', 'success');
 
@@ -368,7 +371,7 @@ function updateUserProfile() {
         }
     })
     .catch(error => {
-        console.error('Feil ved oppdatering:', error);
+        if (DEBUG) console.error('Feil ved oppdatering:', error);
         showMessage('Kunne ikke oppdatere profil.', 'error');
     });
 }

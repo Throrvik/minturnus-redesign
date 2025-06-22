@@ -1,3 +1,6 @@
+// Global debug flag
+const DEBUG = false;
+
 document.addEventListener('DOMContentLoaded', async function () {
     // Verify the current session with the backend
     try {
@@ -16,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     } catch (e) {
         // If the request fails we keep the existing localStorage value
-        console.error('Session status check failed:', e);
+        if (DEBUG) console.error('Session status check failed:', e);
     }
 
     const userName = localStorage.getItem('userName');
@@ -70,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 try {
                     await fetch('backend/logout.php', { credentials: 'include' });
                 } catch (e) {
-                    console.error('Logout request failed:', e);
+                    if (DEBUG) console.error('Logout request failed:', e);
                 }
                 localStorage.removeItem('userName'); // Fjern brukernavn fra localStorage
                 window.location.href = 'index.html'; // Gå tilbake til hovedsiden
@@ -124,6 +127,6 @@ async function updatePendingBadge() {
             if (requestBell) requestBell.style.display = 'none';
         }
     } catch (e) {
-        console.error('Failed to fetch pending count:', e);
+        if (DEBUG) console.error('Failed to fetch pending count:', e);
     }
 }
