@@ -2,7 +2,7 @@
 
 MinTurnus is a small PHP and JavaScript web application for managing shifts and calendar events. The repository contains both the frontend (HTML/JS/CSS) and the backend PHP scripts.
 
-## Project structure
+## Project structure 
 
 - HTML files in the repository root provide pages such as the calendar, login and register forms.
 - `css/` and `js/` contain the static assets.
