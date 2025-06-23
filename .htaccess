@@ -1,0 +1,8 @@
+# Sørger for at alle .php, .js og .css kan kjøres herfra
+Options +Indexes
+DirectoryIndex index.html
+
+# Tillater CORS og AJAX-kall hvis nødvendig
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
