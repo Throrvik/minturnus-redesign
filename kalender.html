@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender - MinTurnus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/icon-512.png">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/user_profile.css">
+    <link rel="stylesheet" href="css/cookie-consent.css">
+    <script defer src="js/bundle.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <h1><a href="index.html">Min<span class="accent-text">Turnus</span></a></h1>
+        <div class="user-container">
+        <div id="user-info"></div>
+        </div>
+        <div id="request-bell" class="request-bell">&#128276;<span id="request-count" class="badge"></span></div>
+        <div id="hamburger" class="hamburger">&#9776;</div>
+    </header>
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a href="index.html">Kalender</a></li>
+                <li><a href="about.html">Om oss</a></li>
+                <li><a href="contact.html">Kontakt</a></li>
+                <li id="friends-item" style="display:none;"><a href="friends.html" id="friends-link">Kollegaer<span id="pending-count" class="badge"></span></a></li>
+                <li id="profile-item" style="display:none;"><a href="user_profile.html">Min profil</a></li>
+                <li><a href="login.html" id="login-link">Logg inn</a></li>
+            </ul>
+        </nav>
+    <!-- Kalender -->
+    <div class="container">
+        <div class="calendar-header">
+            <div class="calendar-top">
+                <h2 id="month-year" class="page-title">Oktober 2024</h2>
+                <div class="calendar-top-buttons">
+                    <button id="today-button" class="nav-button">I dag</button>
+                    <button id="toggle-year" class="nav-button">Vis år</button>
+                </div>
+            </div>
+            <div class="calendar-nav">
+                <button id="prev-month" class="nav-button">← Forrige</button>
+                <button id="next-month" class="nav-button">Neste →</button>
+            </div>
+        </div>
+        <div class="weekday-row">
+            <div class="weekday">MON</div>
+            <div class="weekday">TIR</div>
+            <div class="weekday">ONS</div>
+            <div class="weekday">TOR</div>
+            <div class="weekday">FRE</div>
+            <div class="weekday">LØR</div>
+            <div class="weekday">SØN</div>
+        </div>
+        <div class="calendar-grid"></div>
+        <div id="day-popup" class="day-popup" style="display:none;"></div>
+        <div id="year-container" class="year-container"></div>
+        <div id="turnus-oversikt" class="turnus-oversikt"></div>
+
+        <div id="colleague-section" class="colleague-section" style="display:none;">
+            <h3>Kollegaer i kalenderen</h3>
+            <p class="colleague-info">Her ser du kollegaer du allerede har lagt til. For å legge til nye kollegaer, gå til kollega-siden eller <a href="friends.html">trykk her</a>.</p>
+            <div class="colleague-buttons">
+                <button id="colleagues-all" class="action-btn">Alle</button>
+                <button id="colleagues-none" class="action-btn">Ingen</button>
+                <button id="colleagues-close" class="action-btn">Nære kollegaer</button>
+            </div>
+            <label for="colleague-search">Filtrer kollegaene nedenfor</label>
+            <input type="text" id="colleague-search" placeholder="Filtrer blant eksisterende kollegaer">
+            <div id="colleague-list" class="colleague-list">
+                <div id="user-shift-toggle" class="user-shift-toggle" style="display:none;">
+                    <label><input type="checkbox" id="show-user-shift"> <span id="user-shift-label"></span></label>
+                </div>
+            </div>
+        </div>
+
+    <div id="deviation-section">
+        <button id="toggle-deviation" class="btn" style="display:none;">Legg til avvik fra turnus</button>
+        <form id="deviation-form" class="shift-form" style="display:none;">
+            <input type="hidden" name="csrf_token" value="">
+            <h3>Avvik fra egen turnus</h3>
+            <label for="deviation-start">Startdato</label>
+            <input type="date" id="deviation-start">
+
+            <label for="deviation-pattern">Midlertidig turnus</label>
+            <select id="deviation-pattern">
+                <option value="0-1">0-1</option>
+                <option value="0-2">0-2</option>
+                <option value="0-3">0-3</option>
+                <option value="0-4">0-4</option>
+                <option value="0-5">0-5</option>
+                <option value="1-1">1-1</option>
+                <option value="1-2">1-2</option>
+                <option value="1-3">1-3</option>
+                <option value="1-4">1-4</option>
+                <option value="2-1">2-1</option>
+                <option value="2-2">2-2</option>
+                <option value="2-3">2-3</option>
+                <option value="2-4">2-4</option>
+                <option value="2-6">2-6</option>
+                <option value="3-1">3-1</option>
+                <option value="3-2">3-2</option>
+                <option value="3-3">3-3</option>
+                <option value="3-4">3-4</option>
+                <option value="4-4">4-4</option>
+                <option value="4-5">4-5</option>
+                <option value="4-8">4-8</option>
+                <option value="5-5">5-5</option>
+            </select>
+
+            <label for="deviation-behavior">Etter avvik</label>
+            <select id="deviation-behavior">
+                <option value="keep">Fortsett med original rytme</option>
+                <option value="shift">Fortsett fra slutten av avviket</option>
+            </select>
+
+            <button type="button" id="save-deviation" class="btn">Lagre avvik</button>
+        </form>
+        <div id="deviation-list" class="shift-list"></div>
+    </div>
+    <div class="shift-form">
+        <h3>Legg til ny turnus manuelt</h3>
+        <div class="info-box" id="manual-shift-info">
+            <span class="info-icon">🛈</span>
+            <span>Dette skjemaet brukes til å legge til generelle turnuser i kalenderen. Ønsker du å lagre din egen turnus og dele med kollegaer? <a href="register.html">Opprett en profil her</a>.</span>
+        </div>
+        
+        <label for="shift-name">Navn på turnus:</label>
+        <input type="text" id="shift-name" placeholder="Eks: Thomas">
+        
+        <label for="shift-duration">Turnus lengde:</label>
+        <select id="shift-duration">
+            <!-- Forhåndsdefinerte turnuser -->
+            <option value="mandag-fredag">Mandag til fredag</option>
+            <option value="1-1">1-1</option>
+            <option value="1-2">1-2</option>
+            <option value="1-3">1-3</option>
+            <option value="1-4">1-4</option>
+            <option value="2-1">2-1</option>
+            <option value="2-2">2-2</option>
+            <option value="2-3">2-3</option>
+            <option value="2-4">2-4</option>
+            <option value="2-6">2-6</option>
+            <option value="3-1">3-1</option>
+            <option value="3-2">3-2</option>
+            <option value="3-3">3-3</option>
+            <option value="3-4">3-4</option>
+            <option value="4-4">4-4</option>
+            <option value="4-5">4-5</option>
+            <option value="4-8">4-8</option>
+            <option value="5-5">5-5</option>
+            <option value="custom">Valgfritt...</option>
+        </select>
+                
+        <label for="shift-start">Første skiftdag</label>
+        <input type="date" id="shift-start">
+        
+        
+        <button id="add-shift" class="btn">Legg til turnus</button>
+        <button id="reset" class="btn-secondary">Tøm skjema</button>
+        <div id="message"></div>
+    </div>
+
+
+    <!-- Kolonnetitler for turnuslisten -->
+    <div class="shift-list-header">
+        <span class="shift-header">Velg</span>
+        <span class="shift-header">Navn på turnus</span>
+        <span class="shift-header">Turnus</span>
+        <span class="shift-header">Handling</span>
+    </div>
+
+    <!-- Liste over aktive turnuser med mulighet for sletting og skjuling -->
+    <div id="shift-list" class="shift-list"></div>
+
+</div>
+
+<div id="colleague-modal" class="modal">
+    <div class="modal-content">
+        <span id="colleague-close" class="close">&times;</span>
+        <div id="colleague-content"></div>
+    </div>
+</div>
+
+
+    <div id="cookie-banner" class="cookie-banner">
+        <p>Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
+        <div class="button-group">
+            <button id="accept-cookies" class="btn">Godta</button>
+            <button id="reject-cookies" class="btn-secondary">Avslå</button>
+        </div>
+    </div>
+
+
+</body>
+</html>
