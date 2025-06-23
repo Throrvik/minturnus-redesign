@@ -119,6 +119,15 @@
     </section>
   </main>
 
+  <!-- Cookie consent -->
+  <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex justify-between items-center">
+    <p class="text-sm">Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
+    <div class="flex gap-2">
+      <button id="accept-cookies" class="btn-primary px-4 py-2 text-white rounded-md">Godta</button>
+      <button id="decline-cookies" class="btn-secondary px-4 py-2 text-white rounded-md">Avslå</button>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="bg-gray-900 text-white py-8 text-center">
     <p>© 2025 MinTurnus.no | <a href="privacy.html" class="text-orange-400 hover:underline">Personvernerklæring</a></p>
@@ -126,11 +135,12 @@
 
   <script>
     const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    const userInfo = document.getElementById('user-info');
-    const userAvatar = document.getElementById('user-avatar');
-    const userFirstName = document.getElementById('user-firstname');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenu = document.getElementById('closeMenu');
+  const userInfo = document.getElementById('user-info');
+  const userAvatar = document.getElementById('user-avatar');
+  const userFirstName = document.getElementById('user-firstname');
+  const registerLinks = document.querySelectorAll('a[href="register.html"]');
 
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
@@ -154,10 +164,23 @@
           if (userAvatar && data.user.avatar_url) {
             userAvatar.src = data.user.avatar_url;
           }
+          registerLinks.forEach(l => l.classList.add('hidden'));
         }
       } catch (e) {
         console.error('Kunne ikke hente brukerinfo:', e);
       }
+    });
+
+    const cookieConsent = document.getElementById('cookie-consent');
+    const acceptCookies = document.getElementById('accept-cookies');
+    const declineCookies = document.getElementById('decline-cookies');
+
+    acceptCookies.addEventListener('click', () => {
+      cookieConsent.classList.add('hidden');
+    });
+
+    declineCookies.addEventListener('click', () => {
+      cookieConsent.classList.add('hidden');
     });
   </script>
 </body>
