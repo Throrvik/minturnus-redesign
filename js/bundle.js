@@ -511,6 +511,11 @@ const dayNames = [
 ];
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Only initialize the calendar when the required elements are present
+    if (!calendarGrid) {
+        return;
+    }
+
     renderWeekdayRow();
     initializeEventListeners();
     loadShiftsFromLocalStorage();
