@@ -152,3 +152,4 @@ CREATE TABLE `close_colleagues` (
   PRIMARY KEY (`user_id`, `colleague_id`)
 );
 ```
+# minturnus-redesign
