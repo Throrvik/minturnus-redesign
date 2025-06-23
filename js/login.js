@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (action === 'register') {
                             window.location.href = 'user_profile.html';
                         } else {
-                            window.location.href = 'index.html';
+                            window.location.href = 'calendar.html';
                         }
                     } else {
                         showMessage('Innlogging feilet. Sjekk brukernavn og passord.', 'error');
