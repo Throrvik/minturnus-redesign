@@ -558,6 +558,11 @@ function saveShiftsToLocalStorage() {
 }
 
 function loadSelectedColleagues() {
+    if (!localStorage.getItem('userName')) {
+        localStorage.removeItem('selectedColleagues');
+        selectedColleagues = [];
+        return;
+    }
     const stored = localStorage.getItem('selectedColleagues');
     if (stored) {
         selectedColleagues = JSON.parse(stored);
