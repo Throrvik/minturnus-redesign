@@ -1,102 +1,164 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Om MinTurnus</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
-    <link rel="apple-touch-icon" href="images/icon-512.png">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/cookie-consent.css">
-    <script defer src="js/bundle.min.js"></script>
-    <script defer src="js/about.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MinTurnus - Om oss</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #E5E7EB;
+    }
+    h1, h2, h3 {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #F97316, #FB923C);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .nav-active {
+      transform: translateX(0);
+    }
+    .hero-section {
+      background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    }
+    .card {
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
 </head>
-<body class="about-page">
-    <header class="header">
-        <h1><a href="index.html">Min<span class="accent-text">Turnus</span></a></h1>
-        <div class="user-container">
-        <div id="user-info"></div>
+<body class="antialiased">
+  <!-- Navigasjon -->
+  <nav class="bg-gray-900 text-white p-4 sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="text-orange-500">Turnus</span></a>
+      <button id="menuBtn" class="text-3xl md:hidden text-orange-400 focus:outline-none">☰</button>
+      <div id="navLinks" class="hidden md:flex space-x-6 items-center">
+        <a href="index.html" class="hover:text-orange-400 transition-colors">Hjem</a>
+        <a href="kalender.html" class="hover:text-orange-400 transition-colors">Kalender</a>
+        <a href="about.html" class="hover:text-orange-400 transition-colors">Om oss</a>
+        <a href="register.html" class="hover:text-orange-400 transition-colors">Opprett profil</a>
+        <div id="user-info" class="ml-4 hidden items-center space-x-2">
+          <img id="user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
+          <span id="user-firstname" class="text-sm"></span>
         </div>
-        <div id="request-bell" class="request-bell">&#128276;<span id="request-count" class="badge"></span></div>
-        <div id="hamburger" class="hamburger">&#9776;</div>
-    </header>
-
-    <nav id="navbar" class="navbar">
-        <ul>
-            <li><a href="index.html">Kalender</a></li>
-            <li><a href="about.html">Om oss</a></li>
-            <li><a href="contact.html">Kontakt</a></li>
-            <li id="friends-item" style="display:none;"><a href="friends.html" id="friends-link">Kollegaer<span id="pending-count" class="badge"></span></a></li>
-                <li id="profile-item" style="display:none;"><a href="user_profile.html">Min profil</a></li>
-            <li><a href="login.html" id="login-link">Logg inn</a></li>
-        </ul>
-    </nav>
-        <main class="about-box">
-            <h1 class="page-title">Om MinTurnus</h1>
-
-            <section class="section personal-intro">
-                <p>Jeg har lenge hatt behov for å samle oversikt over turnuser for å lettere planlegge turer og aktiviteter med venner og familie. Det er utfordrende å finne tid sammen når mange i nettverket mitt jobber turnus. Dette verktøyet ble skapt for å gjøre akkurat det enklere, å finne åpninger i en travel hverdag.</p>
-            </section>
-
-            <section class="section">
-                <p>MinTurnus er et gratis nettbasert hjelpemiddel for alle som jobber turnus. Her kan du samle dine egne skift i en oversiktlig kalender og enkelt dele planene med venner og kollegaer.</p>
-            </section>
-
-            <section class="section">
-                <h2>Hvorfor vi laget MinTurnus</h2>
-                <p>Mange opplevde at det var vanskelig å vite når folk var på jobb eller hadde fri. Vi ønsket derfor et lett tilgjengelig verktøy som gjør planleggingen enklere, uten krav om ekstra apper.</p>
-            </section>
-
-            <section class="section">
-                <h2>Hovedfunksjoner</h2>
-                <ul class="feature-list">
-                    <li><span class="feature-icon">&#10003;</span>Registrer og vis din egen turnus direkte i nettleseren.</li>
-                    <li><span class="feature-icon">&#10003;</span>Inviter kollegaer og del skiftplaner med hverandre.</li>
-                    <li><span class="feature-icon">&#10003;</span>Marker nære kollegaer for rask tilgang.</li>
-                    <li><span class="feature-icon">&#10003;</span>Angi midlertidige avvik som ferie eller bytte av skift.</li>
-                    <li><span class="feature-icon">&#10003;</span>Data lagres trygt på serveren slik at den følger deg på tvers av enheter.</li>
-                    <li><span class="feature-icon">&#10003;</span>Legg til lokasjon som båt, rigg eller plattform på profilen slik at venner vet hvor du jobber.</li>
-                </ul>
-            </section>
-
-            <section class="section">
-                <h2>Eksempel</h2>
-                <p>Dette er et eksempel på hvordan turnusvisning kan se ut i MinTurnus.</p>
-                <img src="images/hele.png" alt="Eksempel på turnusoversikt" class="example-image">
-                <div class="example-caption">Årsoversikt hvor neste ledige helg er 22. november 2025.</div>
-                <img src="images/november.png" alt="Månedsvisning med ledige dager" class="example-image">
-                <div class="example-caption">Månedsvisning som viser at 22. og 23. november er ledige.</div>
-            </section>
-
-            <section class="section">
-                <h2>Veien videre</h2>
-                <p>Prosjektet utvikles fortløpende og tilbakemeldinger mottas med takk.</p>
-            </section>
-
-            <section class="cta-section">
-                <h2>Bli med i dag</h2>
-                <p>Opprett en gratis konto og prøv MinTurnus selv.</p>
-                <a href="register.html" class="btn">Registrer deg</a>
-            </section>
-        </main>
-
-    <div id="image-modal" class="modal">
-        <div class="modal-content">
-            <span id="image-close" class="close">&times;</span>
-            <img id="image-modal-content" src="" alt="Forstørret bilde">
-        </div>
+      </div>
     </div>
-
-    <div id="cookie-banner" class="cookie-banner">
-        <p>Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
-        <div class="button-group">
-            <button id="accept-cookies" class="btn">Godta</button>
-            <button id="reject-cookies" class="btn-secondary">Avslå</button>
-        </div>
+    <!-- Mobilmeny -->
+    <div id="mobileMenu" class="hidden md:hidden bg-gray-800 text-white fixed top-0 right-0 h-full w-64 p-6 transform translate-x-full">
+      <button id="closeMenu" class="text-2xl mb-4 text-orange-400">✕</button>
+      <a href="index.html" class="block py-2 hover:text-orange-400">Hjem</a>
+      <a href="kalender.html" class="block py-2 hover:text-orange-400">Kalender</a>
+      <a href="about.html" class="block py-2 hover:text-orange-400">Om oss</a>
+      <a href="register.html" class="block py-2 hover:text-orange-400">Opprett profil</a>
     </div>
+  </nav>
 
+  <!-- Hero-seksjon -->
+  <header class="hero-section text-white py-20">
+    <div class="container mx-auto text-center px-4">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Om MinTurnus</h1>
+      <p class="text-lg md:text-xl mb-8 text-gray-300">Vi gjør skiftplanlegging enklere, smartere og stiligere for deg og ditt team.</p>
+      <a href="#contact" class="inline-block px-8 py-3 btn-primary text-white rounded-full font-semibold">Kontakt oss</a>
+    </div>
+  </header>
+
+  <!-- Innhold -->
+  <main class="container mx-auto py-12 px-4">
+    <!-- Misjon -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Vår misjon</h2>
+      <p class="text-lg text-gray-700 mb-8 text-center max-w-3xl mx-auto">MinTurnus ble startet med et mål om å forenkle skiftplanlegging for bedrifter og ansatte. Vi tror på teknologi som sparer tid og skaper bedre samarbeid, uten å gå på kompromiss med stil eller brukervennlighet.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card bg-white p-6 rounded-xl shadow-lg text-center">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Enkelhet</h3>
+          <p class="text-gray-600">Vi designer verktøy som er intuitive og krever minimal opplæring.</p>
+        </div>
+        <div class="card bg-white p-6 rounded-xl shadow-lg text-center">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Samarbeid</h3>
+          <p class="text-gray-600">Del planer sømløst med kolleger for bedre koordinering.</p>
+        </div>
+        <div class="card bg-white p-6 rounded-xl shadow-lg text-center">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Innovasjon</h3>
+          <p class="text-gray-600">Vi utvikler stadig nye funksjoner for å møte dine behov.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="contact" class="mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Ta kontakt</h2>
+      <div class="card bg-white p-8 rounded-xl shadow-lg max-w-lg mx-auto">
+        <p class="text-gray-700 mb-4 text-center">Har du spørsmål eller ønsker å samarbeide? Send oss en melding!</p>
+        <div class="space-y-4">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Navn</label>
+            <input type="text" id="name" name="name" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">E-post</label>
+            <input type="email" id="email" name="email" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500">
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700">Melding</label>
+            <textarea id="message" name="message" rows="4" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"></textarea>
+          </div>
+          <button type="submit" class="w-full px-6 py-3 btn-primary text-white rounded-lg font-semibold">Send melding</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-8 text-center">
+    <p>© 2025 MinTurnus.no | <a href="privacy.html" class="text-orange-400 hover:underline">Personvernerklæring</a></p>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const userInfo = document.getElementById('user-info');
+    const userAvatar = document.getElementById('user-avatar');
+    const userFirstName = document.getElementById('user-firstname');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('nav-active');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('nav-active');
+    });
+
+    // Hent navn og bilde hvis logget inn
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('backend/get_user_data.php', { credentials: 'include' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'success' && data.user) {
+          if (userInfo) userInfo.classList.remove('hidden');
+          if (userFirstName) userFirstName.textContent = data.user.firstname || '';
+          if (userAvatar && data.user.avatar_url) {
+            userAvatar.src = data.user.avatar_url;
+          }
+        }
+      } catch (e) {
+        console.error('Kunne ikke hente brukerinfo:', e);
+      }
+    });
+  </script>
 </body>
 </html>

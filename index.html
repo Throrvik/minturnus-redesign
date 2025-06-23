@@ -41,13 +41,17 @@
   <!-- Navigasjon -->
   <nav class="bg-gray-900 text-white p-4 sticky top-0 z-50">
     <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="accent-text">Turnus</span></a>
+      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="text-orange-500">Turnus</span></a>
       <button id="menuBtn" class="text-3xl md:hidden text-orange-400 focus:outline-none">☰</button>
-      <div id="navLinks" class="hidden md:flex space-x-6">
+      <div id="navLinks" class="hidden md:flex space-x-6 items-center">
         <a href="index.html" class="hover:text-orange-400 transition-colors">Hjem</a>
         <a href="kalender.html" class="hover:text-orange-400 transition-colors">Kalender</a>
-        <a href="friends.html" class="hover:text-orange-400 transition-colors">Kollegaer</a>
-        <a href="login.html" class="hover:text-orange-400 transition-colors">Logg inn</a>
+        <a href="about.html" class="hover:text-orange-400 transition-colors">Om oss</a>
+        <a href="register.html" class="hover:text-orange-400 transition-colors">Opprett profil</a>
+        <div id="user-info" class="ml-4 hidden items-center space-x-2">
+          <img id="user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
+          <span id="user-firstname" class="text-sm"></span>
+        </div>
       </div>
     </div>
     <!-- Mobilmeny -->
@@ -55,8 +59,8 @@
       <button id="closeMenu" class="text-2xl mb-4 text-orange-400">✕</button>
       <a href="index.html" class="block py-2 hover:text-orange-400">Hjem</a>
       <a href="kalender.html" class="block py-2 hover:text-orange-400">Kalender</a>
-      <a href="friends.html" class="block py-2 hover:text-orange-400">Kollegaer</a>
-      <a href="login.html" class="block py-2 hover:text-orange-400">Logg inn</a>
+      <a href="about.html" class="block py-2 hover:text-orange-400">Om oss</a>
+      <a href="register.html" class="block py-2 hover:text-orange-400">Opprett profil</a>
     </div>
   </nav>
 
