@@ -18,6 +18,11 @@
     text-decoration: none;
 }
 
+/* Gir "Turnus"-delen av logoen en oransje farge */
+.logo-turnus {
+    color: #FFA500;
+}
+
 .user-container {
     display: flex;
     align-items: center;
