@@ -35,13 +35,16 @@
     .card:hover {
       transform: translateY(-5px);
     }
+    .nav-active {
+      transform: translateX(0);
+    }
   </style>
 </head>
 <body class="antialiased">
   <!-- Navigasjon -->
   <nav class="bg-gray-900 text-white p-4 sticky top-0 z-50">
     <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="text-orange-500">Turnus</span></a>
+      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="accent-text">Turnus</span></a>
       <button id="menuBtn" class="text-3xl md:hidden text-orange-400 focus:outline-none">☰</button>
       <div id="navLinks" class="hidden md:flex space-x-6 items-center">
         <a href="index.html" class="hover:text-orange-400 transition-colors">Hjem</a>
@@ -91,7 +94,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-8 text-center">
+  <footer class="bg-gray-900 text-white py-8 text-center fixed bottom-0 left-0 w-full">
     <p>© 2025 MinTurnus.no | <a href="privacy.html" class="text-orange-400 hover:underline">Personvernerklæring</a></p>
   </footer>
 
@@ -134,11 +137,17 @@
   const acceptCookies = document.getElementById('accept-cookies');
   const declineCookies = document.getElementById('decline-cookies');
 
+  if (localStorage.getItem('cookieConsent')) {
+    cookieConsent.classList.add('hidden');
+  }
+
   acceptCookies.addEventListener('click', () => {
+    localStorage.setItem('cookieConsent', 'accepted');
     cookieConsent.classList.add('hidden');
   });
 
   declineCookies.addEventListener('click', () => {
+    localStorage.setItem('cookieConsent', 'declined');
     cookieConsent.classList.add('hidden');
   });
   </script>
