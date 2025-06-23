@@ -525,19 +525,39 @@
 
   <script>
     // Hamburger-meny
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const closeMenu = document.getElementById('closeMenu');
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenu = document.getElementById('closeMenu');
+  const userInfo = document.getElementById('user-info');
+  const userAvatar = document.getElementById('user-avatar');
+  const userFirstName = document.getElementById('user-firstname');
+  const registerLinks = document.querySelectorAll('a[href="register.html"]');
 
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
       mobileMenu.classList.toggle('nav-active');
     });
 
-    closeMenu.addEventListener('click', () => {
-      mobileMenu.classList.add('hidden');
-      mobileMenu.classList.remove('nav-active');
-    });
+  closeMenu.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+    mobileMenu.classList.remove('nav-active');
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('backend/get_user_data.php', { credentials: 'include' });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.status === 'success' && data.user) {
+        if (userInfo) userInfo.classList.remove('hidden');
+        if (userFirstName) userFirstName.textContent = data.user.firstname || '';
+        if (userAvatar && data.user.avatar_url) userAvatar.src = data.user.avatar_url;
+        registerLinks.forEach(l => l.classList.add('hidden'));
+      }
+    } catch (e) {
+      console.error('Kunne ikke hente brukerinfo:', e);
+    }
+  });
 
     // Cookie consent
     const cookieConsent = document.getElementById('cookie-consent');
