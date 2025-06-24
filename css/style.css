@@ -13,12 +13,19 @@
     --accent-color: #F4A300;
     --light-color: #ffffff;
     --text-color: #000;
-    --font-family: 'Inter', 'Roboto', sans-serif;
+    --font-family: 'Open Sans', sans-serif;
     --card-bg: #ffffff;
     --input-bg: #ffffff;
     --input-border: #ccc;
     --border-radius: 8px;
     --box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Headings use Montserrat for a consistent look */
+h1,
+h2,
+h3 {
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Generic class for highlighting text with accent color */
