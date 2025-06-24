@@ -30,6 +30,7 @@
     .modal-active { opacity: 1; transform: scale(1); pointer-events: auto; }
     .search-input { transition: width 0.3s ease, box-shadow 0.3s ease; }
     .search-input:focus { width: 100%; box-shadow: 0 0 15px rgba(249,115,22,0.3); }
+    .accent-text { color: #F4A300; }
     @keyframes pop-in { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     .pop-in { animation: pop-in 0.5s ease forwards; }
     .hero-section { background: linear-gradient(135deg, #F97316, #FB923C); clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
@@ -40,15 +41,14 @@
   <!-- Navigasjon -->
   <nav class="bg-gray-900 text-white p-4 sticky top-0 z-50">
     <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="text-orange-500">Turnus</span></a>
+      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="accent-text">Turnus</span></a>
       <button id="menuBtn" class="text-3xl md:hidden text-orange-400 focus:outline-none">☰</button>
       <div id="navLinks" class="hidden md:flex space-x-6 items-center">
         <a href="index.html" class="hover:text-orange-400 transition-colors">Hjem</a>
         <a href="kalender.html" class="hover:text-orange-400 transition-colors">Kalender</a>
+        <a href="friends.html" class="friends-link hidden hover:text-orange-400 transition-colors">Friends</a>
         <a href="about.html" class="hover:text-orange-400 transition-colors">Om oss</a>
-        <a href="register.html" class="hover:text-orange-400 transition-colors">Opprett profil</a>
-        <a href="friends.html" class="hover:text-orange-400 transition-colors">Kollegaer</a>
-        <a href="user_profile.html" class="hover:text-orange-400 transition-colors">Min profil</a>
+        <a href="register.html" class="register-link hover:text-orange-400 transition-colors">Opprett profil</a>
         <div id="user-info" class="ml-4 hidden items-center space-x-2">
           <img id="user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
           <span id="user-firstname" class="text-sm"></span>
@@ -60,10 +60,9 @@
       <button id="closeMenu" class="text-2xl mb-4 text-orange-400">✕</button>
       <a href="index.html" class="block py-2 hover:text-orange-400">Hjem</a>
       <a href="kalender.html" class="block py-2 hover:text-orange-400">Kalender</a>
+      <a href="friends.html" class="friends-link block py-2 hover:text-orange-400 hidden">Friends</a>
       <a href="about.html" class="block py-2 hover:text-orange-400">Om oss</a>
-      <a href="register.html" class="block py-2 hover:text-orange-400">Opprett profil</a>
-      <a href="friends.html" class="block py-2 hover:text-orange-400">Kollegaer</a>
-      <a href="user_profile.html" class="block py-2 hover:text-orange-400">Min profil</a>
+      <a href="register.html" class="register-link block py-2 hover:text-orange-400">Opprett profil</a>
     </div>
   </nav>
 
@@ -137,8 +136,9 @@
     const closeMenu = document.getElementById('closeMenu');
     const userInfo = document.getElementById('user-info');
     const userAvatar = document.getElementById('user-avatar');
-    const userFirstName = document.getElementById('user-firstname');
-    const registerLinks = document.querySelectorAll('a[href="register.html"]');
+   const userFirstName = document.getElementById('user-firstname');
+   const registerLinks = document.querySelectorAll('a[href="register.html"]');
+    const friendsLinks = document.querySelectorAll('a[href="friends.html"]');
 
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
@@ -159,6 +159,9 @@
           if (userFirstName) userFirstName.textContent = data.user.firstname || '';
           if (userAvatar && data.user.avatar_url) userAvatar.src = data.user.avatar_url;
           registerLinks.forEach(l => l.classList.add('hidden'));
+          friendsLinks.forEach(l => l.classList.remove('hidden'));
+        } else {
+          friendsLinks.forEach(l => l.classList.add('hidden'));
         }
       } catch (e) {
         console.error('Kunne ikke hente brukerinfo:', e);
