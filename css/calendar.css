@@ -8,13 +8,15 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+
 .container.year-view {
-    max-width: 1400px;
+    max-width: none;
+    width: 100%;
 }
 
 .year-container {
     display: none;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 10px;
 }
 
