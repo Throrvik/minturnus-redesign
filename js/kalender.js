@@ -21,8 +21,6 @@ const nextMonthButton = document.getElementById('next-month');
 const calendarGrid = document.querySelector('.calendar-grid');
 const container = document.querySelector('.container');
 const yearContainer = document.getElementById('year-container');
-const yearModal = document.getElementById('year-modal');
-const yearGrid = document.getElementById('year-grid');
 const todayButton = document.getElementById('today-button');
 const toggleYearButton = document.getElementById('toggle-year');
 let isYearView = false;
@@ -250,11 +248,7 @@ function initializeEventListeners() {
     prevMonthButton.addEventListener('click', () => {
         if (isYearView) {
             currentYear--;
-            if (window.innerWidth >= 768) {
-                renderYearCalendar(yearGrid, currentYear);
-            } else {
-                renderYearCalendar(yearContainer, currentYear);
-            }
+            renderYearCalendar(yearContainer, currentYear);
         } else {
             if (currentMonth === 0) {
                 currentMonth = 11;
@@ -269,11 +263,7 @@ function initializeEventListeners() {
     nextMonthButton.addEventListener('click', () => {
         if (isYearView) {
             currentYear++;
-            if (window.innerWidth >= 768) {
-                renderYearCalendar(yearGrid, currentYear);
-            } else {
-                renderYearCalendar(yearContainer, currentYear);
-            }
+            renderYearCalendar(yearContainer, currentYear);
         } else {
             if (currentMonth === 11) {
                 currentMonth = 0;
@@ -1036,31 +1026,22 @@ function updateView() {
     const weekdayRow = document.querySelector('.weekday-row');
 
     if (isYearView) {
-        if (window.innerWidth >= 768) {
-            if (yearModal) {
-                yearModal.classList.remove('hidden');
-                yearModal.classList.add('open');
-            }
-            if (yearContainer) yearContainer.style.display = 'none';
-            renderYearCalendar(yearGrid, currentYear);
-        } else {
-            container.classList.add('year-view');
-            if (calendarGrid) calendarGrid.style.display = 'none';
-            if (weekdayRow) weekdayRow.style.display = 'none';
-            if (yearContainer) yearContainer.style.display = 'grid';
+        container.classList.add('year-view');
+        if (calendarGrid) calendarGrid.style.display = 'none';
+        if (weekdayRow) weekdayRow.style.display = 'none';
+        if (yearContainer) {
+            yearContainer.style.display = 'grid';
             renderYearCalendar(yearContainer, currentYear);
         }
         if (toggleYearButton) toggleYearButton.textContent = 'Vis måned';
     } else {
-        if (yearModal) {
-            yearModal.classList.add('hidden');
-            yearModal.classList.remove('open');
-        }
         container.classList.remove('year-view');
         if (yearContainer) yearContainer.style.display = 'none';
         if (weekdayRow) weekdayRow.style.display = 'grid';
-        if (calendarGrid) calendarGrid.style.display = 'grid';
-        if (calendarGrid) renderCalendar(currentMonth, currentYear);
+        if (calendarGrid) {
+            calendarGrid.style.display = 'grid';
+            renderCalendar(currentMonth, currentYear);
+        }
         if (toggleYearButton) toggleYearButton.textContent = 'Vis år';
     }
 }

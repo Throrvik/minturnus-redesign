@@ -293,33 +293,24 @@
       margin-bottom: 5px;
     }
 
-    /* Årsoversikt modal */
-    #year-modal {
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-    #year-modal.open {
-      display: flex;
-    }
-    .year-grid {
+    /* Årsoversikt */
+    .year-container {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
       gap: 10px;
     }
     @media (min-width: 768px) {
-      .year-grid {
+      .year-container {
         grid-template-columns: repeat(4, 1fr);
       }
     }
-    #year-modal .month-wrapper {
+    .month-wrapper {
       background-color: #FFFFFF;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       overflow: hidden;
-      animation: pop 0.3s ease;
     }
-    #year-modal .month-wrapper h3 {
+    .month-wrapper h3 {
       background: linear-gradient(90deg, #F97316, #FB923C);
       color: #FFFFFF;
       padding: 4px;
@@ -552,14 +543,6 @@
     <button id="colleague-close" class="absolute top-2 right-2 text-gray-600">×</button>
   </div>
 
-  <!-- Årsoversikt modal -->
-  <div id="year-modal" class="modal fixed inset-0 bg-gray-300 bg-opacity-75 flex items-center justify-center hidden">
-    <div class="bg-white p-6 rounded-xl max-w-6xl w-full relative overflow-y-auto">
-      <button id="year-close" class="absolute top-2 right-2 text-gray-600 text-2xl">×</button>
-      <h2 id="year-modal-title" class="text-2xl font-bold text-center mb-4"></h2>
-      <div id="year-grid" class="year-grid"></div>
-    </div>
-  </div>
 
   <!-- Cookie consent -->
   <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex justify-between items-center">
@@ -644,17 +627,7 @@
       colleagueModal.classList.add('hidden');
     });
 
-    // Årsoversikt modal lukk
-    const yearModalEl = document.getElementById('year-modal');
-    const yearCloseBtn = document.getElementById('year-close');
 
-    if (yearCloseBtn) yearCloseBtn.addEventListener('click', () => {
-      yearModalEl.classList.add('hidden');
-      yearModalEl.classList.remove('open');
-      if (window.calendarToggle) {
-        window.calendarToggle(false);
-      }
-    });
 
     // Dummy CSRF-token for kompatibilitet med kalender.js
     window.CSRF_TOKEN = 'dummy-token'; // Erstatt med ekte token fra server
