@@ -418,7 +418,7 @@
 
     <!-- Turnusoversikt -->
     <section class="mb-12">
-      <div class="turnus-oversikt flex flex-wrap gap-2"></div>
+      <div id="turnus-oversikt" class="turnus-oversikt flex flex-wrap gap-2"></div>
     </section>
 
     <!-- Avvik fra turnus -->
@@ -632,6 +632,7 @@
     // Dummy CSRF-token for kompatibilitet med kalender.js
     window.CSRF_TOKEN = 'dummy-token'; // Erstatt med ekte token fra server
   </script>
+  <script src="js/utils/colors.js"></script>
   <script src="js/kalender.js"></script>
 </body>
 </html>
