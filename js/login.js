@@ -37,15 +37,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 const responseText = await response.text();
                 if (DEBUG) console.log('Full server response:', responseText);
 
-                if (!response.ok) {
-                    throw new Error(`HTTP-feil! Status: ${response.status}`);
-                }
-
                 let result;
                 try {
                     result = JSON.parse(responseText);
                 } catch (parseError) {
                     if (DEBUG) console.error("Feil ved parsing av JSON:", parseError);
+                    result = null;
+                }
+
+                if (!response.ok) {
+                    const message = result && result.message ? result.message : `HTTP-feil! Status: ${response.status}`;
+                    errorMessages.textContent = message;
+                    errorMessages.style.display = 'block';
+                    return;
+                }
+
+                if (!result) {
                     errorMessages.textContent = "En feil oppstod ved serverkommunikasjon. Vennligst prøv igjen senere.";
                     errorMessages.style.display = 'block';
                     return;
