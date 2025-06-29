@@ -17,3 +17,7 @@ $FACEBOOK_APP_ID = '';
 ```
 
 `config.php` is ignored by Git so your sensitive data remains private.
+
+If you receive a *500 Internal Server Error* when accessing any of the
+`backend/` PHP scripts, ensure that this `config.php` file exists and
+contains valid credentials.
