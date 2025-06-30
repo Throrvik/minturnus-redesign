@@ -253,11 +253,7 @@ function fetchUserData() {
 
                 if (data.user.avatar_url) {
                     const avatarPreview = document.getElementById('avatar-preview');
-                    let src = data.user.avatar_url;
-                    if (!src.includes('/') && !src.startsWith('http')) {
-                        src = 'uploads/avatars/' + src;
-                    }
-                    avatarPreview.style.backgroundImage = `url('${src}')`;
+                    avatarPreview.style.backgroundImage = `url('${data.user.avatar_url}')`;
                     avatarPreview.textContent = '';
                 }
 
