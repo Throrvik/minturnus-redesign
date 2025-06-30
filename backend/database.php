@@ -29,8 +29,11 @@ if (is_array($config)) {
     }
 }
 
-// Fjern all feilrapportering for produksjon
-error_reporting(0);
+// Respect DEV_MODE environment variable for error visibility
+$devMode = getenv('DEV_MODE') === 'true';
+if (!$devMode) {
+    error_reporting(0);
+}
 
 // Lag tilkoblingen med MySQLi (denne brukes av andre skript ved behov)
 $conn = new mysqli($servername, $username, $db_password, $dbname);

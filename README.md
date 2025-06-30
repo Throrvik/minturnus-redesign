@@ -38,3 +38,6 @@ Either format will be detected automatically.
 If you receive a *500 Internal Server Error* when accessing any of the
 `backend/` PHP scripts, ensure that this `config.php` file exists and
 contains valid credentials.
+
+## Debugging
+Set the environment variable `DEV_MODE=true` to see detailed PHP errors when working locally. In production, omit this variable so errors remain hidden.
