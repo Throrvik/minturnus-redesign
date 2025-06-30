@@ -8,7 +8,11 @@ function createCard(user, options = {}) {
     const avatar = document.createElement('div');
     avatar.className = 'avatar-img';
     if (user.avatar_url) {
-        avatar.style.backgroundImage = `url('${user.avatar_url}')`;
+        let src = user.avatar_url;
+        if (!src.includes('/') && !src.startsWith('http')) {
+            src = 'uploads/avatars/' + src;
+        }
+        avatar.style.backgroundImage = `url('${src}')`;
         avatar.textContent = '';
     } else {
         avatar.textContent = '👤';
@@ -182,7 +186,11 @@ function createProfileCard(user) {
     if (user.avatar_url) {
         const img = document.createElement('img');
         img.className = 'profile-image';
-        img.src = user.avatar_url;
+        let src = user.avatar_url;
+        if (!src.includes('/') && !src.startsWith('http')) {
+            src = 'uploads/avatars/' + src;
+        }
+        img.src = src;
         img.alt = 'Profilbilde';
         contentDiv.appendChild(img);
     }
