@@ -168,7 +168,11 @@
           if (userInfo) userInfo.classList.remove('hidden');
           if (userFirstName) userFirstName.textContent = data.user.firstname || '';
           if (userAvatar && data.user.avatar_url) {
-            userAvatar.src = data.user.avatar_url;
+            let src = data.user.avatar_url;
+            if (!src.includes('/') && !src.startsWith('http')) {
+              src = 'uploads/avatars/' + src;
+            }
+            userAvatar.src = src;
           }
           registerLinks.forEach(l => l.classList.add('hidden'));
           friendsLinks.forEach(l => l.classList.remove('hidden'));
