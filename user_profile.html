@@ -4,37 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brukerprofil - MinTurnus</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
-<link rel="icon" type="image/x-icon" href="images/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
-<link rel="apple-touch-icon" href="images/icon-512.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/icon-512.png">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/user_profile.css">
     <link rel="stylesheet" href="css/cookie-consent.css">
-    <script defer src="js/bundle.min.js"></script>
     <script defer src="js/user_profile.js"></script>
 </head>
 <body>
-    <header class="header">
-        <h1><a href="index.html">Min<span class="accent-text">Turnus</span></a></h1>
-        <div class="user-container">
-        <div id="user-info"></div>
+  <nav class="bg-gray-900 text-white p-4 sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="accent-text">Turnus</span></a>
+      <button id="menuBtn" class="text-3xl md:hidden text-orange-400 focus:outline-none">☰</button>
+      <div id="navLinks" class="hidden md:flex space-x-6 items-center">
+        <a href="index.html" class="hover:text-orange-400 transition-colors">Hjem</a>
+        <a href="kalender.html" class="hover:text-orange-400 transition-colors">Kalender</a>
+        <a href="friends.html" class="friends-link hidden hover:text-orange-400 transition-colors">Friends</a>
+        <a href="about.html" class="hover:text-orange-400 transition-colors">Om oss</a>
+        <a href="register.html" class="register-link hover:text-orange-400 transition-colors">Opprett profil</a>
+        <div id="user-info" class="ml-4 hidden items-center space-x-2 cursor-pointer">
+          <img id="user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
+          <span id="user-firstname" class="text-sm"></span>
         </div>
-        <div id="request-bell" class="request-bell">&#128276;<span id="request-count" class="badge"></span></div>
-        <div id="hamburger" class="hamburger">&#9776;</div>
-    </header>
-
-    <nav id="navbar" class="navbar">
-        <ul>
-            <li><a href="index.html">Kalender</a></li>
-            <li><a href="about.html">Om oss</a></li>
-            <li><a href="contact.html">Kontakt</a></li>
-            <li id="friends-item" style="display:none;"><a href="friends.html" id="friends-link">Kollegaer<span id="pending-count" class="badge"></span></a></li>
-                <li id="profile-item" style="display:none;"><a href="user_profile.html">Min profil</a></li>
-            <li><a href="login.html" id="login-link">Logg inn</a></li>
-        </ul>
-    </nav>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-gray-800 text-white fixed top-0 right-0 h-full w-64 p-6 transform translate-x-full">
+      <button id="closeMenu" class="text-2xl mb-4 text-orange-400">✕</button>
+      <a href="index.html" class="block py-2 hover:text-orange-400">Hjem</a>
+      <a href="kalender.html" class="block py-2 hover:text-orange-400">Kalender</a>
+      <a href="friends.html" class="friends-link block py-2 hover:text-orange-400 hidden">Friends</a>
+      <a href="about.html" class="block py-2 hover:text-orange-400">Om oss</a>
+      <a href="register.html" class="register-link block py-2 hover:text-orange-400">Opprett profil</a>
+    </div>
+  </nav>
 
     <div class="contact-box user-profile-box">
         <form id="user-profile-form" class="user-profile" novalidate>
@@ -148,12 +153,76 @@
         </div>
 </div>
 
-    <div id="cookie-banner" class="cookie-banner">
-        <p>Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
-        <div class="button-group">
-            <button id="accept-cookies" class="btn">Godta</button>
-            <button id="reject-cookies" class="btn-secondary">Avslå</button>
+    <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex justify-between items-center">
+        <p class="text-sm">Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
+        <div class="flex gap-2">
+            <button id="accept-cookies" class="btn-primary px-4 py-2 text-white rounded-md">Godta</button>
+            <button id="decline-cookies" class="btn-secondary px-4 py-2 text-white rounded-md">Avslå</button>
         </div>
     </div>
+
+    <script>
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const closeMenu = document.getElementById('closeMenu');
+      const userInfo = document.getElementById('user-info');
+      const userAvatar = document.getElementById('user-avatar');
+      const userFirstName = document.getElementById('user-firstname');
+      const registerLinks = document.querySelectorAll('a[href="register.html"]');
+      const friendsLinks = document.querySelectorAll('a[href="friends.html"]');
+
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('nav-active');
+      });
+
+      closeMenu.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('nav-active');
+      });
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          const res = await fetch('backend/get_user_data.php', { credentials: 'include' });
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data.status === 'success' && data.user) {
+            if (userInfo) userInfo.classList.remove('hidden');
+            if (userFirstName) userFirstName.textContent = data.user.firstname || '';
+            if (userAvatar && data.user.avatar_url) {
+              let src = data.user.avatar_url;
+              if (!src.includes('/') && !src.startsWith('http')) {
+                src = 'uploads/avatars/' + src;
+              }
+              userAvatar.src = src;
+            }
+            registerLinks.forEach(l => l.classList.add('hidden'));
+            friendsLinks.forEach(l => l.classList.remove('hidden'));
+          } else {
+            friendsLinks.forEach(l => l.classList.add('hidden'));
+          }
+        } catch (e) {
+          console.error('Kunne ikke hente brukerinfo:', e);
+        }
+      });
+
+      const cookieConsent = document.getElementById('cookie-consent');
+      const acceptCookies = document.getElementById('accept-cookies');
+      const declineCookies = document.getElementById('decline-cookies');
+
+      if (localStorage.getItem('cookieConsent')) {
+        cookieConsent.classList.add('hidden');
+      }
+
+      acceptCookies.addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', 'accepted');
+        cookieConsent.classList.add('hidden');
+      });
+
+      declineCookies.addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', 'declined');
+        cookieConsent.classList.add('hidden');
+      });
+    </script>
 </body>
 </html>
