@@ -10,24 +10,7 @@ if (!file_exists($configFile)) {
     ]);
     exit;
 }
-// Include configuration. It can either define variables directly or
-// return an array of settings (legacy format).
-$config = include $configFile;
-
-// If the config file returned an array, map it to variables expected below
-if (is_array($config)) {
-    $servername  = $config['DB_HOST'] ?? 'localhost';
-    $username    = $config['DB_USER'] ?? '';
-    $db_password = $config['DB_PASS'] ?? '';
-    $dbname      = $config['DB_NAME'] ?? '';
-
-    // Optional SMTP/other settings
-    $smtp_user = $config['MAIL_USER'] ?? ($smtp_user ?? null);
-    $smtp_pass = $config['MAIL_PASS'] ?? ($smtp_pass ?? null);
-    if (isset($config['FACEBOOK_APP_ID'])) {
-        $FACEBOOK_APP_ID = $config['FACEBOOK_APP_ID'];
-    }
-}
+require_once $configFile;
 
 // Fjern all feilrapportering for produksjon
 error_reporting(0);
