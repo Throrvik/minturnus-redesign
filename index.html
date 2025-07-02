@@ -6,6 +6,7 @@
   <title>MinTurnus - Forside</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cookie-consent.css">
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
@@ -115,12 +116,12 @@
     </section>
   </main>
 
-  <!-- Cookie consent -->
-  <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex justify-between items-center">
-    <p class="text-sm">Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
-    <div class="flex gap-2">
-      <button id="accept-cookies" class="btn-primary px-4 py-2 text-white rounded-md">Godta</button>
-      <button id="decline-cookies" class="btn-secondary px-4 py-2 text-white rounded-md">Avslå</button>
+  <!-- Cookie banner -->
+  <div id="cookie-banner" class="cookie-banner">
+    <p>Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
+    <div class="button-group">
+      <button id="accept-cookies" class="btn">Godta</button>
+      <button id="reject-cookies" class="btn-secondary">Avslå</button>
     </div>
   </div>
 
@@ -177,23 +178,6 @@
     }
   });
 
-  const cookieConsent = document.getElementById('cookie-consent');
-  const acceptCookies = document.getElementById('accept-cookies');
-  const declineCookies = document.getElementById('decline-cookies');
-
-  if (localStorage.getItem('cookieConsent')) {
-    cookieConsent.classList.add('hidden');
-  }
-
-  acceptCookies.addEventListener('click', () => {
-    localStorage.setItem('cookieConsent', 'accepted');
-    cookieConsent.classList.add('hidden');
-  });
-
-  declineCookies.addEventListener('click', () => {
-    localStorage.setItem('cookieConsent', 'declined');
-    cookieConsent.classList.add('hidden');
-  });
 
   function toggleMenu() {
     if (!userMenu) return;
@@ -233,6 +217,7 @@
   }
   document.addEventListener('click', closeUserMenu);
   </script>
+  <script src="js/cookie-consent.js"></script>
   <script src="js/session.js"></script>
 </body>
 </html>
