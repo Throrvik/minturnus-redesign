@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/kalende1/public_html
+    - export DEPLOYPATH=/home/kalende1/public_html/nydesign
     - /bin/cp -R * $DEPLOYPATH
