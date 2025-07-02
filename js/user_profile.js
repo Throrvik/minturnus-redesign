@@ -329,27 +329,8 @@ function updateUserProfile() {
             // Oppdater localStorage og header med nytt navn
             localStorage.setItem('userName', first);
             const userInfoDiv = document.getElementById('user-info');
-            if (userInfoDiv) {
-                userInfoDiv.textContent = '';
-                const welcomeSpan = document.createElement('span');
-                welcomeSpan.textContent = 'Velkommen, ';
-                const nameLink = document.createElement('a');
-                nameLink.href = 'user_profile.html';
-                const strong = document.createElement('strong');
-                strong.textContent = first;
-                nameLink.appendChild(strong);
-                welcomeSpan.appendChild(nameLink);
-                const sep = document.createElement('span');
-                sep.className = 'accent-text';
-                sep.textContent = ' | ';
-                const logout = document.createElement('a');
-                logout.href = '#';
-                logout.id = 'logout-btn';
-                logout.textContent = 'Logg ut';
-                userInfoDiv.appendChild(welcomeSpan);
-                userInfoDiv.appendChild(sep);
-                userInfoDiv.appendChild(logout);
-            }
+            // Oppdatering av navbar håndteres andre steder. Den gamle
+            // velkomstmeldingen fjernes for å unngå duplikater.
         } else {
             showMessage(`Kunne ikke oppdatere profil: ${data.message}`, 'error');
         }
