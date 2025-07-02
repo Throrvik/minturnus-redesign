@@ -111,29 +111,27 @@
     </section>
   </main>
 
-  <!-- Cookie banner -->
-  <div id="cookie-banner" class="cookie-banner">
-    <p>Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
-    <div class="button-group">
-      <button id="accept-cookies" class="btn">Godta</button>
-      <button id="reject-cookies" class="btn-secondary">Avslå</button>
+  <!-- Cookie consent -->
+  <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex justify-between items-center">
+    <p class="text-sm">Dette nettstedet bruker informasjonskapsler til å lagre dine innstillinger i nettleseren og forbedre opplevelsen i henhold til gjeldende personvernlovgivning.</p>
+    <div class="flex gap-2">
+      <button id="accept-cookies" class="btn-primary px-4 py-2 text-white rounded-md">Godta</button>
+      <button id="decline-cookies" class="btn-secondary px-4 py-2 text-white rounded-md">Avslå</button>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-8 text-center fixed bottom-0 left-0 w-full">
+  <footer class="bg-gray-900 text-white py-8 text-center">
     <p>© 2025 MinTurnus.no | <a href="privacy.html" class="text-orange-400 hover:underline">Personvernerklæring</a></p>
   </footer>
 
   <script>
-  const menuBtn = document.getElementById('menuBtn');
+    const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
-  const closeMenuBtn = document.getElementById('closeMenu');
+  const closeMenu = document.getElementById('closeMenu');
   const userInfo = document.getElementById('user-info');
   const userAvatar = document.getElementById('user-avatar');
   const userFirstName = document.getElementById('user-firstname');
-  const userMenu = document.getElementById('user-menu');
-  const notificationInfo = document.getElementById('notification-info');
   const registerLinks = document.querySelectorAll('a[href="register.html"]');
   const friendsLinks = document.querySelectorAll('a[href="friends.html"]');
 
@@ -142,76 +140,48 @@
       mobileMenu.classList.toggle('nav-active');
     });
 
-  closeMenuBtn.addEventListener('click', () => {
-    mobileMenu.classList.add('hidden');
-    mobileMenu.classList.remove('nav-active');
-  });
+    closeMenu.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('nav-active');
+    });
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    try {
-      const res = await fetch('backend/get_user_data.php', { credentials: 'include' });
-      if (!res.ok) return;
-      const data = await res.json();
-      if (data.status === 'success' && data.user) {
-        if (userInfo) userInfo.classList.remove('hidden');
-        if (userFirstName) userFirstName.textContent = data.user.firstname || '';
-        if (userAvatar && data.user.avatar_url) {
-          let src = data.user.avatar_url;
-          if (!src.includes('/') && !src.startsWith('http')) {
-            src = 'uploads/avatars/' + src;
+    // Hent navn og bilde hvis logget inn
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('backend/get_user_data.php', { credentials: 'include' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'success' && data.user) {
+          if (userInfo) userInfo.classList.remove('hidden');
+          if (userFirstName) userFirstName.textContent = data.user.firstname || '';
+          if (userAvatar && data.user.avatar_url) {
+            let src = data.user.avatar_url;
+            if (!src.includes('/') && !src.startsWith('http')) {
+              src = 'uploads/avatars/' + src;
+            }
+            userAvatar.src = src;
           }
-          userAvatar.src = src;
+          registerLinks.forEach(l => l.classList.add('hidden'));
+          friendsLinks.forEach(l => l.classList.remove('hidden'));
+        } else {
+          friendsLinks.forEach(l => l.classList.add('hidden'));
         }
-        registerLinks.forEach(l => l.classList.add('hidden'));
-        friendsLinks.forEach(l => l.classList.remove('hidden'));
-        updateNotificationText();
-      } else {
-        friendsLinks.forEach(l => l.classList.add('hidden'));
+      } catch (e) {
+        console.error('Kunne ikke hente brukerinfo:', e);
       }
-    } catch (e) {
-      console.error('Kunne ikke hente brukerinfo:', e);
-    }
-  });
+    });
 
+    const cookieConsent = document.getElementById('cookie-consent');
+    const acceptCookies = document.getElementById('accept-cookies');
+    const declineCookies = document.getElementById('decline-cookies');
 
-  function toggleMenu() {
-    if (!userMenu) return;
-    userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
-  }
+    acceptCookies.addEventListener('click', () => {
+      cookieConsent.classList.add('hidden');
+    });
 
-  function closeUserMenu(e) {
-    if (userMenu && !userMenu.contains(e.target) && e.target !== userAvatar && e.target !== userInfo) {
-      userMenu.style.display = 'none';
-    }
-  }
-
-  async function updateNotificationText() {
-    if (!notificationInfo) return;
-    try {
-      const res = await fetch('api/pending_requests.php', { credentials: 'include' });
-      if (!res.ok) return;
-      const requests = await res.json();
-      if (requests.length === 1) {
-        const name = requests[0].user.firstname || 'En kollega';
-        notificationInfo.textContent = `${name} har forespurt om å bli kollega med deg`;
-      } else if (requests.length > 1) {
-        notificationInfo.textContent = `${requests.length} kollegaer har sendt deg en forespørsel`;
-      } else {
-        notificationInfo.textContent = 'Ingen nye forespørsler';
-      }
-    } catch (e) {
-      console.error('Kunne ikke hente varsler:', e);
-    }
-  }
-
-  if (userInfo) {
-    userInfo.addEventListener('click', toggleMenu);
-  }
-  if (userAvatar) {
-    userAvatar.addEventListener('click', toggleMenu);
-  }
-  document.addEventListener('click', closeUserMenu);
+    declineCookies.addEventListener('click', () => {
+      cookieConsent.classList.add('hidden');
+    });
   </script>
-  <script src="js/cookie-consent.js"></script>
 </body>
 </html>
