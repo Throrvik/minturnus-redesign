@@ -1544,28 +1544,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Håndter innloggingsstatus
     if (userName) {
-        // Oppdater header for å vise velkomstmelding og logg ut-knapp
-        if (userInfoDiv) {
-            userInfoDiv.textContent = '';
-            const welcomeSpan = document.createElement('span');
-            welcomeSpan.textContent = 'Velkommen, ';
-            const nameLink = document.createElement('a');
-            nameLink.href = 'user_profile.html';
-            const strong = document.createElement('strong');
-            strong.textContent = userName;
-            nameLink.appendChild(strong);
-            welcomeSpan.appendChild(nameLink);
-            const sep = document.createElement('span');
-            sep.className = 'accent-text';
-            sep.textContent = ' | ';
-            const logout = document.createElement('a');
-            logout.href = '#';
-            logout.id = 'logout-btn';
-            logout.textContent = 'Logg ut';
-            userInfoDiv.appendChild(welcomeSpan);
-            userInfoDiv.appendChild(sep);
-            userInfoDiv.appendChild(logout);
-        }
+        // Navbar oppdateres av nyere skript. Den tidligere
+        // velkomstmeldingen er fjernet for å unngå duplikater.
 
         // Vis venne- og profil-lenken hvis brukeren er logget inn
         if (friendsItem) friendsItem.style.display = 'list-item';
