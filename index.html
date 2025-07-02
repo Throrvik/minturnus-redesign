@@ -132,7 +132,7 @@
   <script>
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
-  const closeMenu = document.getElementById('closeMenu');
+  const closeMenuBtn = document.getElementById('closeMenu');
   const userInfo = document.getElementById('user-info');
   const userAvatar = document.getElementById('user-avatar');
   const userFirstName = document.getElementById('user-firstname');
@@ -146,7 +146,7 @@
       mobileMenu.classList.toggle('nav-active');
     });
 
-  closeMenu.addEventListener('click', () => {
+  closeMenuBtn.addEventListener('click', () => {
     mobileMenu.classList.add('hidden');
     mobileMenu.classList.remove('nav-active');
   });
@@ -200,7 +200,7 @@
     userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
   }
 
-  function closeMenu(e) {
+  function closeUserMenu(e) {
     if (userMenu && !userMenu.contains(e.target) && e.target !== userAvatar && e.target !== userInfo) {
       userMenu.style.display = 'none';
     }
@@ -231,7 +231,7 @@
   if (userAvatar) {
     userAvatar.addEventListener('click', toggleMenu);
   }
-  document.addEventListener('click', closeMenu);
+  document.addEventListener('click', closeUserMenu);
   </script>
 </body>
 </html>
