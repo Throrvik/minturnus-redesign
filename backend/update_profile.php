@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = uniqid('avatar_') . '.' . $ext;
             $destination = $uploadDir . $fileName;
             if (move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
-                $avatarUrl = 'uploads/avatars/' . $fileName;
+                $avatarUrl = 'https://minturnus.no/uploads/avatars/' . $fileName;
             }
         }
 

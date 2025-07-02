@@ -157,7 +157,7 @@
           if (userAvatar && data.user.avatar_url) {
             let src = data.user.avatar_url;
             if (!src.includes('/') && !src.startsWith('http')) {
-              src = 'uploads/avatars/' + src;
+              src = 'https://minturnus.no/uploads/avatars/' + src;
             }
             userAvatar.src = src;
           }
