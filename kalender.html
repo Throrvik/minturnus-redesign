@@ -589,7 +589,14 @@
       if (data.status === 'success' && data.user) {
         if (userInfo) userInfo.classList.remove('hidden');
         if (userFirstName) userFirstName.textContent = data.user.firstname || '';
-        if (userAvatar && data.user.avatar_url) userAvatar.src = data.user.avatar_url;
+        if (userAvatar && data.user.avatar_url) {
+          let src = data.user.avatar_url;
+          if (!src.startsWith('http')) {
+            src = src.replace(/^\/+/, '');
+            src = 'https://minturnus.no/' + src;
+          }
+          userAvatar.src = src;
+        }
         registerLinks.forEach(l => l.classList.add('hidden'));
         friendsLinks.forEach(l => l.classList.remove('hidden'));
         if (colleagueSection) colleagueSection.classList.remove('hidden');
