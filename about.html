@@ -169,8 +169,9 @@
           if (userFirstName) userFirstName.textContent = data.user.firstname || '';
           if (userAvatar && data.user.avatar_url) {
             let src = data.user.avatar_url;
-            if (!src.includes('/') && !src.startsWith('http')) {
-              src = 'https://minturnus.no/uploads/avatars/' + src;
+            if (!src.startsWith('http')) {
+              src = src.replace(/^\/+/, '');
+              src = 'https://minturnus.no/' + src;
             }
             userAvatar.src = src;
           }

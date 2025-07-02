@@ -254,8 +254,9 @@ function fetchUserData() {
                 if (data.user.avatar_url) {
                     const avatarPreview = document.getElementById('avatar-preview');
                     let src = data.user.avatar_url;
-                    if (!src.includes('/') && !src.startsWith('http')) {
-                        src = 'https://minturnus.no/uploads/avatars/' + src;
+                    if (!src.startsWith('http')) {
+                        src = src.replace(/^\/+/, '');
+                        src = 'https://minturnus.no/' + src;
                     }
                     avatarPreview.style.backgroundImage = `url('${src}')`;
                     avatarPreview.textContent = '';
