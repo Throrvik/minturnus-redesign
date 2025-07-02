@@ -71,6 +71,10 @@
     <div class="container mx-auto flex justify-between items-center">
       <a href="index.html" class="text-2xl font-bold"><span class="text-white">Min</span><span class="accent-text">Turnus</span></a>
       <button id="menuBtn" class="text-3xl md:hidden text-orange-400 focus:outline-none">☰</button>
+      <a href="user_profile.html" id="mobile-user-link" class="flex items-center space-x-2 md:hidden hidden">
+        <img id="mobile-user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
+        <span id="mobile-user-firstname" class="text-sm"></span>
+      </a>
       <div id="navLinks" class="hidden md:flex space-x-6 items-center">
         <a href="index.html" class="hover:text-orange-400 transition-colors">Hjem</a>
         <a href="kalender.html" class="hover:text-orange-400 transition-colors">Kalender</a>
@@ -93,6 +97,8 @@
       <a href="friends.html" class="friends-link block py-2 hover:text-orange-400 hidden">Friends</a>
       <a href="about.html" class="block py-2 hover:text-orange-400">Om oss</a>
       <a href="register.html" class="register-link block py-2 hover:text-orange-400">Opprett profil</a>
+      <a href="user_profile.html" id="mobile-profile-link" class="block py-2 hover:text-orange-400 hidden">Profil</a>
+      <button id="mobile-logout-btn" class="block py-2 text-left hover:text-orange-400 hidden">Logg ut</button>
     </div>
   </nav>
 
@@ -134,8 +140,13 @@
   const userInfo = document.getElementById('user-info');
   const userAvatar = document.getElementById('user-avatar');
   const userFirstName = document.getElementById('user-firstname');
+  const mobileUserLink = document.getElementById('mobile-user-link');
+  const mobileUserAvatar = document.getElementById('mobile-user-avatar');
+  const mobileUserFirstName = document.getElementById('mobile-user-firstname');
   const registerLinks = document.querySelectorAll('a[href="register.html"]');
   const friendsLinks = document.querySelectorAll('a[href="friends.html"]');
+  const mobileProfileLink = document.getElementById('mobile-profile-link');
+  const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
 
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
@@ -155,7 +166,9 @@
         const data = await res.json();
         if (data.status === 'success' && data.user) {
           if (userInfo) userInfo.classList.remove('hidden');
+          if (mobileUserLink) mobileUserLink.classList.remove('hidden');
           if (userFirstName) userFirstName.textContent = data.user.firstname || '';
+          if (mobileUserFirstName) mobileUserFirstName.textContent = data.user.firstname || '';
           if (userAvatar && data.user.avatar_url) {
             let src = data.user.avatar_url;
             if (!src.startsWith('http')) {
@@ -163,9 +176,12 @@
               src = 'https://minturnus.no/' + src;
             }
             userAvatar.src = src;
+            if (mobileUserAvatar) mobileUserAvatar.src = src;
           }
           registerLinks.forEach(l => l.classList.add('hidden'));
           friendsLinks.forEach(l => l.classList.remove('hidden'));
+          if (mobileProfileLink) mobileProfileLink.classList.remove('hidden');
+          if (mobileLogoutBtn) mobileLogoutBtn.classList.remove('hidden');
         } else {
           friendsLinks.forEach(l => l.classList.add('hidden'));
         }
@@ -188,7 +204,8 @@
   </script>
   <script>
     const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn?.addEventListener('click', async () => {
+    const mobileLogoutBtn2 = document.getElementById('mobile-logout-btn');
+    const handleLogout = async () => {
       try {
         const res = await fetch('backend/logout.php', { method: 'POST', credentials: 'include' });
         const data = await res.json();
@@ -198,7 +215,9 @@
       } catch (e) {
         console.error('Logout feilet:', e);
       }
-    });
+    };
+    logoutBtn?.addEventListener('click', handleLogout);
+    mobileLogoutBtn2?.addEventListener('click', handleLogout);
   </script>
 </body>
 </html>
