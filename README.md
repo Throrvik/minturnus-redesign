@@ -35,6 +35,10 @@ return [
 
 Either format will be detected automatically.
 
+When you run the application for the first time, the `api/colleague_colors.php`
+endpoint will automatically create the `colleague_colors` table if it does not
+already exist.
+
 If you receive a *500 Internal Server Error* when accessing any of the
 `backend/` PHP scripts, ensure that this `config.php` file exists and
 contains valid credentials.
