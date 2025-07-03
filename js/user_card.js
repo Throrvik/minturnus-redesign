@@ -1,24 +1,26 @@
 
 function createCard(user, options = {}) {
     const card = document.createElement('div');
-    card.className = 'user-card fade';
+    card.classList.add('card', 'colleague-card', 'p-6', 'relative', 'fade');
     if (options.compact) card.classList.add('compact');
     if (options.mini) card.classList.add('mini');
 
-    const avatar = document.createElement('div');
-    avatar.className = 'avatar-img';
+    const avatarWrap = document.createElement('div');
+    avatarWrap.className = 'avatar w-20 h-20 mb-4';
+    const img = document.createElement('img');
+    img.className = 'avatar-img';
     if (user.avatar_url) {
         let src = user.avatar_url;
         if (!src.startsWith('http')) {
             src = src.replace(/^\/+/, '');
             src = 'https://minturnus.no/' + src;
         }
-        avatar.style.backgroundImage = `url('${src}')`;
-        avatar.textContent = '';
+        img.src = src;
     } else {
-        avatar.textContent = '👤';
+        img.alt = '👤';
     }
-    card.appendChild(avatar);
+    avatarWrap.appendChild(img);
+    card.appendChild(avatarWrap);
 
     const content = document.createElement('div');
     content.className = 'card-content';
@@ -28,7 +30,7 @@ function createCard(user, options = {}) {
     info.className = 'user-info';
     const name = user.firstname ? `${user.firstname} ${user.lastname || ''}` : (user.fullname || '');
     const nameP = document.createElement('p');
-    nameP.className = 'name';
+    nameP.className = 'name text-xl mb-2';
     const strongName = document.createElement('strong');
     strongName.textContent = name.trim();
     nameP.appendChild(strongName);
@@ -37,6 +39,7 @@ function createCard(user, options = {}) {
         if (options.compact) {
             if (user.company) {
                 const p = document.createElement('p');
+                p.className = 'text-gray-700 mb-1';
                 const s = document.createElement('strong');
                 s.textContent = 'Firma:';
                 p.appendChild(s);
@@ -45,6 +48,7 @@ function createCard(user, options = {}) {
             }
             if (user.location) {
                 const p = document.createElement('p');
+                p.className = 'text-gray-700 mb-1';
                 const s = document.createElement('strong');
                 s.textContent = 'Lokasjon:';
                 p.appendChild(s);
@@ -53,6 +57,7 @@ function createCard(user, options = {}) {
             }
             if (user.shift) {
                 const p = document.createElement('p');
+                p.className = 'text-gray-700 mb-1';
                 const s = document.createElement('strong');
                 s.textContent = 'Turnus:';
                 p.appendChild(s);
@@ -62,16 +67,19 @@ function createCard(user, options = {}) {
         } else {
             if (user.company) {
                 const p = document.createElement('p');
+                p.className = 'text-gray-700 mb-1';
                 p.textContent = user.company;
                 info.appendChild(p);
             }
             if (user.location) {
                 const p = document.createElement('p');
+                p.className = 'text-gray-700 mb-1';
                 p.textContent = user.location;
                 info.appendChild(p);
             }
             if (user.shift) {
                 const p = document.createElement('p');
+                p.className = 'text-gray-700 mb-1';
                 p.textContent = user.shift;
                 info.appendChild(p);
             }
