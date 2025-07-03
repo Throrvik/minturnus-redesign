@@ -1,39 +1,15 @@
 <?php
 // Load credentials
-$configPath = __DIR__ . '/config.php';
-if (!file_exists($configPath)) {
-    http_response_code(500);
-    die('Missing backend/config.php');
-}
-$config = require $configPath;
-
-// Support both array style and variable style config
-if (is_array($config)) {
-    $servername  = $config['DB_HOST'] ?? 'localhost';
-    $username    = $config['DB_USER'] ?? '';
-    $db_password = $config['DB_PASS'] ?? '';
-    $dbname      = $config['DB_NAME'] ?? '';
-} else {
-    $servername = $servername ?? 'localhost';
-    $username = $username ?? '';
-    $db_password = $db_password ?? '';
-    $dbname = $dbname ?? '';
-}
+$config = require __DIR__ . '/config.php';
 
 // Fjern all feilrapportering for produksjon
-if (getenv('DEV_MODE')) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-} else {
-    error_reporting(0);
-}
+error_reporting(0);
 
 // Definer tilkoblingsinformasjon for MySQL-databasen
-// Config values override the defaults defined above
-$servername = $servername ?: 'localhost';
-$username = $username ?: '';
-$db_password = $db_password ?: '';
-$dbname = $dbname ?: '';
+$servername = "localhost";            // Vanligvis er det "localhost" for webhotell
+$username = $config['DB_USER'];         // Brukernavnet fra config
+$db_password = $config['DB_PASS'];      // Passordet fra config
+$dbname = "kalende1_turnus";          // Navnet på databasen, inkludert prefixet
 
 // Lag tilkoblingen med MySQLi (denne brukes av andre skript ved behov)
 $conn = new mysqli($servername, $username, $db_password, $dbname);
