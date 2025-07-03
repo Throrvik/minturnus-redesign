@@ -188,9 +188,16 @@ function createCard(user, options = {}) {
         sel.addEventListener('click', e => e.stopPropagation());
         sel.onchange = e => {
             const val = e.target.value;
-            if (val) colorPrefs[user.id] = val; else delete colorPrefs[user.id];
-            localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
-            updateColorOptions();
+            fetch('api/colleague_colors.php', {
+                credentials: 'include',
+                method: val ? 'POST' : 'DELETE',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
+                body: JSON.stringify({ id: user.id, color: val })
+            }).then(() => {
+                if (val) colorPrefs[user.id] = val; else delete colorPrefs[user.id];
+                localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
+                updateColorOptions();
+            });
         };
         settings.appendChild(sel);
 
@@ -342,8 +349,21 @@ function getNextAvailableColor() {
 }
 
 function loadColleagueColorPrefs() {
-  const s = localStorage.getItem('colleagueColorPref');
-  colleagueColorPref = s ? JSON.parse(s) : {};
+  if (!localStorage.getItem('userName')) {
+    const s = localStorage.getItem('colleagueColorPref');
+    colleagueColorPref = s ? JSON.parse(s) : {};
+    return;
+  }
+  fetch('api/colleague_colors.php', { credentials: 'include' })
+    .then(r => r.json())
+    .then(prefs => {
+      colleagueColorPref = prefs;
+      localStorage.setItem('colleagueColorPref', JSON.stringify(colleagueColorPref));
+    })
+    .catch(() => {
+      const s = localStorage.getItem('colleagueColorPref');
+      colleagueColorPref = s ? JSON.parse(s) : {};
+    });
 }
 
 function loadCloseColleagues() {

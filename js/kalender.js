@@ -51,8 +51,21 @@ function getNextAvailableColor() {
 }
 
 function loadColleagueColorPrefs() {
-  const s = localStorage.getItem('colleagueColorPref');
-  colleagueColorPref = s ? JSON.parse(s) : {};
+  if (!localStorage.getItem('userName')) {
+    const s = localStorage.getItem('colleagueColorPref');
+    colleagueColorPref = s ? JSON.parse(s) : {};
+    return;
+  }
+  fetch('api/colleague_colors.php', { credentials: 'include' })
+    .then(r => r.json())
+    .then(prefs => {
+      colleagueColorPref = prefs;
+      localStorage.setItem('colleagueColorPref', JSON.stringify(colleagueColorPref));
+    })
+    .catch(() => {
+      const s = localStorage.getItem('colleagueColorPref');
+      colleagueColorPref = s ? JSON.parse(s) : {};
+    });
 }
 
 function loadCloseColleagues() {
