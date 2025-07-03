@@ -4,7 +4,14 @@ let closePrefs = {};
 document.addEventListener('DOMContentLoaded', () => {
     const stored = localStorage.getItem('colleagueColorPref');
     colorPrefs = stored ? JSON.parse(stored) : {};
-    fetch('api/close_colleagues.php', { credentials: 'include' })
+    const colorsPromise = fetch('api/colleague_colors.php', { credentials: 'include' })
+        .then(r => r.json())
+        .then(prefs => {
+            colorPrefs = prefs;
+            localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
+        })
+        .catch(() => {});
+    const closePromise = fetch('api/close_colleagues.php', { credentials: 'include' })
         .then(r => r.json())
         .then(ids => {
             closePrefs = {};
@@ -16,7 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
             closePrefs = closeStored ? JSON.parse(closeStored) : {};
         });
     loadPendingRequests();
-    loadColleagues();
+    Promise.all([colorsPromise, closePromise]).then(() => {
+        updateColorOptions();
+        loadColleagues();
+    });
 
     document.getElementById('search-btn')
         .addEventListener('click', searchUsers);
