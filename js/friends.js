@@ -1,10 +1,19 @@
 let colorPrefs = {};
 let closePrefs = {};
 
+function handleAuth(response) {
+    if (response.status === 401 || response.status === 403) {
+        window.location.href = 'login.html';
+        throw new Error('Unauthorized');
+    }
+    return response;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const stored = localStorage.getItem('colleagueColorPref');
     colorPrefs = stored ? JSON.parse(stored) : {};
     const colorsPromise = fetch('api/colleague_colors.php', { credentials: 'include' })
+        .then(handleAuth)
         .then(r => r.json())
         .then(prefs => {
             colorPrefs = prefs;
@@ -12,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(() => {});
     const closePromise = fetch('api/close_colleagues.php', { credentials: 'include' })
+        .then(handleAuth)
         .then(r => r.json())
         .then(ids => {
             closePrefs = {};
@@ -122,6 +132,7 @@ function updateColorOptions() {
 function searchUsers() {
     const query = document.getElementById('search-input').value.trim();
     const box = document.getElementById('search-results');
+    if (!box) return;
     if (query.length < 2) {
         box.innerHTML = '<p>Skriv minst to bokstaver.</p>';
         return;
@@ -137,6 +148,7 @@ function searchUsers() {
 
 function showSearchResults(users) {
     const box = document.getElementById('search-results');
+    if (!box) return;
     box.innerHTML = '';
     users.forEach(u => {
         const card = createCard(u, { search: true, mini: true });
@@ -152,6 +164,7 @@ function sendRequest(id, btn) {
         headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id })
     })
+        .then(handleAuth)
         .then(r => r.json())
         .then(() => {
             if (btn) {
@@ -165,6 +178,7 @@ function sendRequest(id, btn) {
 
 function loadPendingRequests() {
     fetch('api/pending_requests.php', { credentials: 'include' })
+        .then(handleAuth)
         .then(r => r.json())
         .then(requests => {
             const box = document.getElementById('pending-requests');
@@ -176,6 +190,7 @@ function loadPendingRequests() {
 
 function loadSentRequests() {
     fetch('api/sent_requests.php', { credentials: 'include' })
+        .then(handleAuth)
         .then(r => r.json())
         .then(requests => {
             const box = document.getElementById('sent-requests');
@@ -192,6 +207,7 @@ function respondRequest(id, accept) {
         headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id, accept })
     })
+        .then(handleAuth)
         .then(() => {
             loadPendingRequests();
             loadColleagues();
@@ -201,11 +217,12 @@ function respondRequest(id, accept) {
 
 function loadColleagues() {
     fetch('api/my_colleagues.php', { credentials: 'include' })
+        .then(handleAuth)
         .then(r => r.json())
         .then(list => {
             const box = document.getElementById('colleagues-list');
             box.innerHTML = '';
-            list.forEach(c => box.appendChild(createCard(c, { remove: true, modal: true, compact: true }))); 
+            list.forEach(c => box.appendChild(createCard(c, { remove: true, modal: true, compact: true })));
             const count = document.getElementById('colleague-count');
             if (count) count.textContent = list.length;
             updateColorOptions();
@@ -219,6 +236,7 @@ function removeColleague(id) {
         headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id })
     })
+    .then(handleAuth)
     .then(() => loadColleagues());
 }
 
@@ -246,7 +264,9 @@ function cancelRequest(id) {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
         body: JSON.stringify({ id })
-    }).then(() => loadSentRequests());
+    })
+    .then(handleAuth)
+    .then(() => loadSentRequests());
 }
 
 function createSentRequestCard(req) {
@@ -261,6 +281,7 @@ function createSentRequestCard(req) {
 
 function showColleagueInfo(id) {
     fetch(`api/user_info.php?id=${id}`, { credentials: 'include' })
+        .then(handleAuth)
         .then(r => r.json())
         .then(data => {
             if (!data || data.status !== 'success') return;

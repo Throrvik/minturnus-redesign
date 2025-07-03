@@ -91,12 +91,19 @@
     <section class="mb-12">
       <input type="text" id="search-input" placeholder="Søk etter kollegaer..." class="search-input w-3/4 md:w-1/2 p-4 border border-gray-300 rounded-full focus:ring-orange-500 focus:border-orange-500 bg-white shadow-md">
       <button id="search-btn" class="ml-2 px-4 py-2 btn-primary text-white rounded-md">Søk</button>
+      <div id="search-results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-6"></div>
     </section>
 
     <!-- Ventende kollegaforespørsler -->
     <section class="mb-16">
       <h2 class="text-2xl font-bold text-gray-900 mb-6">Ventende kollegaforespørsler</h2>
       <div id="pending-requests" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </section>
+
+    <!-- Sendte forespørsler -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Sendte forespørsler</h2>
+      <div id="sent-requests" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </section>
 
     <!-- Foreslåtte kollegaer -->
@@ -125,6 +132,12 @@
         <div id="copy-feedback" class="text-green-600 text-center"></div>
       </div>
     </div>
+  </div>
+
+  <!-- Kollega-modal -->
+  <div id="colleague-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div id="colleague-content" class="bg-white p-6 rounded-xl max-w-sm w-full"></div>
+    <button id="colleague-close" class="absolute top-2 right-2 text-gray-600">×</button>
   </div>
 
   <!-- Cookie consent -->
