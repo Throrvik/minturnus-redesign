@@ -1,26 +1,24 @@
 
 function createCard(user, options = {}) {
     const card = document.createElement('div');
-    card.classList.add('card', 'colleague-card', 'p-6', 'relative', 'fade');
+    card.className = 'user-card fade';
     if (options.compact) card.classList.add('compact');
     if (options.mini) card.classList.add('mini');
 
-    const avatarWrap = document.createElement('div');
-    avatarWrap.className = 'avatar w-20 h-20 mb-4';
-    const img = document.createElement('img');
-    img.className = 'avatar-img';
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar-img';
     if (user.avatar_url) {
         let src = user.avatar_url;
         if (!src.startsWith('http')) {
             src = src.replace(/^\/+/, '');
             src = 'https://minturnus.no/' + src;
         }
-        img.src = src;
+        avatar.style.backgroundImage = `url('${src}')`;
+        avatar.textContent = '';
     } else {
-        img.alt = '👤';
+        avatar.textContent = '👤';
     }
-    avatarWrap.appendChild(img);
-    card.appendChild(avatarWrap);
+    card.appendChild(avatar);
 
     const content = document.createElement('div');
     content.className = 'card-content';
