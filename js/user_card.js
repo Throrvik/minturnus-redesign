@@ -123,8 +123,22 @@ function createCard(user, options = {}) {
         const settings = document.createElement('div');
         settings.className = 'settings-row';
 
+        const colorWrap = document.createElement('div');
+        colorWrap.className = 'color-container';
+
+        const colorDisplay = document.createElement('div');
+        colorDisplay.className = 'color-display';
+        const currentColor = colorPrefs[user.id] || '';
+        if (currentColor) colorDisplay.style.backgroundColor = currentColor; else colorDisplay.textContent = 'A';
+        colorWrap.appendChild(colorDisplay);
+
+        const changeBtn = document.createElement('button');
+        changeBtn.className = 'action-btn';
+        changeBtn.textContent = 'Endre';
+        colorWrap.appendChild(changeBtn);
+
         const picker = document.createElement('div');
-        picker.className = 'color-picker';
+        picker.className = 'color-picker hidden';
         const createSwatch = (col, label) => {
             const sw = document.createElement('div');
             sw.className = 'color-swatch';
@@ -148,12 +162,27 @@ function createCard(user, options = {}) {
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': window.CSRF_TOKEN },
                 body: JSON.stringify({ id: user.id, color: val })
             }).then(() => {
-                if (val) colorPrefs[user.id] = val; else delete colorPrefs[user.id];
+                if (val) {
+                    colorPrefs[user.id] = val;
+                    colorDisplay.style.backgroundColor = val;
+                    colorDisplay.textContent = '';
+                } else {
+                    delete colorPrefs[user.id];
+                    colorDisplay.style.backgroundColor = '';
+                    colorDisplay.textContent = 'A';
+                }
                 localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
                 updateColorOptions();
+                picker.classList.add('hidden');
             });
         });
-        settings.appendChild(picker);
+        changeBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            picker.classList.toggle('hidden');
+        });
+
+        colorWrap.appendChild(picker);
+        settings.appendChild(colorWrap);
 
         const lbl = document.createElement('label');
         lbl.className = 'close-label';
