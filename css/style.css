@@ -132,21 +132,32 @@ h2 {
     background-color: var(--accent-color); /* Hover-effekt i aksentfarge */
 }
 
+.btn-primary {
+    background: linear-gradient(90deg, #F97316, #FB923C);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
 .btn-secondary {
     width: 100%;
     padding: 12px;
     background-color: var(--secondary-color); /* Sekundær knappfarge */
-    color: var(--primary-color);
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
     font-size: 16px;
     margin-bottom: 10px; /* Avstand mellom Glemt passord og teksten under */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-secondary:hover {
     background-color: var(--accent-color); /* Hover-effekt i aksentfarge */
-    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
     /* Styling for Om oss Section */
