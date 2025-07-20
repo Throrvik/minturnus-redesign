@@ -51,9 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('colleague-close');
     const modal = document.getElementById('colleague-modal');
     if (closeBtn && modal) {
-        closeBtn.onclick = () => modal.style.display = 'none';
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+        };
         window.addEventListener('click', e => {
-            if (e.target === modal) modal.style.display = 'none';
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                modal.classList.add('hidden');
+            }
         });
     }
 
@@ -290,6 +296,7 @@ function showColleagueInfo(id) {
             const card = createProfileCard(data.user);
             content.innerHTML = '';
             content.appendChild(card);
-            modal.style.display = 'block';
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
         });
 }
