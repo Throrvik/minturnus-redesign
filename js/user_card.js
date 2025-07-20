@@ -1,10 +1,12 @@
 
 function createCard(user, options = {}) {
     const card = document.createElement('div');
-    card.className = 'user-card fade';
+    card.className = 'user-card colleague-card fade';
     if (options.compact) card.classList.add('compact');
     if (options.mini) card.classList.add('mini');
 
+    const avatarWrap = document.createElement('div');
+    avatarWrap.className = 'avatar';
     const avatar = document.createElement('div');
     avatar.className = 'avatar-img';
     if (user.avatar_url) {
@@ -18,7 +20,8 @@ function createCard(user, options = {}) {
     } else {
         avatar.textContent = '👤';
     }
-    card.appendChild(avatar);
+    avatarWrap.appendChild(avatar);
+    card.appendChild(avatarWrap);
 
     const content = document.createElement('div');
     content.className = 'card-content';
