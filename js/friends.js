@@ -126,11 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function updateColorOptions() {
     const used = new Set(Object.values(colorPrefs).filter(c => c));
-    document.querySelectorAll('#colleagues-list select').forEach(sel => {
-        const current = sel.value;
-        Array.from(sel.options).forEach(opt => {
-            if (!opt.value) return;
-            opt.disabled = used.has(opt.value) && opt.value !== current;
+    document.querySelectorAll('#colleagues-list .color-picker').forEach(picker => {
+        const userId = picker.closest('.user-card')?.dataset.userid;
+        const current = colorPrefs[userId] || '';
+        picker.querySelectorAll('.color-swatch').forEach(sw => {
+            const val = sw.dataset.color || '';
+            const unavailable = val && used.has(val) && val !== current;
+            sw.classList.toggle('disabled', unavailable);
         });
     });
 }
