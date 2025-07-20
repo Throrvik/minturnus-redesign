@@ -2,6 +2,7 @@
 function createCard(user, options = {}) {
     const card = document.createElement('div');
     card.className = 'user-card colleague-card fade';
+    card.dataset.userid = user.id;
     if (options.compact) card.classList.add('compact');
     if (options.mini) card.classList.add('mini');
 
@@ -122,22 +123,25 @@ function createCard(user, options = {}) {
         const settings = document.createElement('div');
         settings.className = 'settings-row';
 
-        const sel = document.createElement('select');
-        const autoOpt = document.createElement('option');
-        autoOpt.value = '';
-        autoOpt.textContent = 'Auto';
-        sel.appendChild(autoOpt);
-        allColors.forEach(c => {
-            const o = document.createElement('option');
-            o.value = c;
-            o.textContent = colorNames[c] || c;
-            o.style.backgroundColor = c;
-            sel.appendChild(o);
-        });
-        sel.value = colorPrefs[user.id] || '';
-        sel.addEventListener('click', e => e.stopPropagation());
-        sel.onchange = e => {
-            const val = e.target.value;
+        const picker = document.createElement('div');
+        picker.className = 'color-picker';
+        const createSwatch = (col, label) => {
+            const sw = document.createElement('div');
+            sw.className = 'color-swatch';
+            sw.dataset.color = col;
+            if (col) sw.style.backgroundColor = col; else sw.textContent = label;
+            if ((colorPrefs[user.id] || '') === col) sw.classList.add('selected');
+            picker.appendChild(sw);
+        };
+        createSwatch('', 'A');
+        allColors.forEach(c => createSwatch(c));
+        picker.addEventListener('click', e => {
+            const sw = e.target.closest('.color-swatch');
+            if (!sw) return;
+            e.stopPropagation();
+            picker.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+            sw.classList.add('selected');
+            const val = sw.dataset.color || '';
             fetch('api/colleague_colors.php', {
                 credentials: 'include',
                 method: val ? 'POST' : 'DELETE',
@@ -148,8 +152,8 @@ function createCard(user, options = {}) {
                 localStorage.setItem('colleagueColorPref', JSON.stringify(colorPrefs));
                 updateColorOptions();
             });
-        };
-        settings.appendChild(sel);
+        });
+        settings.appendChild(picker);
 
         const lbl = document.createElement('label');
         lbl.className = 'close-label';
