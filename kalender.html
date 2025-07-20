@@ -15,7 +15,7 @@
       font-family: 'Montserrat', sans-serif;
     }
     .btn-primary {
-      background: linear-gradient(90deg, #F97316, #FB923C);
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .btn-primary:hover {
@@ -31,7 +31,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     .accent-text {
-      color: #F4A300;
+      color: var(--accent-color);
     }
     .nav-menu {
       transition: transform 0.3s ease-in-out;
@@ -43,7 +43,7 @@
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
     .calendar-day:hover {
-      background-color: #F97316;
+      background-color: var(--accent-start);
       color: white;
       transform: scale(1.05);
     }
@@ -124,7 +124,7 @@
       border-radius: 50%;
     }
     .today {
-      background-color: #F97316;
+      background-color: var(--accent-start);
       color: #FFFFFF;
       font-weight: bold;
     }
@@ -192,7 +192,7 @@
       border-radius: 5px;
     }
     .shift-item button:hover {
-      background-color: #F97316;
+      background-color: var(--accent-start);
     }
     .shift-list-header {
       display: flex;
@@ -237,7 +237,7 @@
     }
     .info-box {
       background-color: #FFFBEB;
-      border-left: 4px solid #F97316;
+      border-left: 4px solid var(--accent-start);
       padding: 10px;
       border-radius: 4px;
       display: flex;
@@ -255,7 +255,7 @@
       margin-right: 10px;
     }
     .colleague-name {
-      color: #F97316;
+      color: var(--accent-start);
       text-decoration: underline;
       cursor: pointer;
     }
@@ -311,7 +311,7 @@
       overflow: hidden;
     }
     .month-wrapper h3 {
-      background: linear-gradient(90deg, #F97316, #FB923C);
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
       color: #FFFFFF;
       padding: 4px;
       font-weight: 600;

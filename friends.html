@@ -19,7 +19,7 @@
   <style>
     body { font-family: 'Open Sans', sans-serif; background-color: #E5E7EB; overflow-x: hidden; }
     h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
-    .btn-primary { background: linear-gradient(90deg, #F97316, #FB923C); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .btn-primary { background: linear-gradient(90deg, var(--accent-start), var(--accent-end)); transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(249,115,22,0.5); }
     .btn-secondary { background-color: #1F2937; transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .btn-secondary:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(31,41,55,0.5); }
@@ -27,16 +27,16 @@
     .nav-active { transform: translateX(0); }
     .colleague-card { position: relative; background: white; border-radius: 12px; overflow: hidden; transition: transform 0.4s ease, box-shadow 0.4s ease; transform: rotate(-1deg); }
     .colleague-card:hover { transform: rotate(0) scale(1.03); box-shadow: 0 8px 20px rgba(249,115,22,0.3); }
-    .colleague-card::before { content: ''; position: absolute; top: 0; left: 0; width: 50px; height: 50px; background: linear-gradient(45deg,#F97316,#FB923C); clip-path: polygon(0 0,100% 0,0 100%); z-index: 1; }
-    .avatar { background: linear-gradient(45deg,#F97316,#FB923C); padding: 2px; border-radius: 50%; }
+    .colleague-card::before { content: ''; position: absolute; top: 0; left: 0; width: 50px; height: 50px; background: linear-gradient(45deg,var(--accent-start),var(--accent-end)); clip-path: polygon(0 0,100% 0,0 100%); z-index: 1; }
+    .avatar { background: linear-gradient(45deg,var(--accent-start),var(--accent-end)); padding: 2px; border-radius: 50%; }
     .modal { transition: opacity 0.3s ease, transform 0.3s ease; transform: scale(0.8); }
     .modal-active { opacity: 1; transform: scale(1); pointer-events: auto; }
     .search-input { transition: width 0.3s ease, box-shadow 0.3s ease; }
     .search-input:focus { width: 100%; box-shadow: 0 0 15px rgba(249,115,22,0.3); }
-    .accent-text { color: #F4A300; }
+    .accent-text { color: var(--accent-color); }
     @keyframes pop-in { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     .pop-in { animation: pop-in 0.5s ease forwards; }
-    .hero-section { background: linear-gradient(135deg, #F97316, #FB923C); clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
+    .hero-section { background: linear-gradient(135deg, var(--accent-start), var(--accent-end)); clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
     @media (max-width: 640px){ .colleague-card { transform: rotate(0); } .search-input { width:100% !important; } }
   </style>
 </head>
